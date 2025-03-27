@@ -1,26 +1,18 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { TextField, Button, Box, Typography, IconButton, InputAdornment, Card,
+  CardContent, Avatar, Grid, FormControl, OutlinedInput, InputLabel } from "@mui/material";
 import {
-  TextField,
-  Button,
-  Box,
-  Typography,
-  IconButton,
-  InputAdornment,
-  Card,
-  CardContent,
-  Avatar,
-  Grid
-} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
-import KeyIcon from "@mui/icons-material/Key";
-import PersonIcon from "@mui/icons-material/Person";
-import PeopleIcon from "@mui/icons-material/People";
-import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
+  Visibility,
+  VisibilityOff,
+  PhoneIphone as PhoneIphoneIcon,
+  Key as KeyIcon,
+  Person as PersonIcon,
+  People as PeopleIcon
+} from "@mui/icons-material";
 
 const SignupForm = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -31,21 +23,18 @@ const SignupForm = () => {
   const validateForm = () => {
     let newErrors = {};
 
-    // ✅ Phone Number Validation (Only 10 digits)
     if (!phone) {
       newErrors.phone = "Phone number is required";
     } else if (!/^\d{10}$/.test(phone)) {
       newErrors.phone = "Enter a valid 10-digit phone number";
     }
 
-    // ✅ Password Validation (Min 6 characters)
     if (!password) {
       newErrors.password = "Password is required";
     } else if (password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
 
-    // ✅ Name Validation (Only characters, no numbers)
     if (!name) {
       newErrors.name = "Name is required";
     } else if (!/^[a-zA-Z\s]+$/.test(name)) {
@@ -68,53 +57,32 @@ const SignupForm = () => {
         <Grid item xs={12} sm={8} md={5} lg={4}>
           <Card elevation={3} sx={{ p: 4, borderRadius: 4, textAlign: "center", backgroundColor: "rgba(255, 255, 255, 0.95)" }}>
             <CardContent>
-              {/* Logo & Branding */}
               <Box display="flex" justifyContent="center" mb={1}>
-                <Avatar src="/PN_logo.png" alt="Company Logo" sx={{ width: 80, height: 80, mt:-2 }} />
+                <Avatar src="/PN_logo.png" alt="Company Logo" sx={{ width: 80, height: 80, mt: -2 }} />
               </Box>
-              <Typography variant="h4" sx={{ 
-                fontFamily: 'Poppins, sans-serif', 
-                fontWeight: 'bold', 
-                color: '#3babd9', 
-                letterSpacing: 1.5, mt: -3,
-            }}
-            >PAYNEST</Typography>
+              <Typography variant="h4" sx={{ fontFamily: 'Poppins, sans-serif', fontWeight: 'bold', color: '#3babd9', letterSpacing: 1.5, mt: -3 }}>PAYNEST</Typography>
+              <Typography variant="body2" sx={{ fontFamily: 'Poppins, sans-serif', color: 'textSecondary', letterSpacing: 1, mt: -1, mb: 3 }}>PROFIT COMPANY</Typography>
 
-              <Typography variant="body2" sx={{ 
-                fontFamily: 'Poppins, sans-serif',  
-                color: 'textSecondary', 
-                letterSpacing: 1, mt: -1, mb: 3,
-            }}>
-                PROFIT COMPANY
-              </Typography>
-
-              {/* ✅ Phone Number Field with "+91" Fixed */}
               <FormControl sx={{ width: '100%' }} variant="outlined">
-  <InputLabel htmlFor="outlined-adornment-phone">Phone Number</InputLabel>
-  <OutlinedInput
-    id="outlined-adornment-phone"
-    type="tel"
-    value={phone}
-    onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-    error={!!errors.phone}
-    startAdornment={
-      <InputAdornment position="start">
-        <PhoneIphoneIcon color="primary" sx={{ mr: 1 }} />
-        <Typography sx={{ fontWeight: 'bold', color: 'black' }}>+91</Typography>
-      </InputAdornment>
-    }
-    label="Phone Number"
-    placeholder="Enter Your Mobile Number"
-  />
-</FormControl>
-{errors.phone && (
-  <Typography variant="caption" color="error" sx={{ ml : 2, textAlign: "left", display: "block" }}>
-    {errors.phone}
-  </Typography>
-)}
+                <InputLabel htmlFor="outlined-adornment-phone">Phone Number</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                  error={!!errors.phone}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <PhoneIphoneIcon color="primary" sx={{ mr: 1 }} />
+                      <Typography sx={{ fontWeight: 'bold', color: 'black' }}>+91</Typography>
+                    </InputAdornment>
+                  }
+                  label="Phone Number"
+                  placeholder="Enter Your Mobile Number"
+                />
+              </FormControl>
+              {errors.phone && <Typography variant="caption" color="error" sx={{ ml: 2, textAlign: "left", display: "block" }}>{errors.phone}</Typography>}
 
-
-              {/* ✅ Name Field */}
               <TextField
                 label="Your Name"
                 placeholder="Enter Your Name"
@@ -134,7 +102,6 @@ const SignupForm = () => {
                 }}
               />
 
-              {/* ✅ Password Field */}
               <TextField
                 label="Login Password"
                 placeholder="Set Login Password"
@@ -162,7 +129,6 @@ const SignupForm = () => {
                 }}
               />
 
-              {/* ✅ Invitation Code Field */}
               <TextField
                 label="Invitation Code"
                 placeholder="Enter Invitation Code"
@@ -180,43 +146,9 @@ const SignupForm = () => {
                 }}
               />
 
-              {/* ✅ Buttons */}
               <Box display="flex" justifyContent="space-between" mt={3} gap={2}>
-                {/* Log In Button */}
-                <Button
-                  variant="outlined"
-                  sx={{
-                    flex: 1,
-                    borderRadius: "25px",
-                    padding: "12px 0",
-                    boxShadow: "2px 4px 6px rgba(0, 0, 0, 0.1)",
-                    textTransform: "none",
-                    borderColor: "#B0BEC5",
-                    color: "black",
-                    backgroundColor: "white",
-                    "&:hover": { backgroundColor: "#f0f0f0" }
-                  }}
-                >
-                  Log in
-                </Button>
-
-                {/* Sign Up Button */}
-                <Button
-                  variant="contained"
-                  onClick={handleSubmit}
-                  sx={{
-                    flex: 1,
-                    borderRadius: "25px",
-                    padding: "12px 0",
-                    boxShadow: "2px 4px 6px rgba(0, 0, 0, 0.1)",
-                    textTransform: "none",
-                    backgroundColor: "#3babd9",
-                    color: "white",
-                    "&:hover": { backgroundColor: "#156fb2" }
-                  }}
-                >
-                  Sign Up
-                </Button>
+                <Button variant="outlined" onClick={() => navigate("/")} sx={{ flex: 1, borderRadius: "25px", padding: "12px 0", borderColor: "#B0BEC5", color: "black", backgroundColor: "white", "&:hover": { backgroundColor: "#f0f0f0" } }}>Log in</Button>
+                <Button variant="contained" onClick={handleSubmit} sx={{ flex: 1, borderRadius: "25px", padding: "12px 0", backgroundColor: "#3babd9", color: "white", "&:hover": { backgroundColor: "#156fb2" } }}>Sign Up</Button>
               </Box>
             </CardContent>
           </Card>
