@@ -74,7 +74,7 @@ const SignupForm = () => {
                   startAdornment={
                     <InputAdornment position="start">
                       <PhoneIphoneIcon color="primary" sx={{ mr: 1 }} />
-                      <Typography sx={{ fontWeight: 'bold', color: 'black' }}>+91</Typography>
+                      <Typography sx={{ fontWeight: 'bold' }}>+91</Typography>
                     </InputAdornment>
                   }
                   label="Phone Number"

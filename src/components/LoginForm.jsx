@@ -23,8 +23,9 @@ const LoginForm = () => {
   const handleLogin = useCallback(() => {
     if (validateForm()) {
       console.log("Logging in with:", { phone, password });
+      navigate("/invest");
     }
-  }, [validateForm, phone, password]);
+  }, [validateForm, phone, password, navigate]);
 
   return (
     <Box
