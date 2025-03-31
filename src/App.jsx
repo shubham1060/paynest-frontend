@@ -3,6 +3,7 @@ import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import ForgetPassword from "./components/ForgetPassword";
 import Invest from "./components/Invest";
+import Account from "./components/Account";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/frgtPwd" element={<ForgetPassword />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
     </BrowserRouter>
   );
