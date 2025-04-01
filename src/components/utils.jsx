@@ -1,31 +1,22 @@
+
 import React, { useState } from "react";
 import {
-  Avatar,
-  Box,
-  Typography,
-  Card,
-  Grid,
-  CardContent,
-  Button,
-  BottomNavigation,
-  BottomNavigationAction,
+  Avatar, Box, Typography, Card,
+  CardContent, Button, BottomNavigation, BottomNavigationAction
 } from "@mui/material";
 import { styled } from "@mui/system";
-import MovingOutlinedIcon from "@mui/icons-material/MovingOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import MovingOutlinedIcon from '@mui/icons-material/MovingOutlined';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 
 const CustomTabs = styled(Box)({
   display: "flex",
   width: "100%",
   backgroundColor: "#156fb2",
-  borderRadius: "15px 15px 0 0",
+  borderRadius: "10px 10px 0 0",
   padding: "0px", // Removed padding to fix spacing issue
   justifyContent: "space-between",
-  flexWrap: "nowrap",
+  flexWrap: "nowrap"
 });
 
 const CustomTab = styled(Button)(({ selected, color }) => ({
@@ -43,7 +34,7 @@ const CustomTab = styled(Button)(({ selected, color }) => ({
 const FutureFundApp = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [tabColor, setTabColor] = useState("#3babd9");
-  const [value, setValue] = useState("recents");
+  const [value, setValue] = useState('recents');
 
   const handleTabChange = (index, color) => {
     setTabIndex(index);
@@ -64,37 +55,29 @@ const FutureFundApp = () => {
       }}
     >
       <CardContent>
-        <Typography
-          variant="h6"
-          sx={{ fontWeight: "bold", textTransform: "capitalize" }}
-        >
+        <Typography variant="h6" sx={{ fontWeight: "bold", textTransform: "capitalize" }}>
           {data.title}
         </Typography>
         <Box display="flex" justifyContent="space-between" mt={1}>
           <Typography>Invest Amount</Typography>
           <Typography>
-            <AccountBalanceWalletIcon sx={{ fontSize: 16 }} />{" "}
-            {data.investAmount}
+            <AccountBalanceWalletIcon sx={{ fontSize: 16 }} /> {data.investAmount}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between">
           <Typography>Total Earnings</Typography>
           <Typography>
-            <AccountBalanceWalletIcon sx={{ fontSize: 16 }} />{" "}
-            {data.totalEarnings}
+            <AccountBalanceWalletIcon sx={{ fontSize: 16 }} /> {data.totalEarnings}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between">
           <Typography>Return period</Typography>
-          <Typography sx={{ fontWeight: "bold" }}>
-            {data.returnPeriod}
-          </Typography>
+          <Typography sx={{ fontWeight: "bold" }}>{data.returnPeriod}</Typography>
         </Box>
         <Box display="flex" justifyContent="space-between">
           <Typography>Periodic return</Typography>
           <Typography>
-            <AccountBalanceWalletIcon sx={{ fontSize: 16 }} />{" "}
-            {data.periodicReturn}
+            <AccountBalanceWalletIcon sx={{ fontSize: 16 }} /> {data.periodicReturn}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between">
@@ -112,8 +95,7 @@ const FutureFundApp = () => {
             "&:hover": { backgroundColor: data.buttonColor },
           }}
         >
-          {data.buttonText}{" "}
-          {data.buttonText === "Invest Now" && <ChevronRightIcon />}
+          {data.buttonText} {data.buttonText === "Invest Now" && <ChevronRightIcon />}
         </Button>
       </CardContent>
     </Card>
@@ -143,6 +125,7 @@ const FutureFundApp = () => {
       textColor: "#FFC107",
     },
   ];
+  
 
   return (
     <Box sx={{
@@ -168,46 +151,27 @@ const FutureFundApp = () => {
             <Avatar
               src="/PN_logo.png"
               alt="Company Logo"
-              sx={{ width: 70, height: 70 }}
+              sx={{ width: 56, height: 56, mr: 2 }}
             />
             <Box>
-              <Typography variant="h4" sx={{
+              <Typography variant="h5" sx={{
                 fontSize: { xs: "1.3rem", sm: "1.8rem" },
                 fontFamily: 'Poppins, sans-serif',
-                fontWeight: 'bold', letterSpacing: 2,
-                color: '#fff', mb:-1
+                fontWeight: 'bold',
+                color: '#fff'
               }}>
                 PAYNEST
               </Typography>
               <Typography variant="body2" sx={{
                 fontFamily: 'Poppins, sans-serif',
-                color: '#fff', mr:1,
+                color: '#fff',
                 letterSpacing: 1
               }}>
                 PROFIT COMPANY
               </Typography>
             </Box>
           </Box>
-          <Box>
-            <Typography sx={{
-                fontSize: { xs: "1rem", sm: ".6rem" },
-                fontFamily: 'Poppins, sans-serif',
-                color: '#fff', ml:'5%', display: 'flex',
-                alignItems: 'center'
-              }}>Account Balance</Typography>
-              <Typography sx={{
-  fontSize: { xs: "1rem", sm: "1rem" },
-  fontFamily: 'sans-serif',
-  color: '#fff',
-  ml: '7%', mt:'-1%', mb:'2%',
-  fontWeight: 'bold',
-  display: 'flex',
-  alignItems: 'center', // Align icon and text vertically
-}}>
-  <CurrencyRupeeIcon sx={{ fontSize: "1rem", marginRight: "3px" }} /> 0.00
-</Typography>
-          </Box>
-          
+
           <CustomTabs>
             <CustomTab
               onClick={() => handleTabChange(0, "#3babd9")}
@@ -224,36 +188,21 @@ const FutureFundApp = () => {
               Monthly Earnings
             </CustomTab>
           </CustomTabs>
-          <Box
-            sx={{
-              backgroundColor: tabColor,
-              borderRadius: "0 0 10px 10px",
-              mt: 0, // Removed margin-top to fix spacing
-              padding: { xs: 2, sm: 3 },
-            }}
-          >
+
+          <Box sx={{
+            backgroundColor: tabColor,
+            borderRadius: "0 0 10px 10px",
+            mt: 0, // Removed margin-top to fix spacing
+            padding: { xs: 2, sm: 3 }
+          }}>
             {tabIndex === 0 ? (
               <>
-                <Typography>
+                <Typography variant="h6" sx={{ mb: 1 }}>
                   💰 Daily Earnings Introductory
                 </Typography>
                 <Typography>
-                  Investing in the first cycle product qualifies you for further
-                  benefits.
+                  Investing in the first cycle product qualifies you for further benefits.
                 </Typography>
-                <Card spacing={1} sx={{ padding: "20px", width: "88%" }}>
-                  <Grid
-                    container
-                    spacing={1}
-                    sx={{ padding: "1px", width: "100%" }}
-                  >
-                    {investmentData.map((item, index) => (
-                      <Grid item xs={12} sm={6} key={index}>
-                        <InvestmentCard data={item} />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Card>
               </>
             ) : (
               <>
@@ -266,6 +215,15 @@ const FutureFundApp = () => {
               </>
             )}
           </Box>
+          {tabIndex === 0 && (
+        <Grid container spacing={1} sx={{ padding: "20px", width: "100%" }}>
+          {investmentData.map((item, index) => (
+            <Grid item xs={12} sm={6} key={index}>
+              <InvestmentCard data={item} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
         </CardContent>
       </Card>
 
@@ -276,26 +234,14 @@ const FutureFundApp = () => {
           position: "fixed",
           bottom: 0,
           backgroundColor: "white",
-          zIndex: 1000,
+          zIndex: 1000
         }}
         value={value}
         onChange={handleBottomNavigationChange}
       >
-        <BottomNavigationAction
-          label="Invest"
-          value="invest"
-          icon={<MovingOutlinedIcon />}
-        />
-        <BottomNavigationAction
-          label="PrizeTask"
-          value="prizetask"
-          icon={<EmojiEventsOutlinedIcon />}
-        />
-        <BottomNavigationAction
-          label="Account"
-          value="account"
-          icon={<AccountCircleOutlinedIcon />}
-        />
+        <BottomNavigationAction label="Invest" value="invest" icon={<MovingOutlinedIcon />} />
+        <BottomNavigationAction label="PrizeTask" value="prizetask" icon={<EmojiEventsOutlinedIcon />} />
+        <BottomNavigationAction label="Account" value="account" icon={<AccountCircleOutlinedIcon />} />
       </BottomNavigation>
     </Box>
   );
