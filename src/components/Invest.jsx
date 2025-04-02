@@ -16,7 +16,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 
 const CustomTabs = styled(Box)({
   display: "flex",
@@ -145,69 +145,103 @@ const FutureFundApp = () => {
   ];
 
   return (
-    <Box sx={{
-      width: "100%",
-      minHeight: "100vh",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      background: "linear-gradient(to bottom, #E3F2FD, #ffffff)",
-      paddingBottom: "60px"
-    }}>
-      <Card elevation={3} sx={{
-        p: { xs: 2, sm: 4 },
-        backgroundColor: "#156fb2",
-        width: "90%",
-        maxWidth: "400px",
-        textAlign: "center",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.1)"
-      }}>
-        <CardContent sx={{ padding: "0 !important" }}> {/* Removed padding to fix spacing */}
-          <Box display="flex" alignItems="center" justifyContent="center" mb={1}>
+    <Box
+      sx={{
+        width: "100%",
+        maxHeight: "100vh", // Prevent content from exceeding screen height
+        overflowY: "auto", // Enable vertical scrolling
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "linear-gradient(to bottom, #E3F2FD, #ffffff)",
+        paddingBottom: "60px",
+      }}
+    >
+      <Card
+        elevation={3}
+        sx={{
+          p: { xs: 2, sm: 4 },
+          backgroundColor: "#156fb2",
+          width: "90%",
+          maxWidth: "400px",
+          textAlign: "center",
+          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+        }}
+      >
+        <CardContent sx={{ padding: "0 !important" }}>
+          {" "}
+          {/* Removed padding to fix spacing */}
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            mb={1}
+          >
             <Avatar
               src="/PN_logo.png"
               alt="Company Logo"
               sx={{ width: 70, height: 70 }}
             />
             <Box>
-              <Typography variant="h4" sx={{
-                fontSize: { xs: "1.3rem", sm: "1.8rem" },
-                fontFamily: 'Poppins, sans-serif',
-                fontWeight: 'bold', letterSpacing: 2,
-                color: '#fff', mb:-1
-              }}>
+              <Typography
+                variant="h4"
+                sx={{
+                  fontSize: { xs: "2rem", sm: "1.8rem" },
+                  fontFamily: "Poppins, sans-serif",
+                  fontWeight: "bold",
+                  letterSpacing: 2,
+                  color: "#fff",
+                  mb: -1,
+                }}
+              >
                 PAYNEST
               </Typography>
-              <Typography variant="body2" sx={{
-                fontFamily: 'Poppins, sans-serif',
-                color: '#fff', mr:1,
-                letterSpacing: 1
-              }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontFamily: "Poppins, sans-serif",
+                  color: "#fff",
+                  mr: 1,
+                  letterSpacing: 1,
+                }}
+              >
                 PROFIT COMPANY
               </Typography>
             </Box>
           </Box>
           <Box>
-            <Typography sx={{
-                fontSize: { xs: "1rem", sm: ".6rem" },
-                fontFamily: 'Poppins, sans-serif',
-                color: '#fff', ml:'5%', display: 'flex',
-                alignItems: 'center'
-              }}>Account Balance</Typography>
-              <Typography sx={{
-  fontSize: { xs: "1rem", sm: "1rem" },
-  fontFamily: 'sans-serif',
-  color: '#fff',
-  ml: '7%', mt:'-1%', mb:'2%',
-  fontWeight: 'bold',
-  display: 'flex',
-  alignItems: 'center', // Align icon and text vertically
-}}>
-  <CurrencyRupeeIcon sx={{ fontSize: "1rem", marginRight: "3px" }} /> 0.00
-</Typography>
+            <Typography
+              sx={{
+                fontSize: { xs: ".6rem", sm: ".6rem" },
+                fontFamily: "Poppins, sans-serif",
+                color: "#fff",
+                ml: "5%",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              Account Balance
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: { xs: "1rem", sm: "1rem" },
+                fontFamily: "sans-serif",
+                color: "#fff",
+                ml: "7%",
+                mt: "-1%",
+                mb: "2%",
+                fontWeight: "bold",
+                display: "flex",
+                alignItems: "center", // Align icon and text vertically
+              }}
+            >
+              <CurrencyRupeeIcon
+                sx={{ fontSize: "1rem", marginRight: "3px" }}
+              />{" "}
+              0.00
+            </Typography>
           </Box>
-          
           <CustomTabs>
             <CustomTab
               onClick={() => handleTabChange(0, "#3babd9")}
@@ -234,9 +268,7 @@ const FutureFundApp = () => {
           >
             {tabIndex === 0 ? (
               <>
-                <Typography>
-                  💰 Daily Earnings Introductory
-                </Typography>
+                <Typography>💰 Daily Earnings Introductory</Typography>
                 <Typography>
                   Investing in the first cycle product qualifies you for further
                   benefits.
