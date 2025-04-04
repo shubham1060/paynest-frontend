@@ -25,10 +25,8 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { useNavigate } from "react-router-dom";
 import BankAccountPopup from "./BankAccountPopup";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import CircularProgress from '@mui/material/CircularProgress';
 
-
-const Account = () => {
+const FullScreenBluePage = () => {
   const navigate = useNavigate();
   const [openPopup, setOpenPopup] = useState(false);
   const [user, setUser] = useState(null);
@@ -67,9 +65,7 @@ const Account = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', color:"white",  alignItems: "center", }}>
-      <CircularProgress />
-    </Box>
+      <Typography sx={{ textAlign: "center", mt: 5 }}>Loading...</Typography>
     );
   }
 
@@ -275,4 +271,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default FullScreenBluePage;
