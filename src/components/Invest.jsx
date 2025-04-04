@@ -8,6 +8,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import { investmentData, investmentMonthlyData } from "./Plandata";
 
+
 const Invest = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [value, setValue] = useState("invest");
@@ -34,6 +35,7 @@ const Invest = () => {
         overflowX: "hidden", // Hide horizontal scroll issue
         padding: 0, // Remove extra padding
         margin: 0, // Remove extra margin
+        paddingBottom: "56px",
       }}
     >
       <Header />
@@ -160,7 +162,7 @@ const Invest = () => {
           </>
         )}
       </Box>
-
+        
       {/* Popup Model for Investment Details */}
       <PopupModel
         open={open}
