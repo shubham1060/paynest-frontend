@@ -19,10 +19,10 @@ const Account = () => {
   const [openPopup, setOpenPopup] = useState(false);
 
   const fundEntryItems = [
-    { name: "Billing List", icon: <ReceiptIcon color="primary" /> },
-    { name: "Withdrawal Records", icon: <AccountBalanceWalletIcon color="primary" /> },
-    { name: "Recharge Records", icon: <PaymentIcon color="primary" /> },
-    { name: "Commission Records", icon: <MonetizationOnIcon color="primary" /> },
+    { name: "Billing List", icon: <ReceiptIcon color="primary" />, path: "billing" },
+    { name: "Withdrawal Records", icon: <AccountBalanceWalletIcon color="primary" />, path: "withdrawal" },
+    { name: "Recharge Records", icon: <PaymentIcon color="primary" />, path: "recharge" },
+    { name: "Commission Records", icon: <MonetizationOnIcon color="primary" />, path: "commission" },
     { name: "Reward Records", icon: <RedeemIcon color="primary" /> },
     { name: "My Feedback", icon: <FeedbackIcon color="primary" /> },
     { name: "Self-Service", icon: <BuildIcon color="primary" /> },
@@ -38,14 +38,41 @@ const Account = () => {
   };
 
   return (
-    <Box sx={{ width: "100vw", minHeight: "100vh", backgroundColor: "#156fb2", display: "flex", justifyContent: "center", alignItems: "center", padding: 2 }}>
-      <Container maxWidth="md" sx={{ backgroundColor: "white", borderRadius: "16px", boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.1)", padding: 3, position: "relative" }}>
+    <Box
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "#156fb2",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Container
+        maxWidth="md"
+        sx={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: "white",
+          borderRadius: "0px",
+          boxShadow: "none",
+          padding: 3,
+          position: "relative",
+          overflowY: "scroll",
+          scrollbarWidth: "none", // Firefox
+          "&::-webkit-scrollbar": {
+            display: "none", // Chrome, Safari
+          },
+        }}
+      >
+        {/* Header Icons */}
         <Box sx={{ position: "absolute", top: 16, right: 16, display: "flex", gap: 1 }}>
           <IconButton sx={{ backgroundColor: "#3babd9" }}><NotificationsIcon /></IconButton>
           <IconButton sx={{ backgroundColor: "#3babd9" }}><SettingsIcon /></IconButton>
         </Box>
 
-        <Box sx={{ background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)", boxShadow: "0 4px 15px rgba(0, 242, 254, 0.3)", p: 2, borderRadius: "10px", position: "relative", textAlign: "left", marginTop: 6 }}>
+        {/* User Info Card */}
+        <Box sx={{ background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)", boxShadow: "0 4px 15px rgba(0, 242, 254, 0.3)", p: 2, borderRadius: "10px", position: "relative", textAlign: "left", mt: 6 }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Box>
               <Typography variant="h6" color="white" fontWeight="bold">Sanjay</Typography>
@@ -56,6 +83,7 @@ const Account = () => {
           </Box>
         </Box>
 
+        {/* Account Balance */}
         <Card sx={{ backgroundColor: "#e0f7fa", p: 2, borderRadius: "10px", display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
           <Box>
             <Typography variant="body1" fontWeight="bold">Account Balance</Typography>
@@ -64,33 +92,32 @@ const Account = () => {
           <Button variant="contained" sx={{ backgroundColor: "#26a69a", color: "white" }} onClick={handleRechargeClick}>Recharge →</Button>
         </Card>
 
+        {/* Quick Actions */}
         <Grid container spacing={2} sx={{ mt: 2 }}>
           <Grid item xs={4}>
-            <Card sx={{ p: 2, textAlign: "center" }}>
+            <Card sx={{ p: 2, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100px" }}>
               <AccountBalanceWalletIcon color="primary" fontSize="large" />
               <Typography>Withdraw</Typography>
               <Typography>0.00</Typography>
             </Card>
           </Grid>
           <Grid item xs={4}>
-            <Card sx={{ p: 2, textAlign: "center" }}>
+            <Card sx={{ p: 2, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100px" }}>
               <ReceiptIcon color="primary" fontSize="large" />
               <Typography>Orders</Typography>
               <Typography>0.00</Typography>
             </Card>
           </Grid>
           <Grid item xs={4}>
-            <Card
-              onClick={handleBankAccountClick}
-              sx={{ p: 2, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
-            >
+            <Card onClick={handleBankAccountClick} sx={{ p: 2, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100px", cursor: "pointer" }}>
               <AccountBalanceIcon color="primary" fontSize="large" />
               <Typography>Bank Account</Typography>
-              <Typography variant="body2" sx={{ whiteSpace: "nowrap", fontSize: "0.8rem" }}>No Bank Linked</Typography>
+              <Typography variant="body2" sx={{ fontSize: "0.75rem", marginTop: "2px" }}>No Bank Linked</Typography>
             </Card>
           </Grid>
         </Grid>
 
+        {/* Points Section */}
         <Card sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "linear-gradient(to right, #FFD700, #FFF5C3)", p: 2, borderRadius: "10px", mt: 2 }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Avatar sx={{ bgcolor: "#FFC107", mr: 1 }}>
@@ -101,10 +128,17 @@ const Account = () => {
           <Button variant="text" sx={{ color: "#555", fontWeight: "bold", textTransform: "none" }}>Records →</Button>
         </Card>
 
-        <Box sx={{ mt: 2 }}>
+        {/* Fund Entry Section */}
+        <Box sx={{ mt: 2, mb: 5 }}>
           <Typography variant="h6" fontWeight="bold">Fund Entry</Typography>
           {fundEntryItems.map((item) => (
-            <Card key={item.name} sx={{ p: 2, mt: 1, display: "flex", alignItems: "center" }}>
+            <Card
+              key={item.name}
+              sx={{ p: 2, mt: 1, display: "flex", alignItems: "center", cursor: item.path ? "pointer" : "default" }}
+              onClick={() => {
+                if (item.path) navigate(`/list/${item.path}`);
+              }}
+            >
               <Box sx={{ mr: 2 }}>{item.icon}</Box>
               <Typography>{item.name}</Typography>
             </Card>

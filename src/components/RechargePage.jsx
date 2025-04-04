@@ -1,22 +1,47 @@
 import React, { useState } from "react";
-import { Box, Typography, Button, Paper, Grid, TextField, List, ListItem, ListItemText, Divider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  Button,
+  Paper,
+  Grid,
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  IconButton,
+} from "@mui/material";
 import PaymentIcon from "@mui/icons-material/Payment";
 import InfoIcon from "@mui/icons-material/InfoOutlined";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const RechargePage = () => {
+  const navigate = useNavigate();
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [customAmount, setCustomAmount] = useState("");
   const [selectedChannel, setSelectedChannel] = useState(null);
 
   const amountOptions = [100, 500, 3000, 10000, 50000, 100000];
   const paymentChannels = [
-    { id: "channel1", name: "Payment Channel 1", minAmount: 100, maxAmount: 100000 },
-    { id: "channel2", name: "Payment Channel 2", minAmount: 100, maxAmount: 100000 },
+    {
+      id: "channel1",
+      name: "Payment Channel 1",
+      minAmount: 100,
+      maxAmount: 100000,
+    },
+    {
+      id: "channel2",
+      name: "Payment Channel 2",
+      minAmount: 100,
+      maxAmount: 100000,
+    },
   ];
 
   const handleAmountSelect = (amount) => {
-    setSelectedAmount(selectedAmount === amount ? null : amount);
-    setCustomAmount("");
+    setSelectedAmount(amount);
+    setCustomAmount(amount);
   };
 
   const handleCustomAmountChange = (e) => {
@@ -33,38 +58,48 @@ const RechargePage = () => {
     <Box
       sx={{
         width: "100vw",
-        minHeight: "100vh",
-        backgroundColor: "#156fb2", // ✅ Updated primary color
+        height: "100vh",
+        backgroundColor: "#156fb2",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: 2,
+        padding: 0,
       }}
     >
       <Paper
         elevation={6}
         sx={{
-          width: "90%",
+          width: "100%",
           maxWidth: 450,
-          borderRadius: 4,
-          overflow: "hidden",
+          height: "100%",
+          overflowY: "scroll",
           backgroundColor: "#f0f7f6",
-          padding: 3,
+          display: "flex",
+          flexDirection: "column",
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
         }}
       >
-        <Typography
-          variant="h5"
+        <Box
           sx={{
-            textAlign: "center",
-            fontWeight: 700,
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "#156fb2",
             padding: 2,
-            color: "#ffffff",
-            backgroundColor: "#156fb2", // ✅ Updated header background color
-            borderRadius: "8px 8px 0 0",
           }}
         >
-          Recharge
-        </Typography>
+          <IconButton onClick={() => navigate("/account")} sx={{ color: "#fff" }}>
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: 700, color: "#ffffff", flexGrow: 1, textAlign: "center" }}
+          >
+            Recharge
+          </Typography>
+        </Box>
 
         <Box sx={{ padding: 2 }}>
           <Typography fontWeight={600}>Recharge amount</Typography>
@@ -75,13 +110,9 @@ const RechargePage = () => {
             type="number"
             value={customAmount}
             onChange={handleCustomAmountChange}
-            sx={{
-              mt: 1,
-              mb: 2,
-              backgroundColor: "#ffffff",
-              borderRadius: 2,
-            }}
+            sx={{ mt: 1, mb: 2, backgroundColor: "#ffffff", borderRadius: 2 }}
           />
+
           <Grid container spacing={1}>
             {amountOptions.map((amount) => (
               <Grid item xs={4} key={amount}>
@@ -119,8 +150,11 @@ const RechargePage = () => {
                 sx={{
                   my: 1,
                   borderRadius: 3,
-                  backgroundColor: selectedChannel === channel.id ? "#a5f2e7" : "#ffffff",
-                  border: `2px solid ${selectedChannel === channel.id ? "#156fb2" : "#bbbbbb"}`,
+                  backgroundColor:
+                    selectedChannel === channel.id ? "#a5f2e7" : "#ffffff",
+                  border: `2px solid ${
+                    selectedChannel === channel.id ? "#156fb2" : "#bbbbbb"
+                  }`,
                   transition: "all 0.3s ease",
                   "&:hover": {
                     backgroundColor: "#a5f2e7",
@@ -163,7 +197,13 @@ const RechargePage = () => {
         </Box>
 
         <Divider />
-        <Box sx={{ padding: 3, backgroundColor: "white", borderRadius: "0 0 12px 12px" }}>
+        <Box
+          sx={{
+            padding: 3,
+            backgroundColor: "white",
+            borderRadius: "0 0 12px 12px",
+          }}
+        >
           <Typography fontWeight={600} display="flex" alignItems="center">
             <InfoIcon color="primary" sx={{ mr: 1 }} /> Rule description
           </Typography>
