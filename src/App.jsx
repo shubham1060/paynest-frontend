@@ -9,7 +9,8 @@ import RechargePage from "./components/RechargePage";
 import BankCardForm from "./components/BankCardForm"; 
 import Footer from "./components/Footer";
 import PrizeTask from "./components/PrizeTask";
-import NewAccount from "./components/NewAccountPage"; // Import the new component
+import NewAccount from "./components/NewAccountPage";
+import LoaderPage from "./components/LoaderPage"; 
 
 function App() {
   const [value, setValue] = useState("invest");
@@ -24,7 +25,8 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/new-account" element={<NewAccount />} />
         <Route path="/recharge" element={<RechargePage />} />
-        <Route path="/bank-card" element={<BankCardForm />} /> {/* ✅ New Route */}
+        <Route path="/bank-card" element={<BankCardForm />} />
+        <Route path="/loader" element={<LoaderPage />} />
       </Routes>
       <Footer value={value} onChange={setValue} />
     </BrowserRouter>
