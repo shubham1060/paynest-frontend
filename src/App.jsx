@@ -6,7 +6,8 @@ import ForgetPassword from "./components/ForgetPassword";
 import Invest from "./components/Invest";
 import Account from "./components/Account";
 import RechargePage from "./components/RechargePage";
-import BankCardForm from "./components/BankCardForm"; 
+import BankCardForm from "./components/BankCardForm"; // ✅ New import
+import List from "./components/List"; // ✅ Import List component 
 import Footer from "./components/Footer";
 import PrizeTask from "./components/PrizeTask";
 import NewAccount from "./components/NewAccountPage";
@@ -26,6 +27,7 @@ function App() {
         <Route path="/new-account" element={<NewAccount />} />
         <Route path="/recharge" element={<RechargePage />} />
         <Route path="/bank-card" element={<BankCardForm />} />
+        <Route path="/list/:type" element={<List />} /> {/* ✅ Dynamic route */}
         <Route path="/loader" element={<LoaderPage />} />
       </Routes>
       <Footer value={value} onChange={setValue} />
