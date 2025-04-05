@@ -25,20 +25,24 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { useNavigate } from "react-router-dom";
 import BankAccountPopup from "./BankAccountPopup";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import CircularProgress from '@mui/material/CircularProgress';
 
-
-const Account = () => {
+const FullScreenBluePage = () => {
   const navigate = useNavigate();
   const [openPopup, setOpenPopup] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fundEntryItems = [
-    { name: "Billing List", icon: <ReceiptIcon color="primary" />, path: "billing" },
-    { name: "Withdrawal Records", icon: <AccountBalanceWalletIcon color="primary" />, path: "withdrawal" },
-    { name: "Recharge Records", icon: <PaymentIcon color="primary" />, path: "recharge" },
-    { name: "Commission Records", icon: <MonetizationOnIcon color="primary" />, path: "commission" },
+    { name: "Billing List", icon: <ReceiptIcon color="primary" /> },
+    {
+      name: "Withdrawal Records",
+      icon: <AccountBalanceWalletIcon color="primary" />,
+    },
+    { name: "Recharge Records", icon: <PaymentIcon color="primary" /> },
+    {
+      name: "Commission Records",
+      icon: <MonetizationOnIcon color="primary" />,
+    },
     { name: "Reward Records", icon: <RedeemIcon color="primary" /> },
     { name: "My Feedback", icon: <FeedbackIcon color="primary" /> },
     { name: "Self-Service", icon: <BuildIcon color="primary" /> },
@@ -61,9 +65,7 @@ const Account = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', color:"white",  alignItems: "center", }}>
-      <CircularProgress />
-    </Box>
+      <Typography sx={{ textAlign: "center", mt: 5 }}>Loading...</Typography>
     );
   }
 
@@ -242,7 +244,7 @@ const Account = () => {
           <List>
             {fundEntryItems.map((item, index) => (
               <ListItem
-                key={item.name}
+                key={item.icon + " " + item.name}
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -253,14 +255,10 @@ const Account = () => {
                     index !== fundEntryItems.length - 1
                       ? "1px solid #eee"
                       : "none",
-                      cursor: item.path ? "pointer" : "default",
+                  cursor: "pointer",
                 }}
-                onClick={() => {
-                  if (item.path) navigate(`/list/${item.path}`);
-                }}
+                onClick={item.onClick}
               >
-                
-              {/* <Box sx={{ mr: 2 }}>{item.icon}</Box> */}
                 <Typography variant="body1">{item.name}</Typography>
                 <ChevronRightIcon sx={{ color: "gray" }} />
               </ListItem>
@@ -273,4 +271,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default FullScreenBluePage;

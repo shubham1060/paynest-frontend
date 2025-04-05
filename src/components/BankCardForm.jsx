@@ -39,131 +39,131 @@ const BankCardForm = () => {
           flexDirection: "column",
           overflowY: "auto",
           overflowX: "hidden",
-          padding: 2,
           boxSizing: "border-box",
           scrollbarWidth: "none", // Firefox
           "&::-webkit-scrollbar": { display: "none" }, // Chrome
         }}
       >
-        {/* Header */}
+        {/* Header - full white card width */}
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             backgroundColor: "#156fb2",
-            padding: 2,
-            borderRadius: 2,
-            position: "sticky",
-            top: 0,
-            zIndex: 10,
+            px: 2,
+            py: 0.5,
           }}
         >
-          <IconButton onClick={() => navigate("/account")} sx={{ color: "#ffffff" }}>
+          <IconButton onClick={() => navigate("/account")} sx={{ color: "#fff" }}>
             <ArrowBackIcon />
           </IconButton>
           <Typography
-            variant="h6"
+            variant="subtitle1"
             sx={{
-              fontWeight: 700,
+              fontWeight: 600,
               color: "#ffffff",
               flexGrow: 1,
               textAlign: "center",
-              mr: 4,
+              fontSize: "15px",
             }}
           >
-            Add bank card
+                Add bank card
           </Typography>
         </Box>
 
         {/* Form Fields */}
-        <Box mt={2}>
-          <Typography fontWeight="bold">Bank</Typography>
-          <TextField
-            fullWidth
-            variant="outlined"
-            disabled
-            value="Bank"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountBalanceIcon />
-                </InputAdornment>
-              ),
-            }}
-            sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}
-          />
-        </Box>
+        <Box sx={{ padding: 2 }}>
+          <Box mt={2}>
+            <Typography fontWeight="bold">Bank</Typography>
+            <TextField
+              fullWidth
+              variant="outlined"
+              disabled
+              value="Bank"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountBalanceIcon />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}
+            />
+          </Box>
 
-        <Box mt={2}>
-          <Typography fontWeight="bold">Bank IFSC</Typography>
-          <TextField
-            fullWidth
-            placeholder="Bank IFSC"
-            variant="outlined"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <NumbersIcon />
-                </InputAdornment>
-              ),
-            }}
-            sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}
-          />
-        </Box>
+          <Box mt={2}>
+            <Typography fontWeight="bold">Bank IFSC</Typography>
+            <TextField
+              fullWidth
+              placeholder="Bank IFSC"
+              variant="outlined"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <NumbersIcon />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}
+            />
+          </Box>
 
-        <Box mt={2}>
-          <Typography fontWeight="bold">Cardholder Name</Typography>
-          <TextField
-            fullWidth
-            placeholder="Cardholder Name"
-            variant="outlined"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <PersonIcon />
-                </InputAdornment>
-              ),
-            }}
-            sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}
-          />
-        </Box>
+          <Box mt={2}>
+            <Typography fontWeight="bold">Cardholder Name</Typography>
+            <TextField
+              fullWidth
+              placeholder="Cardholder Name"
+              variant="outlined"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <PersonIcon />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}
+            />
+          </Box>
 
-        <Box mt={2}>
-          <Typography fontWeight="bold">Bank Account Number</Typography>
-          <TextField
-            fullWidth
-            placeholder="Bank Account Number"
-            variant="outlined"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <CreditCardIcon />
-                </InputAdornment>
-              ),
-            }}
-            sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}
-          />
-        </Box>
+          <Box mt={2}>
+            <Typography fontWeight="bold">Bank Account Number</Typography>
+            <TextField
+              fullWidth
+              placeholder="Bank Account Number"
+              variant="outlined"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <CreditCardIcon />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}
+            />
+          </Box>
 
-        {/* Confirm Button */}
-        <Box mt={3} mb={1}>
+          {/* Confirm Button */}
+          <Box mt={3} mb={1}>
           <Button
             fullWidth
-            variant="contained"
+            variant="contained" 
             sx={{
-              backgroundColor: "#156fb2",
+              mt: 1,
+              py: 1,
+              fontWeight: 600,
+              fontSize: "14px",
+              background: "#156fb2",
               color: "white",
-              py: 1.5,
-              fontWeight: 700,
-              borderRadius: 50,
+              borderRadius: "30px",
               transition: "all 0.3s ease",
               "&:hover": {
-                backgroundColor: "#125a8c",
+                background: "#125a8c",
               },
             }}
           >
             Confirm
           </Button>
+          </Box>
         </Box>
       </Box>
     </Box>

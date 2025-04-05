@@ -1,14 +1,22 @@
 import React from "react";
-import { Box, Typography, List as MuiList, ListItem, ListItemText, Paper, IconButton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  List as MuiList,
+  ListItem,
+  ListItemText,
+  Paper,
+  IconButton,
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate, useParams } from "react-router-dom";
 
 const List = ({ records = [] }) => {
   const navigate = useNavigate();
-  const { type } = useParams(); // Dynamic title from route
+  const { type } = useParams();
 
   const formattedTitle = type
-    ? type.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase()) // Convert "billing-list" to "Billing List"
+    ? type.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())
     : "List";
 
   return (
@@ -18,15 +26,15 @@ const List = ({ records = [] }) => {
         sx={{
           display: "flex",
           alignItems: "center",
-          backgroundColor: "#1976D2", // Blue header
-          color: "white",
-          padding: "12px 16px"
+          backgroundColor: "#156fb2",
+          px: 2,
+          py: 0.5,
         }}
       >
         <IconButton onClick={() => navigate("/account")} sx={{ color: "white" }}>
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h6" sx={{ flexGrow: 1, textAlign: "center" }}>
+        <Typography variant="h6" sx={{ flexGrow: 1, textAlign: "center", color: "white" }}>
           {formattedTitle}
         </Typography>
       </Box>
@@ -36,7 +44,7 @@ const List = ({ records = [] }) => {
         {records.length === 0 ? (
           <Box sx={{ textAlign: "center", mt: 6 }}>
             <img
-              src="https://cdn-icons-png.flaticon.com/512/1178/1178479.png" // No Records Image
+              src="https://www.achieversacademyalwar.in/public/assets/images/no-record-found.png"
               alt="No Records"
               style={{ width: "120px", opacity: 0.6 }}
             />
