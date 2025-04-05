@@ -10,7 +10,8 @@ import BankCardForm from "./components/BankCardForm"; // ✅ New import
 import List from "./components/List"; // ✅ Import List component 
 import Footer from "./components/Footer";
 import PrizeTask from "./components/PrizeTask";
-import NewAccount from "./components/NewAccountPage"; // Import the new component
+import NewAccount from "./components/NewAccountPage";
+import LoaderPage from "./components/LoaderPage"; 
 
 function App() {
   const [value, setValue] = useState("invest");
@@ -27,6 +28,7 @@ function App() {
         <Route path="/recharge" element={<RechargePage />} />
         <Route path="/bank-card" element={<BankCardForm />} />
         <Route path="/list/:type" element={<List />} /> {/* ✅ Dynamic route */}
+        <Route path="/loader" element={<LoaderPage />} />
       </Routes>
       <Footer value={value} onChange={setValue} />
     </BrowserRouter>

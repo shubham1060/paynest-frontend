@@ -50,6 +50,7 @@ const Invest = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          
         }}
       >
         {tabIndex === 0 ? (

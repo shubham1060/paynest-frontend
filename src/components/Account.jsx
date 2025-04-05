@@ -25,7 +25,8 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { useNavigate } from "react-router-dom";
 import BankAccountPopup from "./BankAccountPopup";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import CircularProgress from '@mui/material/CircularProgress';
+import Loader from "../components/LoaderPage"; 
+import avatarImage from "../assets/av1.png"; 
 
 
 const Account = () => {
@@ -53,18 +54,14 @@ const Account = () => {
         userId: "40109939",
         balance: 1500.75,
         points: 120,
-        avatar: "/av1.png",
+        avatar: avatarImage
       });
       setLoading(false);
     }, 1000);
   }, []);
 
   if (loading) {
-    return (
-      <Box sx={{ display: 'flex', color:"white",  alignItems: "center", }}>
-      <CircularProgress />
-    </Box>
-    );
+    return <Loader />;
   }
 
   return (
@@ -107,9 +104,8 @@ const Account = () => {
           background: "#3babd9",
           p: 2,
           borderRadius: "10px",
-          mt: 6, // Reduced margin from top (previously 6)
-          width: "100%", // Slightly reduced for better alignment
-          // Prevents it from stretching too much on large screens
+          mt: 6, 
+          width: "100%", 
         }}
       >
         <Box
@@ -204,11 +200,11 @@ const Account = () => {
               }}
               onClick={item.onClick}
             >
-              <Box sx={{ fontSize: 25 }}>{item.icon}</Box>{" "}
+              <Box sx={{ fontSize: 24 }}>{item.icon}</Box>{" "}
               {/* ✅ Fixed icon size */}
               <Typography
                 variant="body1"
-                sx={{ fontWeight: "bold", whiteSpace: "nowrap" }}
+                sx={{ fontWeight: "bold", whiteSpace: "nowrap", }}
               >
                 {item.label}
               </Typography>
@@ -247,7 +243,7 @@ const Account = () => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  px: 2,
+                  px: 3,
                   py: 1,
                   borderBottom:
                     index !== fundEntryItems.length - 1
