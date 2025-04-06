@@ -10,7 +10,7 @@ import BankCardForm from "./components/BankCardForm"; // ✅ New import
 import List from "./components/List"; // ✅ Import List component 
 import Footer from "./components/Footer";
 import PrizeTask from "./components/PrizeTask";
-import NewAccount from "./components/NewAccountPage";
+// import NewAccount from "./components/NewAccountPage";
 import LoaderPage from "./components/LoaderPage"; 
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
         <Route path="/invest" element={<Invest />} />
         <Route path="/prize-task" element={<PrizeTask />} />
         <Route path="/account" element={<Account />} />
-        <Route path="/new-account" element={<NewAccount />} />
+        {/* <Route path="/new-account" element={<NewAccount />} /> */}
         <Route path="/recharge" element={<RechargePage />} />
         <Route path="/bank-card" element={<BankCardForm />} />
         <Route path="/list/:type" element={<List />} /> {/* ✅ Dynamic route */}
