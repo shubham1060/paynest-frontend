@@ -201,11 +201,11 @@ const Account = () => {
               }}
               onClick={item.onClick}
             >
-              <Box sx={{ fontSize: 24 }}>{item.icon}</Box>{" "}
+              <Box sx={{ fontSize: 25 }}>{item.icon}</Box>{" "}
               {/* ✅ Fixed icon size */}
               <Typography
                 variant="body1"
-                sx={{ fontWeight: "bold", whiteSpace: "nowrap", }}
+                sx={{ fontWeight: "bold", fontSize: "90%", whiteSpace: "nowrap", }}
               >
                 {item.label}
               </Typography>

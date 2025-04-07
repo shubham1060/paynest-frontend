@@ -48,6 +48,10 @@ html, body, #root {
 }
 
 
+*:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
 
 
 

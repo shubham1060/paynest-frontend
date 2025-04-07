@@ -25,7 +25,7 @@ function App() {
         <Route path="/invest" element={<Invest />} />
         <Route path="/prize-task" element={<PrizeTask />} />
         <Route path="/account" element={<Account />} />
-        <Route path="/new-account" element={<NewAccount />} />
+        {/* <Route path="/new-account" element={<NewAccount />} /> */}
         <Route path="/recharge" element={<RechargePage />} />
         <Route path="/bank-card" element={<BankCardForm />} />
         <Route path="/list/:type" element={<List />} /> {/* ✅ Dynamic route */}
