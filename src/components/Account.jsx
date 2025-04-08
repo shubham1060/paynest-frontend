@@ -37,7 +37,7 @@ const Account = () => {
 
   const fundEntryItems = [
     { name: "Billing List", icon: <ReceiptIcon color="primary" />, path: "billing" },
-    { name: "Withdrawal Records", icon: <AccountBalanceWalletIcon color="primary" />, path: "withdrawal" },
+    { name: "Withdrawal Records", icon: <AccountBalanceWalletIcon color="primary" />, path: "withdraw-record" },
     { name: "Recharge Records", icon: <PaymentIcon color="primary" />, path: "recharge" },
     { name: "Commission Records", icon: <MonetizationOnIcon color="primary" />, path: "commission" },
     { name: "Reward Records", icon: <RedeemIcon color="primary" /> },
@@ -177,6 +177,7 @@ const Account = () => {
             icon: <AccountBalanceWalletIcon />,
             label: "Withdraw",
             amount: "₹0.00",
+            
           },
           { icon: <ReceiptIcon />, label: "Orders", amount: "₹0.00" },
           {
@@ -252,8 +253,9 @@ const Account = () => {
                       cursor: item.path ? "pointer" : "default",
                 }}
                 onClick={() => {
-                  if (item.path) navigate(`/list/${item.path}`);
+                  if (item.path) navigate(`/${item.path}`);
                 }}
+                
               >
                 
               {/* <Box sx={{ mr: 2 }}>{item.icon}</Box> */}
