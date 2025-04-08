@@ -17,17 +17,12 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import RedeemIcon from "@mui/icons-material/Redeem";
-import FeedbackIcon from "@mui/icons-material/Feedback";
-import BuildIcon from "@mui/icons-material/Build";
-import InfoIcon from "@mui/icons-material/Info";
-import PaymentIcon from "@mui/icons-material/Payment";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { useNavigate } from "react-router-dom";
 import BankAccountPopup from "./BankAccountPopup";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import Loader from "../components/LoaderPage"; 
-import avatarImage from "../assets/av1.png"; 
-
+import Loader from "../components/LoaderPage";
+import avatarImage from "../assets/av1.png";
+import LogoutButton from "./LogoutButton";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -36,28 +31,28 @@ const Account = () => {
   const [loading, setLoading] = useState(true);
 
   const fundEntryItems = [
-    { name: "Billing List", icon: <ReceiptIcon color="primary" />, path: "billing" },
-    { name: "Withdrawal Records", icon: <AccountBalanceWalletIcon color="primary" />, path: "withdrawal" },
-    { name: "Recharge Records", icon: <PaymentIcon color="primary" />, path: "recharge" },
-    { name: "Commission Records", icon: <MonetizationOnIcon color="primary" />, path: "commission" },
-    { name: "Reward Records", icon: <RedeemIcon color="primary" /> },
-    { name: "My Feedback", icon: <FeedbackIcon color="primary" /> },
-    { name: "Self-Service", icon: <BuildIcon color="primary" /> },
-    { name: "About Us", icon: <InfoIcon color="primary" /> },
+    { name: "Billing List", path: "billing" },
+    { name: "Recharge Records", path: "recharges" },
+    { name: "Withdrawal Records", path: "withdrawal" },
+    { name: "Commission Records", path: "commission" },
+    { name: "Reward Records" },
+    { name: "My Feedback" },
+    { name: "Self-Service" },
+    { name: "About Us" },
   ];
 
   useEffect(() => {
     setTimeout(() => {
       setUser({
-        name: "Sanjay",
+        name: "Sbm",
         phone: "9977692577",
         userId: "40109939",
         balance: 1500.75,
         points: 120,
-        avatar: avatarImage
+        avatar: avatarImage,
       });
       setLoading(false);
-    }, 1000);
+    }, 2000);
   }, []);
 
   if (loading) {
@@ -68,15 +63,15 @@ const Account = () => {
     <Box
       sx={{
         width: "100vw",
-        height: "100%", // Full viewport height
+        height: "100%", 
         backgroundColor: "#156fb2",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: 3, // Reduced padding
+        padding: 3, 
         overflow: "hidden",
         boxSizing: "border-box",
-        position: "relative", // Ensures absolute positioning works correctly
+        position: "relative", 
         paddingBottom: "60px",
       }}
     >
@@ -84,8 +79,8 @@ const Account = () => {
       <Box
         sx={{
           position: "absolute",
-          top: 10, // Reduced space from top
-          right: 10, // Reduced right margin
+          top: 10, 
+          right: 10, 
           display: "flex",
           gap: 1,
         }}
@@ -104,8 +99,8 @@ const Account = () => {
           background: "#3babd9",
           p: 2,
           borderRadius: "10px",
-          mt: 6, 
-          width: "100%", 
+          mt: 6,
+          width: "100%",
         }}
       >
         <Box
@@ -153,7 +148,7 @@ const Account = () => {
             <RedeemIcon sx={{ color: "white" }} />
           </Avatar>
           <Typography fontWeight="bold">
-            Account Balance: ₹{user.balance.toFixed(2)}
+            Account Balance: ₹ {user.balance.toFixed(2)}
           </Typography>
         </Box>
         <Button
@@ -204,7 +199,11 @@ const Account = () => {
               {/* ✅ Fixed icon size */}
               <Typography
                 variant="body1"
-                sx={{ fontWeight: "bold", fontSize: "90%", whiteSpace: "nowrap", }}
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "90%",
+                  whiteSpace: "nowrap",
+                }}
               >
                 {item.label}
               </Typography>
@@ -249,20 +248,30 @@ const Account = () => {
                     index !== fundEntryItems.length - 1
                       ? "1px solid #eee"
                       : "none",
-                      cursor: item.path ? "pointer" : "default",
+                  cursor: item.path ? "pointer" : "default",
                 }}
                 onClick={() => {
-                  if (item.path) navigate(`/list/${item.path}`);
-                }}
+                  if (item.path) navigate(`/${item.path}`);
+        }}
               >
-                
-              {/* <Box sx={{ mr: 2 }}>{item.icon}</Box> */}
+                {/* <Box sx={{ mr: 2 }}>{item.icon}</Box> */}
                 <Typography variant="body1">{item.name}</Typography>
                 <ChevronRightIcon sx={{ color: "gray" }} />
               </ListItem>
             ))}
           </List>
         </Card>
+        <LogoutButton
+          onLogout={() => {
+            // Your logout logic here
+            localStorage.clear();
+            sessionStorage.clear();
+            setUser(null);
+            window.location.reload();
+            navigate("/");
+            window.location.reload();
+          }}
+        />
       </Box>
       <BankAccountPopup open={openPopup} onClose={() => setOpenPopup(false)} />
     </Box>
