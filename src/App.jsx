@@ -13,6 +13,7 @@ import PrizeTask from "./components/PrizeTask";
 import LoaderPage from "./components/LoaderPage"; 
 import BillingList from "./components/BillingList";
 // import RechargeRecords from "./components/RechargeRecords";
+import WithdrawalRecords from "./components/WithdrawalRecords";  
 
 function App() {
   const [value, setValue] = useState("invest");
@@ -32,6 +33,7 @@ function App() {
         {/* <Route path="/recharge-records" element={<RechargeRecords />} /> */}
         <Route path="/loader" element={<LoaderPage />} />
         <Route path="*" element={<h2>404 Not Found</h2>} />
+        <Route path="/withdraw-record" element={<WithdrawalRecords />} /> 
       </Routes>
       <Footer value={value} onChange={setValue} />
     </BrowserRouter>

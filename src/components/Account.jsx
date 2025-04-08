@@ -33,7 +33,7 @@ const Account = () => {
   const fundEntryItems = [
     { name: "Billing List", path: "billing" },
     { name: "Recharge Records", path: "recharges" },
-    { name: "Withdrawal Records", path: "withdrawal" },
+    { name: "Withdrawal Records", path: "withdraw-record" },
     { name: "Commission Records", path: "commission" },
     { name: "Reward Records" },
     { name: "My Feedback" },
@@ -172,6 +172,7 @@ const Account = () => {
             icon: <AccountBalanceWalletIcon />,
             label: "Withdraw",
             amount: "₹0.00",
+            
           },
           { icon: <ReceiptIcon />, label: "Orders", amount: "₹0.00" },
           {
@@ -252,7 +253,7 @@ const Account = () => {
                 }}
                 onClick={() => {
                   if (item.path) navigate(`/${item.path}`);
-        }}
+                }}
               >
                 {/* <Box sx={{ mr: 2 }}>{item.icon}</Box> */}
                 <Typography variant="body1">{item.name}</Typography>
