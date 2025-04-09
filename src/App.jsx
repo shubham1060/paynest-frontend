@@ -14,6 +14,12 @@ import LoaderPage from "./components/LoaderPage";
 import BillingList from "./components/BillingList";
 // import RechargeRecords from "./components/RechargeRecords";
 import WithdrawalRecords from "./components/WithdrawalRecords";  
+import RechargeRecords from "./components/RechargeRecords";
+import CommisionRecords from "./components/CommisionRecords";
+import UserSettings from "./components/UserSettings"; // 👈 New page
+import ResetPaymentPasswordPage from './components/ResetPaymentPasswordPage';
+
+
 
 function App() {
   const [value, setValue] = useState("invest");
@@ -34,6 +40,11 @@ function App() {
         <Route path="/loader" element={<LoaderPage />} />
         <Route path="*" element={<h2>404 Not Found</h2>} />
         <Route path="/withdraw-record" element={<WithdrawalRecords />} /> 
+        <Route path="/recharge-record" element={<RechargeRecords />} />
+        <Route path="/commission-record" element={<CommisionRecords />} />
+        <Route path="/user-settings" element={<UserSettings />} />
+        <Route path="/reset-payment-password" element={<ResetPaymentPasswordPage />} />
+
       </Routes>
       <Footer value={value} onChange={setValue} />
     </BrowserRouter>

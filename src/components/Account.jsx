@@ -22,19 +22,21 @@ import BankAccountPopup from "./BankAccountPopup";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Loader from "../components/LoaderPage";
 import avatarImage from "../assets/av1.png";
+import SettingsPopup from "./SettingsPopup"; // <-- added
 import LogoutButton from "./LogoutButton";
 
 const Account = () => {
   const navigate = useNavigate();
   const [openPopup, setOpenPopup] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false); // <-- added
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fundEntryItems = [
     { name: "Billing List", path: "billing" },
-    { name: "Recharge Records", path: "recharges" },
+    { name: "Recharge Records", path: "recharge-record" },
     { name: "Withdrawal Records", path: "withdraw-record" },
-    { name: "Commission Records", path: "commission" },
+    { name: "Commission Records", path: "commission-record" },
     { name: "Reward Records" },
     { name: "My Feedback" },
     { name: "Self-Service" },
@@ -88,7 +90,10 @@ const Account = () => {
         <IconButton sx={{ backgroundColor: "#3babd9" }}>
           <NotificationsIcon />
         </IconButton>
-        <IconButton sx={{ backgroundColor: "#3babd9" }}>
+        <IconButton
+          sx={{ backgroundColor: "#3babd9" }}
+          onClick={() => setOpenSettings(true)} // <-- added
+        >
           <SettingsIcon />
         </IconButton>
       </Box>
@@ -172,7 +177,6 @@ const Account = () => {
             icon: <AccountBalanceWalletIcon />,
             label: "Withdraw",
             amount: "₹0.00",
-            
           },
           { icon: <ReceiptIcon />, label: "Orders", amount: "₹0.00" },
           {
@@ -188,23 +192,18 @@ const Account = () => {
                 p: 1,
                 textAlign: "center",
                 cursor: item.onClick ? "pointer" : "default",
-                minHeight: 80, // ✅ Ensure fixed height
+                minHeight: 80,
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center", // ✅ Center content properly
+                justifyContent: "center",
                 alignItems: "center",
               }}
               onClick={item.onClick}
             >
-              <Box sx={{ fontSize: 25 }}>{item.icon}</Box>{" "}
-              {/* ✅ Fixed icon size */}
+              <Box sx={{ fontSize: 25 }}>{item.icon}</Box>
               <Typography
                 variant="body1"
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "90%",
-                  whiteSpace: "nowrap",
-                }}
+                sx={{ fontWeight: "bold", fontSize: "90%", whiteSpace: "nowrap" }}
               >
                 {item.label}
               </Typography>
@@ -224,8 +223,6 @@ const Account = () => {
       </Grid>
 
       <Box>
-        {/* <Typography variant="h6" fontWeight="bold" sx={{ px: 2, py: 1, color:"white" }}><ContentPasteIcon /> Fund Entry</Typography> */}
-
         <Card
           sx={{
             borderRadius: "12px",
@@ -246,16 +243,13 @@ const Account = () => {
                   px: 3,
                   py: 1,
                   borderBottom:
-                    index !== fundEntryItems.length - 1
-                      ? "1px solid #eee"
-                      : "none",
+                    index !== fundEntryItems.length - 1 ? "1px solid #eee" : "none",
                   cursor: item.path ? "pointer" : "default",
                 }}
                 onClick={() => {
                   if (item.path) navigate(`/${item.path}`);
                 }}
               >
-                {/* <Box sx={{ mr: 2 }}>{item.icon}</Box> */}
                 <Typography variant="body1">{item.name}</Typography>
                 <ChevronRightIcon sx={{ color: "gray" }} />
               </ListItem>
@@ -274,7 +268,9 @@ const Account = () => {
           }}
         />
       </Box>
+
       <BankAccountPopup open={openPopup} onClose={() => setOpenPopup(false)} />
+      <SettingsPopup open={openSettings} onClose={() => setOpenSettings(false)} />
     </Box>
   );
 };
