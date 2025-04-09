@@ -7,20 +7,16 @@ import Invest from "./components/Invest";
 import Account from "./components/Account";
 import RechargePage from "./components/RechargePage";
 import BankCardForm from "./components/BankCardForm"; 
-import List from "./components/List"; 
 import Footer from "./components/Footer";
 import PrizeTask from "./components/PrizeTask";
 import LoaderPage from "./components/LoaderPage"; 
 import BillingList from "./components/BillingList";
-// import RechargeRecords from "./components/RechargeRecords";
 import WithdrawalRecords from "./components/WithdrawalRecords";  
 import PageNotFound from "./components/PageNotFound";
 import RechargeRecords from "./components/RechargeRecords";
 import CommisionRecords from "./components/CommisionRecords";
-import UserSettings from "./components/UserSettings"; // 👈 New page
+import UserSettings from "./components/UserSettings"; 
 import ResetPaymentPasswordPage from './components/ResetPaymentPasswordPage';
-
-
 
 function App() {
   const [value, setValue] = useState("invest");
@@ -33,11 +29,9 @@ function App() {
         <Route path="/invest" element={<Invest />} />
         <Route path="/prize-task" element={<PrizeTask />} />
         <Route path="/account" element={<Account />} />
-        {/* <Route path="/new-account" element={<NewAccount />} /> */}
         <Route path="/recharge" element={<RechargePage />} />
         <Route path="/bank-card" element={<BankCardForm />} />
         <Route path="/billing" element={<BillingList />} />
-        {/* <Route path="/recharge-records" element={<RechargeRecords />} /> */}
         <Route path="/loader" element={<LoaderPage />} />
         <Route path="*" element={<PageNotFound/>} />
         <Route path="/withdraw-record" element={<WithdrawalRecords />} /> 

@@ -92,7 +92,7 @@ const Account = () => {
         </IconButton>
         <IconButton
           sx={{ backgroundColor: "#3babd9" }}
-          onClick={() => setOpenSettings(true)} // <-- added
+          onClick={() => setOpenSettings(true)}
         >
           <SettingsIcon />
         </IconButton>
