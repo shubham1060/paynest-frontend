@@ -6,12 +6,13 @@ import ForgetPassword from "./components/ForgetPassword";
 import Invest from "./components/Invest";
 import Account from "./components/Account";
 import RechargePage from "./components/RechargePage";
-import BankCardForm from "./components/BankCardForm"; // ✅ New import
-import List from "./components/List"; // ✅ Import List component 
+import BankCardForm from "./components/BankCardForm"; 
+import List from "./components/List"; 
 import Footer from "./components/Footer";
 import PrizeTask from "./components/PrizeTask";
-import NewAccount from "./components/NewAccountPage";
-import LoaderPage from "./components/LoaderPage";
+import LoaderPage from "./components/LoaderPage"; 
+import BillingList from "./components/BillingList";
+// import RechargeRecords from "./components/RechargeRecords";
 import WithdrawalRecords from "./components/WithdrawalRecords";  
 
 function App() {
@@ -28,8 +29,10 @@ function App() {
         {/* <Route path="/new-account" element={<NewAccount />} /> */}
         <Route path="/recharge" element={<RechargePage />} />
         <Route path="/bank-card" element={<BankCardForm />} />
-        <Route path="/list/:type" element={<List />} /> {/* ✅ Dynamic route */}
+        <Route path="/billing" element={<BillingList />} />
+        {/* <Route path="/recharge-records" element={<RechargeRecords />} /> */}
         <Route path="/loader" element={<LoaderPage />} />
+        <Route path="*" element={<h2>404 Not Found</h2>} />
         <Route path="/withdraw-record" element={<WithdrawalRecords />} /> 
       </Routes>
       <Footer value={value} onChange={setValue} />

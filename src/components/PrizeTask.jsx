@@ -20,6 +20,7 @@ const PrizeTask = () => {
       <Box
         sx={{
           backgroundColor: "#B3E5FC",
+          paddingTop: "8px",
           minHeight: "100vh",
           maxWidth: "100vw",
           display: "flex",
