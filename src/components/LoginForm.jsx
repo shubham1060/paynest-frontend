@@ -14,8 +14,8 @@ const LoginForm = () => {
 
   const validateForm = useCallback(() => {
     let newErrors = {};
-    if (!phone) newErrors.phone = "Phone number is required";
-    if (!password) newErrors.password = "Password is required";
+    if (!phone) newErrors.phone = "Phone number is mandatory";
+    if (!password) newErrors.password = "Password is mandatory";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }, [phone, password]);
@@ -98,27 +98,28 @@ const LoginForm = () => {
                 variant="body2"
                 color="primary"
                 sx={{ textAlign: "left", mt: 1, cursor: "pointer", "&:hover": { textDecoration: "underline" } }}
-                onClick={() => navigate("/frgtPwd")}
+                onClick={() => navigate("/forget-Password")}
               >
                 Forgot Password?
               </Typography>
 
               {/* Login and Signup Buttons */}
               <Box display="flex" justifyContent="space-between" mt={3} gap={2}>
+
+              <Button
+                  variant="contained"
+                  onClick={() => navigate("/signup")}
+                  sx={{ flex: 1, borderRadius: "25px", padding: "12px 0", textTransform: "none", backgroundColor: "#3babd9", color: "white", "&:hover": { backgroundColor: "#156fb2" } }}
+                >
+                  Sign Up
+                </Button>
+
                 <Button
                   variant="outlined"
                   onClick={handleLogin}
                   sx={{ flex: 1, borderRadius: "25px", padding: "12px 0", textTransform: "none", borderColor: "#B0BEC5", color: "black", backgroundColor: "white", "&:hover": { backgroundColor: "#f0f0f0" } }}
                 >
                   Log in
-                </Button>
-
-                <Button
-                  variant="contained"
-                  onClick={() => navigate("/signup")}
-                  sx={{ flex: 1, borderRadius: "25px", padding: "12px 0", textTransform: "none", backgroundColor: "#3babd9", color: "white", "&:hover": { backgroundColor: "#156fb2" } }}
-                >
-                  Sign Up
                 </Button>
               </Box>
             </CardContent>

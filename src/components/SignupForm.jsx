@@ -24,21 +24,21 @@ const SignupForm = () => {
     let newErrors = {};
 
     if (!phone) {
-      newErrors.phone = "Phone number is required";
+      newErrors.phone = "Phone number is mandatory";
     } else if (!/^\d{10}$/.test(phone)) {
       newErrors.phone = "Enter a valid 10-digit phone number";
     }
 
     if (!password) {
-      newErrors.password = "Password is required";
+      newErrors.password = "Set your login password";
     } else if (password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
 
     if (!name) {
-      newErrors.name = "Name is required";
+      newErrors.name = "Name is mandatory";
     } else if (!/^[a-zA-Z\s]+$/.test(name)) {
-      newErrors.name = "Name should contain only letters";
+      newErrors.name = "Name should contain only letters ex.(A-Z, a-z)";
     }
 
     setErrors(newErrors);

@@ -17,17 +17,13 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import RedeemIcon from "@mui/icons-material/Redeem";
-import FeedbackIcon from "@mui/icons-material/Feedback";
-import BuildIcon from "@mui/icons-material/Build";
-import InfoIcon from "@mui/icons-material/Info";
-import PaymentIcon from "@mui/icons-material/Payment";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { useNavigate } from "react-router-dom";
 import BankAccountPopup from "./BankAccountPopup";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Loader from "../components/LoaderPage";
 import avatarImage from "../assets/av1.png";
 import SettingsPopup from "./SettingsPopup"; // <-- added
+import LogoutButton from "./LogoutButton";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -37,28 +33,28 @@ const Account = () => {
   const [loading, setLoading] = useState(true);
 
   const fundEntryItems = [
-    { name: "Billing List", icon: <ReceiptIcon color="primary" />, path: "billing" },
-    { name: "Withdrawal Records", icon: <AccountBalanceWalletIcon color="primary" />, path: "withdraw-record" },
-    { name: "Recharge Records", icon: <PaymentIcon color="primary" />, path: "recharge-record" },
-    { name: "Commission Records", icon: <MonetizationOnIcon color="primary" />, path: "commission-record" },
-    { name: "Reward Records", icon: <RedeemIcon color="primary" /> },
-    { name: "My Feedback", icon: <FeedbackIcon color="primary" /> },
-    { name: "Self-Service", icon: <BuildIcon color="primary" /> },
-    { name: "About Us", icon: <InfoIcon color="primary" /> },
+    { name: "Billing List", path: "billing" },
+    { name: "Recharge Records", path: "recharge-record" },
+    { name: "Withdrawal Records", path: "withdraw-record" },
+    { name: "Commission Records", path: "commission-record" },
+    { name: "Reward Records" },
+    { name: "My Feedback" },
+    { name: "Self-Service" },
+    { name: "About Us" },
   ];
 
   useEffect(() => {
     setTimeout(() => {
       setUser({
-        name: "Sanjay",
+        name: "Sbm",
         phone: "9977692577",
         userId: "40109939",
         balance: 1500.75,
         points: 120,
-        avatar: avatarImage
+        avatar: avatarImage,
       });
       setLoading(false);
-    }, 1000);
+    }, 2000);
   }, []);
 
   if (loading) {
@@ -69,15 +65,15 @@ const Account = () => {
     <Box
       sx={{
         width: "100vw",
-        height: "100%",
+        height: "100%", 
         backgroundColor: "#156fb2",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: 3,
+        padding: 3, 
         overflow: "hidden",
         boxSizing: "border-box",
-        position: "relative",
+        position: "relative", 
         paddingBottom: "60px",
       }}
     >
@@ -85,8 +81,8 @@ const Account = () => {
       <Box
         sx={{
           position: "absolute",
-          top: 10,
-          right: 10,
+          top: 10, 
+          right: 10, 
           display: "flex",
           gap: 1,
         }}
@@ -157,7 +153,7 @@ const Account = () => {
             <RedeemIcon sx={{ color: "white" }} />
           </Avatar>
           <Typography fontWeight="bold">
-            Account Balance: ₹{user.balance.toFixed(2)}
+            Account Balance: ₹ {user.balance.toFixed(2)}
           </Typography>
         </Box>
         <Button
@@ -260,6 +256,17 @@ const Account = () => {
             ))}
           </List>
         </Card>
+        <LogoutButton
+          onLogout={() => {
+            // Your logout logic here
+            localStorage.clear();
+            sessionStorage.clear();
+            setUser(null);
+            window.location.reload();
+            navigate("/");
+            window.location.reload();
+          }}
+        />
       </Box>
 
       <BankAccountPopup open={openPopup} onClose={() => setOpenPopup(false)} />
