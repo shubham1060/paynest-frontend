@@ -28,7 +28,7 @@ const Footer = () => {
   };
 
   // Now safely return null AFTER hooks are set up
-  const hideFooterPaths = ["/", "/login", "/signup", "/forget-password", "/loader","/billing", "/recharge", "/bank-card"];
+  const hideFooterPaths = ["/", "/login", "/signup", "/forget-password", "/loader","/billing", "/recharge", "/bank-card", "/withdraw-record", "/commission", "/feedback", "/about-us", "/self-service"];
   if (hideFooterPaths.includes(location.pathname)) {
     return null;
   }

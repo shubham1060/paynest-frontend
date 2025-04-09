@@ -148,7 +148,7 @@ const Account = () => {
             <RedeemIcon sx={{ color: "white" }} />
           </Avatar>
           <Typography fontWeight="bold">
-            Account Balance: ₹ {user.balance.toFixed(2)}
+            Account Balance: ₹{user.balance.toFixed(2)}
           </Typography>
         </Box>
         <Button

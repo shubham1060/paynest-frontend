@@ -8,7 +8,7 @@ const PrizeTask = () => {
 
   useEffect(() => {
     // Automatically stop confetti after 5 seconds
-    const timer = setTimeout(() => setShowConfetti(false), 9000);
+    const timer = setTimeout(() => setShowConfetti(false), 5000);
     return () => clearTimeout(timer);
   }, []);
 
