@@ -35,7 +35,7 @@ const SettingsPopup = ({ open, onClose }) => {
       }
 
       if (option === "Login Password") {
-        navigate("/forget-password"); // 👈 Navigate to ForgetPassword page
+        navigate("/forget-password", { state: { from: "account" } });
       }
       
 
