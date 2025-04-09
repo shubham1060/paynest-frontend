@@ -25,21 +25,22 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { useNavigate } from "react-router-dom";
 import BankAccountPopup from "./BankAccountPopup";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import Loader from "../components/LoaderPage"; 
-import avatarImage from "../assets/av1.png"; 
-
+import Loader from "../components/LoaderPage";
+import avatarImage from "../assets/av1.png";
+import SettingsPopup from "./SettingsPopup"; // <-- added
 
 const Account = () => {
   const navigate = useNavigate();
   const [openPopup, setOpenPopup] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false); // <-- added
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fundEntryItems = [
     { name: "Billing List", icon: <ReceiptIcon color="primary" />, path: "billing" },
     { name: "Withdrawal Records", icon: <AccountBalanceWalletIcon color="primary" />, path: "withdraw-record" },
-    { name: "Recharge Records", icon: <PaymentIcon color="primary" />, path: "recharge" },
-    { name: "Commission Records", icon: <MonetizationOnIcon color="primary" />, path: "commission" },
+    { name: "Recharge Records", icon: <PaymentIcon color="primary" />, path: "recharge-record" },
+    { name: "Commission Records", icon: <MonetizationOnIcon color="primary" />, path: "commission-record" },
     { name: "Reward Records", icon: <RedeemIcon color="primary" /> },
     { name: "My Feedback", icon: <FeedbackIcon color="primary" /> },
     { name: "Self-Service", icon: <BuildIcon color="primary" /> },
@@ -68,15 +69,15 @@ const Account = () => {
     <Box
       sx={{
         width: "100vw",
-        height: "100%", // Full viewport height
+        height: "100%",
         backgroundColor: "#156fb2",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: 3, // Reduced padding
+        padding: 3,
         overflow: "hidden",
         boxSizing: "border-box",
-        position: "relative", // Ensures absolute positioning works correctly
+        position: "relative",
         paddingBottom: "60px",
       }}
     >
@@ -84,8 +85,8 @@ const Account = () => {
       <Box
         sx={{
           position: "absolute",
-          top: 10, // Reduced space from top
-          right: 10, // Reduced right margin
+          top: 10,
+          right: 10,
           display: "flex",
           gap: 1,
         }}
@@ -93,7 +94,10 @@ const Account = () => {
         <IconButton sx={{ backgroundColor: "#3babd9" }}>
           <NotificationsIcon />
         </IconButton>
-        <IconButton sx={{ backgroundColor: "#3babd9" }}>
+        <IconButton
+          sx={{ backgroundColor: "#3babd9" }}
+          onClick={() => setOpenSettings(true)} // <-- added
+        >
           <SettingsIcon />
         </IconButton>
       </Box>
@@ -104,8 +108,8 @@ const Account = () => {
           background: "#3babd9",
           p: 2,
           borderRadius: "10px",
-          mt: 6, 
-          width: "100%", 
+          mt: 6,
+          width: "100%",
         }}
       >
         <Box
@@ -177,7 +181,6 @@ const Account = () => {
             icon: <AccountBalanceWalletIcon />,
             label: "Withdraw",
             amount: "₹0.00",
-            
           },
           { icon: <ReceiptIcon />, label: "Orders", amount: "₹0.00" },
           {
@@ -193,19 +196,18 @@ const Account = () => {
                 p: 1,
                 textAlign: "center",
                 cursor: item.onClick ? "pointer" : "default",
-                minHeight: 80, // ✅ Ensure fixed height
+                minHeight: 80,
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center", // ✅ Center content properly
+                justifyContent: "center",
                 alignItems: "center",
               }}
               onClick={item.onClick}
             >
-              <Box sx={{ fontSize: 25 }}>{item.icon}</Box>{" "}
-              {/* ✅ Fixed icon size */}
+              <Box sx={{ fontSize: 25 }}>{item.icon}</Box>
               <Typography
                 variant="body1"
-                sx={{ fontWeight: "bold", fontSize: "90%", whiteSpace: "nowrap", }}
+                sx={{ fontWeight: "bold", fontSize: "90%", whiteSpace: "nowrap" }}
               >
                 {item.label}
               </Typography>
@@ -225,8 +227,6 @@ const Account = () => {
       </Grid>
 
       <Box>
-        {/* <Typography variant="h6" fontWeight="bold" sx={{ px: 2, py: 1, color:"white" }}><ContentPasteIcon /> Fund Entry</Typography> */}
-
         <Card
           sx={{
             borderRadius: "12px",
@@ -247,18 +247,13 @@ const Account = () => {
                   px: 3,
                   py: 1,
                   borderBottom:
-                    index !== fundEntryItems.length - 1
-                      ? "1px solid #eee"
-                      : "none",
-                      cursor: item.path ? "pointer" : "default",
+                    index !== fundEntryItems.length - 1 ? "1px solid #eee" : "none",
+                  cursor: item.path ? "pointer" : "default",
                 }}
                 onClick={() => {
                   if (item.path) navigate(`/${item.path}`);
                 }}
-                
               >
-                
-              {/* <Box sx={{ mr: 2 }}>{item.icon}</Box> */}
                 <Typography variant="body1">{item.name}</Typography>
                 <ChevronRightIcon sx={{ color: "gray" }} />
               </ListItem>
@@ -266,7 +261,9 @@ const Account = () => {
           </List>
         </Card>
       </Box>
+
       <BankAccountPopup open={openPopup} onClose={() => setOpenPopup(false)} />
+      <SettingsPopup open={openSettings} onClose={() => setOpenSettings(false)} />
     </Box>
   );
 };
