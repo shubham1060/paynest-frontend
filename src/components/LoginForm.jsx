@@ -18,6 +18,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import AlertNotify from "./AlertNotify";
+import { loginUser } from "../api/userApi";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -35,13 +36,24 @@ const LoginForm = () => {
     return Object.keys(newErrors).length === 0;
   }, [phone, password]);
 
-  const handleLogin = useCallback(() => {
-    if (validateForm()) {
-      console.log("Logging in with:", { phone, password });
+  const handleLogin = useCallback(async () => {
+    if (!validateForm()) return;
+  
+    try {
+      const data = await loginUser(phone, password);
+      const { access_token, ...user } = data;
+  
+      localStorage.setItem("token", access_token);
+      // console.log("User Info:", user);
+      // console.log("Token:", access_token);
+  
       setShowAlert(true);
       navigate("/invest");
+    } catch (errorMessage) {
+      alert(errorMessage);
+      console.error("Login Error:", errorMessage);
     }
-  }, [validateForm, phone, password, navigate]);
+  }, [phone, password, validateForm, navigate]);
 
   return (
     <Box
