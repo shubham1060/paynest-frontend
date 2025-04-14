@@ -1,19 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
   Typography,
   Card,
   CardContent,
-  Button,
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/system";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import { getUserProfile } from "../api/userApi"; // ✅ import your API call
 
-const Header = ({ balance = 0 }) => {
+const Header = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getUserProfile();
+        setBalance(user.balance || 0);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <Box
@@ -86,7 +101,7 @@ const Header = ({ balance = 0 }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                mt:3,
+                mt: 3,
               }}
             >
               Account Balance

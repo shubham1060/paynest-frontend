@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -7,15 +7,68 @@ import {
   Button,
   InputAdornment,
   IconButton,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
 } from "@mui/material";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import PersonIcon from "@mui/icons-material/Person";
 import NumbersIcon from "@mui/icons-material/Numbers";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getAllBanks, addBankDetails } from "../api/userApi";
 
 const BankCardForm = () => {
   const navigate = useNavigate();
+  const [banks, setBanks] = useState([]);
+
+  // Form State
+  const [formData, setFormData] = useState({
+    bankName: "",
+    ifsc: "",
+    cardholderName: "",
+    accountNumber: "",
+  });
+
+  // Fetch Banks
+  useEffect(() => {
+    const fetchBanks = async () => {
+      const bankList = await getAllBanks();
+      setBanks(bankList);
+    };
+    fetchBanks();
+  }, []);
+
+  // Input Handler
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: name === 'ifsc' ? value.toUpperCase() : value }));
+  };
+
+  // Submit Handler
+  const handleSubmit = async () => {
+    try {
+      const userId = localStorage.getItem("userId"); // Get current user's ID
+      console.log("User ID:==53==>", userId);
+      if (!userId) {
+        alert("logged in once again");
+        navigate("/"); // Redirect to login if userId is not found
+        return;
+      }
+  
+      const payload = { ...formData, userId };
+  
+      await addBankDetails(payload); // API call to backend
+      alert("Bank card added successfully!");
+      navigate("/account");
+    } 
+    catch (err) {
+      console.error(err);
+      alert("Failed to add bank card");
+    }
+  };
+  
 
   return (
     <Box
@@ -40,11 +93,11 @@ const BankCardForm = () => {
           overflowY: "auto",
           overflowX: "hidden",
           boxSizing: "border-box",
-          scrollbarWidth: "none", // Firefox
-          "&::-webkit-scrollbar": { display: "none" }, // Chrome
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": { display: "none" },
         }}
       >
-        {/* Header - full white card width */}
+        {/* Header */}
         <Box
           sx={{
             display: "flex",
@@ -67,35 +120,47 @@ const BankCardForm = () => {
               fontSize: "15px",
             }}
           >
-                Add bank card
+            Add bank card
           </Typography>
         </Box>
 
-        {/* Form Fields */}
+        {/* Form */}
         <Box sx={{ padding: 2 }}>
+          {/* Bank Dropdown */}
           <Box mt={2}>
             <Typography fontWeight="bold">Bank</Typography>
-            <TextField
-              fullWidth
-              variant="outlined"
-              disabled
-              value="Bank"
-              InputProps={{
-                startAdornment: (
+            <FormControl fullWidth variant="outlined" sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}>
+              <InputLabel id="bank-select-label">Select Bank</InputLabel>
+              <Select
+                labelId="bank-select-label"
+                name="bankName"
+                value={formData.bankName}
+                onChange={handleChange}
+                label="Select Bank"
+                startAdornment={
                   <InputAdornment position="start">
                     <AccountBalanceIcon />
                   </InputAdornment>
-                ),
-              }}
-              sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}
-            />
+                }
+              >
+                {banks.map((bank) => (
+                  <MenuItem key={bank._id} value={bank.name}>
+                    {bank.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
 
+          {/* IFSC */}
           <Box mt={2}>
             <Typography fontWeight="bold">Bank IFSC</Typography>
             <TextField
               fullWidth
+              name="ifsc"
               placeholder="Bank IFSC"
+              value={formData.ifsc}
+              onChange={handleChange}
               variant="outlined"
               InputProps={{
                 startAdornment: (
@@ -108,11 +173,15 @@ const BankCardForm = () => {
             />
           </Box>
 
+          {/* Cardholder Name */}
           <Box mt={2}>
             <Typography fontWeight="bold">Cardholder Name</Typography>
             <TextField
               fullWidth
+              name="cardholderName"
               placeholder="Cardholder Name"
+              value={formData.cardholderName}
+              onChange={handleChange}
               variant="outlined"
               InputProps={{
                 startAdornment: (
@@ -125,11 +194,15 @@ const BankCardForm = () => {
             />
           </Box>
 
+          {/* Account Number */}
           <Box mt={2}>
             <Typography fontWeight="bold">Bank Account Number</Typography>
             <TextField
               fullWidth
+              name="accountNumber"
               placeholder="Bank Account Number"
+              value={formData.accountNumber}
+              onChange={handleChange}
               variant="outlined"
               InputProps={{
                 startAdornment: (
@@ -144,25 +217,26 @@ const BankCardForm = () => {
 
           {/* Confirm Button */}
           <Box mt={3} mb={1}>
-          <Button
-            fullWidth
-            variant="contained" 
-            sx={{
-              mt: 1,
-              py: 1,
-              fontWeight: 600,
-              fontSize: "14px",
-              background: "#156fb2",
-              color: "white",
-              borderRadius: "30px",
-              transition: "all 0.3s ease",
-              "&:hover": {
-                background: "#125a8c",
-              },
-            }}
-          >
-            Confirm
-          </Button>
+            <Button
+              onClick={handleSubmit}
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 1,
+                py: 1,
+                fontWeight: 600,
+                fontSize: "14px",
+                background: "#156fb2",
+                color: "white",
+                borderRadius: "30px",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  background: "#125a8c",
+                },
+              }}
+            >
+              Confirm
+            </Button>
           </Box>
         </Box>
       </Box>

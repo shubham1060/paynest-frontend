@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  TextField, Button, Box, Typography, IconButton, InputAdornment, Card,
+import { TextField, Button, Box, Typography, IconButton, InputAdornment, Card,
   CardContent, Avatar, Grid, FormControl, OutlinedInput, InputLabel
 } from "@mui/material";
 import {
@@ -13,6 +12,7 @@ import {
   People as PeopleIcon
 } from "@mui/icons-material";
 import OtpPopup from "./OtpPopup";
+import { createUser } from "../api/userApi"; // Adjust the import path as necessary
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -95,6 +95,30 @@ const SignupForm = () => {
       setShowOtpPopup(true); // Show OTP dialog
     }
   };
+
+  const handleFinalSignup = async () => {
+    try {
+      const userData = {
+        name: name,
+        phoneNumber: phone,
+        password: password,
+        inviteCode: inviteCode,
+      };
+      console.log("Signup Payload==>", { name, phone, password, inviteCode});
+      const result = await createUser(userData);
+      console.log("User created:", result);
+  
+      // Save token if needed
+      localStorage.setItem("token", result.data.access_token);
+      alert("User registered successfully, Please login to continue.");
+      setShowOtpPopup(false); // Close OTP dialog
+      navigate("/"); // Or your next route
+    } catch (error) {
+      console.error("Signup failed:", error.response?.data || error.message);
+      alert("Signup failed. Please try again.");
+    }
+  };
+  
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" width="100vw" sx={{ background: "linear-gradient(to bottom, #E3F2FD, #ffffff)" }}>
@@ -195,30 +219,15 @@ const SignupForm = () => {
                 <Button
                   variant="outlined"
                   onClick={() => navigate("/")}
-                  sx={{
-                    flex: 1,
-                    borderRadius: "25px",
-                    padding: "12px 0",
-                    borderColor: "#B0BEC5",
-                    color: "black",
-                    backgroundColor: "white",
-                    "&:hover": { backgroundColor: "#f0f0f0" }
-                  }}
-                >
-                  Log in
+                  sx={{ flex: 1, borderRadius: "25px", padding: "12px 0", borderColor: "#B0BEC5", color: "black", backgroundColor: "white", 
+                        "&:hover": { backgroundColor: "#f0f0f0" }}}>
+                    Log in
                 </Button>
                 <Button
                   variant="contained"
                   onClick={handleSubmit}
-                  sx={{
-                    flex: 1,
-                    borderRadius: "25px",
-                    padding: "12px 0",
-                    backgroundColor: "#3babd9",
-                    color: "white",
-                    "&:hover": { backgroundColor: "#156fb2" }
-                  }}
-                >
+                  sx={{ flex: 1, borderRadius: "25px", padding: "12px 0", backgroundColor: "#3babd9", color: "white",
+                    "&:hover": { backgroundColor: "#156fb2" } }}>
                   Sign Up
                 </Button>
               </Box>
@@ -239,6 +248,8 @@ const SignupForm = () => {
         setSmsCode={setSmsCode}
         timer={timer}
         handleGetSmsCode={handleGetSmsCode}
+        onVerifySuccess={handleFinalSignup}
+        expectedSmsCode={smsCode}
       />
     </Box>
   );

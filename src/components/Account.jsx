@@ -24,6 +24,7 @@ import Loader from "../components/LoaderPage";
 import avatarImage from "../assets/av1.png";
 import SettingsPopup from "./SettingsPopup"; // <-- added
 import LogoutButton from "./LogoutButton";
+import { getUserProfile } from '../api/userApi';
 
 const Account = () => {
   const navigate = useNavigate();
@@ -44,17 +45,19 @@ const Account = () => {
   ];
 
   useEffect(() => {
-    setTimeout(() => {
-      setUser({
-        name: "Sbm",
-        phone: "9977692577",
-        userId: "40109939",
-        balance: 1500.75,
-        points: 120,
-        avatar: avatarImage,
-      });
-      setLoading(false);
-    }, 2000);
+    (async () => {
+      try {
+        const data = await getUserProfile();
+        console.log("User Profile:==51==>", data);
+        setUser(data);
+      } catch (err) {
+        console.error("Error fetching user profile:", err);
+        alert("Failed to fetch user profile. Please try again.");
+        navigate("/login"); // Redirect on failure
+      } finally {
+        setLoading(false); 
+      }
+    })();
   }, []);
 
   if (loading) {
@@ -116,17 +119,20 @@ const Account = () => {
             flexWrap: "wrap",
           }}
         >
+          {user && (
           <Box>
             <Typography variant="h6" color="white" fontWeight="bold">
               {user.name}
             </Typography>
-            <Typography color="white">{user.phone}</Typography>
-            <Typography color="white" fontWeight="bold">
-              User ID: {user.userId}
+            <Typography color="white">{user.phoneNumber}</Typography>
+            <Typography color="white">User ID: {user.userId}</Typography>
+            <Typography color="black" fontWeight="bold">
+              Account Balance: ₹{user.balance.toFixed(2)}
             </Typography>
           </Box>
+          )}
           <Avatar
-            src={user.avatar}
+            src={avatarImage}
             alt="Profile"
             sx={{
               bgcolor: "rgba(255, 255, 255, 0.5)",
@@ -153,7 +159,7 @@ const Account = () => {
             <RedeemIcon sx={{ color: "white" }} />
           </Avatar>
           <Typography fontWeight="bold">
-            Account Balance: ₹{user.balance.toFixed(2)}
+            Recharge Amount: ₹{user.rechargeAmount.toFixed(2)}
           </Typography>
         </Box>
         <Button
