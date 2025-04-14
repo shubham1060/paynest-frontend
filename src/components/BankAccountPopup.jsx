@@ -19,7 +19,7 @@ const BankAccountPopup = ({ open, onClose }) => {
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography fontWeight="bold">No bank account linked!</Typography>
+          <Typography fontWeight="bold">Link Your Bank Account</Typography>
           <IconButton onClick={onClose}>
             <CloseIcon />
           </IconButton>

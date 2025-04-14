@@ -403,7 +403,38 @@ const SignupForm = () => {
           </Button>
         </DialogContent>
       </Dialog>
+      {/* Info Section (Mocked out lines) */}
+                  <Paper
+                      elevation={1}
+                      sx={{
+                          width: '100%',
+                          maxWidth: '87%',
+                          my: 1,
+                          p: 2,
+                          borderRadius: 3,
+                          backgroundColor: '#ffffff',
+                      }}
+                  >
+                      <Box
+                          sx={{
+                              height: 16,
+                              width: '70%',
+                              backgroundColor: '#eee',
+                              borderRadius: 8,
+                              mb: 1,
+                          }}
+                      />
+                      <Box
+                          sx={{
+                              height: 16,
+                              width: '90%',
+                              backgroundColor: '#eee',
+                              borderRadius: 8,
+                          }}
+                      />
+                  </Paper>
     </Box>
+    
   );
 };
 

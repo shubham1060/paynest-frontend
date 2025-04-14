@@ -1,48 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
   Typography,
   Box,
-  IconButton
+  IconButton, CircularProgress
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
-
-const withdrawalRecords = [
-  {
-    arrivalMoney: 190.95,
-    withdrawMoney: 201.0,
-    withdrawTax: 10.05,
-    createTime: '12:20 PM, 31 Mar 25',
-    status: 'Payment Success',
-    finishTime: '10:24 AM, 02 Apr 25'
-  },
-  {
-    arrivalMoney: 295.45,
-    withdrawMoney: 311.0,
-    withdrawTax: 15.55,
-    createTime: '11:59 AM, 30 Mar 25',
-    status: 'Payment Pending',
-    finishTime: '20:28 PM, 30 Mar 25'
-  },
-  {
-    arrivalMoney: 190.0,
-    withdrawMoney: 200.0,
-    withdrawTax: 10.0,
-    createTime: '11:37 AM, 28 Mar 25',
-    status: 'Payment Failed',
-    finishTime: '12:47 PM, 28 Mar 25'
-  },
-  {
-    arrivalMoney: 190.0,
-    withdrawMoney: 200.0,
-    withdrawTax: 10.0,
-    createTime: '10:41 AM, 27 Mar 25',
-    status: 'Payment Success',
-    finishTime: '11:55 AM, 27 Mar 25'
-  }
-];
+import { fetchUserWithdrawalRecords } from '../api/userApi';
 
 const InfoLine = ({ label, value, isStatus }) => {
   const getStatusColor = (status) => {
@@ -59,7 +25,7 @@ const InfoLine = ({ label, value, isStatus }) => {
   };
 
   return (
-    <Box display="flex" justifyContent="space-between" mb={0.5}>
+    <Box display="flex" justifyContent="space-between" mb={0.3}>
       <Typography fontSize="14px">{label}</Typography>
       <Typography
         fontSize="14px"
@@ -74,28 +40,62 @@ const InfoLine = ({ label, value, isStatus }) => {
   );
 };
 
-const MoneyLine = ({ label, amount }) => (
-  <Box display="flex" justifyContent="space-between" mb={1}>
-    <Typography  fontSize="14px">{label}</Typography>
-    <Typography  fontSize="14px">₹ {amount}</Typography>
+const MoneyLine = ({ label, amount, boldValue = false }) => (
+  <Box display="flex" justifyContent="space-between" mb={0.3}>
+    <Typography fontSize="14px">{label}</Typography>
+    <Typography fontSize="14px" fontWeight={boldValue ? 'bold' : 'normal'}>
+      ₹ {amount.toFixed(2)}
+    </Typography>
   </Box>
 );
+
+const formatDate = (dateStr) => {
+  if (!dateStr) return '—';
+  const date = new Date(dateStr);
+  return date.toLocaleString('en-IN', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+    day: '2-digit',
+    month: 'short',
+    year: '2-digit',
+  });
+};
 
 const WithdrawalCard = ({ record }) => (
   <Card sx={{ marginBottom: 0.5, borderRadius: 3, boxShadow: 2 }}>
     <CardContent>
-      <MoneyLine label="Arrival Money" amount={record.arrivalMoney} />
+      <MoneyLine label="Arrival Money" amount={record.arrivalMoney} boldValue />
       <MoneyLine label="Withdraw Money" amount={record.withdrawMoney} />
       <MoneyLine label="Withdraw Tax" amount={record.withdrawTax} />
-      <InfoLine label="Create Time" value={record.createTime} />
+      <InfoLine label="Create Time" value={formatDate(record.createdAt)} />
       <InfoLine label="Status" value={record.status} isStatus />
-      <InfoLine label="Finish Time" value={record.finishTime} />
+      <InfoLine label="Finish Time" value={formatDate(record.updatedAt)} />
     </CardContent>
   </Card>
 );
 
 const WithdrawalRecords = () => {
   const navigate = useNavigate();
+  const [withdrawals, setWithdrawals] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      setLoading(false); // stop loader if no user
+      return;
+    }
+
+    fetchUserWithdrawalRecords(userId)
+      .then(data => {
+        setWithdrawals(data);
+        setLoading(false); // stop loader after data loads
+      }).catch((err) => {
+        console.error("Error loading withdrawals", err);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <Box
@@ -108,7 +108,7 @@ const WithdrawalRecords = () => {
         flexDirection: 'column'
       }}
     >
-      {/* Fixed Blue Header */}
+      {/* Header */}
       <Box
         sx={{
           flexShrink: 0,
@@ -131,14 +131,14 @@ const WithdrawalRecords = () => {
             flexGrow: 1,
             textAlign: 'center',
             fontSize: '15px',
-            marginRight: '40px' // balance back icon
+            marginRight: '40px'
           }}
         >
           Withdrawal Records
         </Typography>
       </Box>
 
-      {/* Scrollable Content */}
+      {/* Records */}
       <Box
         sx={{
           flexGrow: 1,
@@ -153,9 +153,19 @@ const WithdrawalRecords = () => {
           msOverflowStyle: 'none'
         }}
       >
-        {withdrawalRecords.map((record, index) => (
-          <WithdrawalCard key={index} record={record} />
-        ))}
+        {loading ? (
+          <Box display="flex" justifyContent="center" mt={30}>
+            <CircularProgress />
+          </Box>
+        ) : withdrawals.length === 0 ? (
+          <Typography textAlign="center" mt={25}>
+            No withdrawal records found.
+          </Typography>
+        ) : (
+          withdrawals.map((record, index) => (
+            <WithdrawalCard key={index} record={record} />
+          ))
+        )}
       </Box>
     </Box>
   );
