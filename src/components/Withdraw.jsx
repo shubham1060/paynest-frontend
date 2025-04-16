@@ -19,7 +19,7 @@ const WithdrawPage = () => {
     const [selectedBank, setSelectedBank] = useState(null);
     const [bankChannels, setBankChannels] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [balance, setBalance] = useState(null);
+    const [balance, setBalance] = useState(0);
     // const [bankAccountId, setBankAccountId] = useState('');
 
     useEffect(() => {

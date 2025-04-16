@@ -25,6 +25,8 @@ import avatarImage from "../assets/av1.png";
 import SettingsPopup from "./SettingsPopup"; // <-- added
 import LogoutButton from "./LogoutButton";
 import { getUserProfile } from '../api/userApi';
+import Orders from './Orders';
+import { fetchUserOrders } from '../api/userApi';
 
 const Account = () => {
   const navigate = useNavigate();
@@ -33,6 +35,7 @@ const Account = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [bankCount, setBankCount] = useState(0);
+  const [orderCount, setOrderCount] = useState(0);
 
   const fundEntryItems = [
     { name: "Billing List", path: "billing" },
@@ -52,6 +55,10 @@ const Account = () => {
         console.log("User Profile:==51==>", data);
         setUser(data);
         setBankCount(data.bankCount || 0);
+
+        const orders = await fetchUserOrders(data.userId);
+        setOrderCount(orders.length);
+        // <Orders onOrderCountChange={setOrderCount} />
       } catch (err) {
         console.error("Error fetching user profile:", err);
         alert("Failed to fetch user profile. Please try again.");
@@ -187,7 +194,10 @@ const Account = () => {
             amount: user.balance.toFixed(2),
             onClick: () => navigate("/withdraw"),
           },
-          { icon: <ReceiptIcon />, label: "Orders", amount: "₹0.00" },
+          { icon: <ReceiptIcon />, label: "Orders", 
+            amount: orderCount > 0 ? `${orderCount} Order${orderCount > 1 ? 's' : ''}` : "No Orders", 
+            onClick: () => navigate("/my-order") 
+          },
           {
             icon: <AccountBalanceIcon />,
             label: "Bank Account",

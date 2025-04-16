@@ -18,6 +18,7 @@ import CommisionRecords from "./components/CommisionRecords";
 import UserSettings from "./components/UserSettings"; 
 import ResetPaymentPasswordPage from './components/ResetPaymentPasswordPage';
 import Withdraw from "./components/Withdraw"; 
+import Orders from "./components/Orders";
 
 function App() {
   const [value, setValue] = useState("invest");
@@ -41,6 +42,8 @@ function App() {
         <Route path="/user-settings" element={<UserSettings />} />
         <Route path="/reset-payment-password" element={<ResetPaymentPasswordPage />} />
         <Route path="/withdraw" element={<Withdraw />} />
+        <Route path="/my-order" element={<Orders />} />
+
 
       </Routes>
       <Footer value={value} onChange={setValue} />

@@ -7,6 +7,7 @@ import PopupModel from "./PopupModel";
 import Footer from "./Footer";
 import Header from "./Header";
 import { investmentData, investmentMonthlyData } from "./Plandata";
+import { purchaseProduct } from "../api/userApi";
 
 const Invest = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -19,6 +20,30 @@ const Invest = () => {
     setSelectedInvestment(investment);
     setOpen(true);
   };
+
+  const userId = localStorage.getItem('userId');
+
+  const handleConfirmInvest = async (investment) => {  
+    if (!userId) {
+      alert("User not logged in. Please log in to invest.");
+      return;
+    }
+  
+    // Clean ₹ and commas from amount
+    const cleanAmount = Number(
+      investment.investAmount.replace(/[₹,]/g, "").trim()
+    );
+  
+    console.log('cleanAmount==41==>',cleanAmount);
+    const res = await purchaseProduct(userId, investment.productCode, cleanAmount);
+  
+    if (res.success) {
+      alert("✅ Investment successful!");
+      setOpen(false);
+    } else {
+      alert("❌ " + res.message);
+    }
+  };  
 
   return (
     <Box
@@ -170,6 +195,7 @@ const Invest = () => {
         open={open}
         onClose={() => setOpen(false)}
         selectedInvestment={selectedInvestment}
+        onConfirmInvest={handleConfirmInvest}
       />
 
       {/* Footer */}
