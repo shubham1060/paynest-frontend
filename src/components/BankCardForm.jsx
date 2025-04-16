@@ -31,6 +31,13 @@ const BankCardForm = () => {
     accountNumber: "",
   });
 
+  const [formErrors, setFormErrors] = useState({
+    bankName: false,
+    ifsc: false,
+    cardholderName: false,
+    accountNumber: false,
+  });
+
   // Fetch Banks
   useEffect(() => {
     const fetchBanks = async () => {
@@ -44,6 +51,21 @@ const BankCardForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: name === 'ifsc' ? value.toUpperCase() : value }));
+
+    if (value.trim()) {
+      setFormErrors((prev) => ({ ...prev, [name]: false }));
+    }
+  };
+
+  const validateForm = () => {
+    const errors = {
+      bankName: !formData.bankName.trim(),
+      ifsc: !formData.ifsc.trim(),
+      cardholderName: !formData.cardholderName.trim(),
+      accountNumber: !formData.accountNumber.trim(),
+    };
+    setFormErrors(errors);
+    return !Object.values(errors).includes(true);
   };
 
   // Submit Handler
@@ -56,19 +78,21 @@ const BankCardForm = () => {
         navigate("/"); // Redirect to login if userId is not found
         return;
       }
-  
+      if (!validateForm()) return;
+      console.log("Form submitted:", formData);
+
       const payload = { ...formData, userId };
-  
+
       await addBankDetails(payload); // API call to backend
       alert("Bank card added successfully!");
       navigate("/account");
-    } 
+    }
     catch (err) {
       console.error(err);
       alert("Failed to add bank card");
     }
   };
-  
+
 
   return (
     <Box
@@ -129,7 +153,12 @@ const BankCardForm = () => {
           {/* Bank Dropdown */}
           <Box mt={2}>
             <Typography fontWeight="bold">Bank</Typography>
-            <FormControl fullWidth variant="outlined" sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}>
+            <FormControl
+              fullWidth
+              variant="outlined"
+              sx={{ backgroundColor: "#f8f8f8", borderRadius: 2, mt: 0.5 }}
+              error={formErrors.bankName}
+            >
               <InputLabel id="bank-select-label">Select Bank</InputLabel>
               <Select
                 labelId="bank-select-label"
@@ -149,6 +178,11 @@ const BankCardForm = () => {
                   </MenuItem>
                 ))}
               </Select>
+              {formErrors.bankName && (
+                <Typography color="error" fontSize="0.75rem" ml={2}>
+                  Bank is required
+                </Typography>
+              )}
             </FormControl>
           </Box>
 
@@ -162,6 +196,8 @@ const BankCardForm = () => {
               value={formData.ifsc}
               onChange={handleChange}
               variant="outlined"
+              error={formErrors.ifsc}
+              helperText={formErrors.ifsc ? "IFSC is required" : ""}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -183,6 +219,8 @@ const BankCardForm = () => {
               value={formData.cardholderName}
               onChange={handleChange}
               variant="outlined"
+              error={formErrors.cardholderName}
+              helperText={formErrors.cardholderName ? "Cardholder name is required" : ""}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -204,6 +242,8 @@ const BankCardForm = () => {
               value={formData.accountNumber}
               onChange={handleChange}
               variant="outlined"
+              error={formErrors.accountNumber}
+              helperText={formErrors.accountNumber ? "Account number is required" : ""}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

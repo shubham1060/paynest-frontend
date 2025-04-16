@@ -32,6 +32,7 @@ const Account = () => {
   const [openSettings, setOpenSettings] = useState(false); // <-- added
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [bankCount, setBankCount] = useState(0);
 
   const fundEntryItems = [
     { name: "Billing List", path: "billing" },
@@ -50,10 +51,11 @@ const Account = () => {
         const data = await getUserProfile();
         console.log("User Profile:==51==>", data);
         setUser(data);
+        setBankCount(data.bankCount || 0);
       } catch (err) {
         console.error("Error fetching user profile:", err);
         alert("Failed to fetch user profile. Please try again.");
-        navigate("/login"); // Redirect on failure
+        navigate("/"); // Redirect on failure
       } finally {
         setLoading(false); 
       }
@@ -182,13 +184,14 @@ const Account = () => {
           {
             icon: <AccountBalanceWalletIcon />,
             label: "Withdraw",
-            amount: "₹0.00",
+            amount: user.balance.toFixed(2),
+            onClick: () => navigate("/withdraw"),
           },
           { icon: <ReceiptIcon />, label: "Orders", amount: "₹0.00" },
           {
             icon: <AccountBalanceIcon />,
             label: "Bank Account",
-            amount: "No Bank Linked",
+            amount: user.bankCount > 0 ? `${user.bankCount} Bank${user.bankCount > 1 ? 's' : ''} Linked` : "No Bank Linked",
             onClick: () => setOpenPopup(true),
           },
         ].map((item, index) => (
