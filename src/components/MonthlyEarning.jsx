@@ -1,16 +1,36 @@
 import React, { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import InvestmentPopup from "./PopupModel"; // Import your popup component
+import PopupModel from "./PopupModel";
+import { purchaseProduct } from "../api/userApi";
 
-const MonthlyEarning = ({ title, investAmount, earnings, returnPeriod, periodicReturn, totalEarnings }) => {
+const MonthlyEarning = ({ title, investAmount, productCode, earnings, returnPeriod, periodicReturn, totalEarnings }) => {
   const [open, setOpen] = useState(false);
   const [selectedInvestment, setSelectedInvestment] = useState(null);
 
   // Handle popup open
   const handleOpen = () => {
-    setSelectedInvestment({ title, investAmount, earnings, returnPeriod, periodicReturn, totalEarnings });
+    // console.log("Clicked Invest for monthly=13=>");
+    setSelectedInvestment({ title, investAmount, productCode, earnings, returnPeriod, periodicReturn, totalEarnings });
     setOpen(true);
+  };
+
+  const userId = localStorage.getItem('userId');
+  const handleConfirmInvest = async () => {
+     // Ideally from auth
+    // console.log("userId==20==>", localStorage.getItem('userId'));
+    if (!selectedInvestment) return;
+
+    const cleanAmount = Number(selectedInvestment.investAmount.replace(/[₹,]/g, "").trim());
+    // console.log('cleanAmount==22==>', cleanAmount);
+
+    const res = await purchaseProduct(userId, selectedInvestment.productCode, cleanAmount);
+    if (res.success) {
+      alert("✅ Investment successful!");
+      setOpen(false);
+    } else {
+      alert("❌ " + res.message);
+    }
   };
 
   return (
@@ -46,10 +66,11 @@ const MonthlyEarning = ({ title, investAmount, earnings, returnPeriod, periodicR
       </Button>
 
       {/* Investment Popup */}
-      <InvestmentPopup 
+      <PopupModel
         open={open} 
         onClose={() => setOpen(false)} 
         selectedInvestment={selectedInvestment} 
+        onConfirmInvest={handleConfirmInvest}
       />
     </Box>
   );

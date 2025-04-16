@@ -2,7 +2,10 @@ import React, {useState} from "react";
 import { Modal, Box, Typography, Button, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close"; // Import Close Icon
 
-const InvestmentPopup = ({ open, onClose, selectedInvestment }) => {
+const PopupModel = ({ open, onClose, selectedInvestment, onConfirmInvest }) => {
+
+  {console.log("Modal open state:=7=>", open, "Selected Investment:=7=>", selectedInvestment)}
+
 
     const [confirmOpen, setConfirmOpen] = useState(false);
     // Show confirmation popup
@@ -12,8 +15,11 @@ const InvestmentPopup = ({ open, onClose, selectedInvestment }) => {
 
   // Close everything
   const handleConfirmClose = () => {
+    if (onConfirmInvest) {
+      onConfirmInvest(selectedInvestment);
+    }
     setConfirmOpen(false);
-    onClose(); // Close main modal after confirmation
+    onClose(); // Close the main modal
   };
 
 
@@ -119,4 +125,4 @@ const InvestmentPopup = ({ open, onClose, selectedInvestment }) => {
   );
 };
 
-export default InvestmentPopup;
+export default PopupModel;

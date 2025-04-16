@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -13,23 +13,60 @@ import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate } from "react-router-dom";
+import { updateUserProfile, getUserProfile } from "../api/userApi"; // make sure getUserProfile is available
 
 const UserSettings = () => {
   const navigate = useNavigate();
-
   const [userData, setUserData] = useState({
-    mobile: "9977692577",
-    name: "Sanjay",
+    phoneNumber: "",
+    name: "",
     email: "",
   });
+
+  // Load user data when component mounts
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = await getUserProfile();
+        if (user) {
+          setUserData({
+            phoneNumber: user.phoneNumber || "",
+            name: user.name || "",
+            email: user.email || "",
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load user data", err);
+        alert("Failed to load user profile.");
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleChange = (field) => (e) => {
     setUserData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  const handleConfirm = () => {
-    console.log("Updated user data:", userData);
-    alert("User data saved!");
+  const handleConfirm = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        alert("User ID not found");
+        return;
+      }
+
+      const res = await updateUserProfile(userId, userData);
+
+      if (res.success) {
+        alert("✅ Profile updated successfully!");
+      } else {
+        alert("❌ Failed to update profile.");
+      }
+    } catch (err) {
+      console.error("Update failed", err);
+      alert("Error occurred while updating.");
+    }
   };
 
   return (
@@ -120,7 +157,7 @@ const UserSettings = () => {
               fullWidth
               size="small"
               disabled
-              value={userData.mobile}
+              value={userData.phoneNumber}
               sx={{ my: 1 }}
               InputProps={{
                 startAdornment: (

@@ -44,8 +44,8 @@ const LoginForm = () => {
       const { access_token, ...user } = data;
   
       localStorage.setItem("token", access_token);
-      // console.log("User Info:", user);
-      // console.log("Token:", access_token);
+      console.log("User Info:", user);
+      console.log("Token:", access_token);
   
       setShowAlert(true);
       navigate("/invest");
