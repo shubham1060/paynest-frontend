@@ -44,7 +44,6 @@ function App() {
         <Route path="/withdraw" element={<Withdraw />} />
         <Route path="/my-order" element={<Orders />} />
 
-
       </Routes>
       <Footer value={value} onChange={setValue} />
     </BrowserRouter>

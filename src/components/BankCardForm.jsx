@@ -82,6 +82,7 @@ const BankCardForm = () => {
       console.log("Form submitted:", formData);
 
       const payload = { ...formData, userId };
+      console.log("payload data==85==>", payload);
 
       await addBankDetails(payload); // API call to backend
       alert("Bank card added successfully!");

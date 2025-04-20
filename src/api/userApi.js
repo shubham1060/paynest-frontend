@@ -38,9 +38,9 @@ export const getUserProfile = async () => {
     });
     console.log("User Profile Response:==37==>", response.data);
     localStorage.setItem('userId', response.data.userId); // Store userId in localStorage
-    localStorage.setItem("phoneNumber", response.data.phoneNumber);
+    localStorage.setItem('phoneNumber', response.data.phoneNumber);
     console.log("User ID:==39==>", localStorage.getItem('userId'));
-    console.log("PhoneNumber==41==>", localStorage.setItem("phoneNumber", response.data.phoneNumber));
+    console.log("PhoneNumber==41==>", localStorage.getItem('phoneNumber'));
     return response.data;
   } catch (error) {
     console.error('Error fetching user profile:', error);
@@ -195,4 +195,19 @@ export const resetPassword = async (payload) => {
   }
 
   return res.json();
+};
+
+// show commission records on UI
+export const getCommissionByUserId = async (userId) => {
+  try {
+    console.log("User ID:==203==>", localStorage.getItem('userId'));
+    const response = await axios.get(`${API_BASE_URL}/commission?userId=${userId}`);
+    // const res = await axios.get(`/api/commission?userId=${userId}`);
+    
+    console.log('commission data==206==>', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching commission data:', error);
+    throw error;
+  }
 };

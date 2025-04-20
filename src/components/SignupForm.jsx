@@ -12,7 +12,7 @@ import {
   People as PeopleIcon
 } from "@mui/icons-material";
 import OtpPopup from "./OtpPopup";
-import { createUser } from "../api/userApi"; // Adjust the import path as necessary
+import { createUser } from "../api/userApi"; 
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -102,7 +102,7 @@ const SignupForm = () => {
         name: name,
         phoneNumber: phone,
         password: password,
-        inviteCode: inviteCode,
+        invitationCode: inviteCode,
       };
       console.log("Signup Payload==>", { name, phone, password, inviteCode});
       const result = await createUser(userData);
@@ -200,12 +200,12 @@ const SignupForm = () => {
 
               <TextField
                 label="Invitation Code"
-                placeholder="Enter Invitation Code"
+                placeholder="Enter Invitation & Referral Code"
                 variant="outlined"
                 fullWidth
                 margin="normal"
                 value={inviteCode}
-                onChange={(e) => setInviteCode(e.target.value)}
+                onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
