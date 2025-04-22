@@ -169,3 +169,76 @@ const ForgetPassword = () => {
 };
 
 export default ForgetPassword;
+
+
+import React, { useState } from 'react';
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Rating,
+  Paper,
+} from '@mui/material';
+
+const MyFeedbackPage = () => {
+  const [feedback, setFeedback] = useState('');
+  const [rating, setRating] = useState(0);
+
+  const handleSubmit = () => {
+    // You can replace this with an API call to save feedback
+    console.log('Submitted Feedback:', feedback);
+    console.log('Rating:', rating);
+    alert('Thank you for your feedback!');
+    setFeedback('');
+    setRating(0);
+  };
+
+  return (
+    <Box
+      component={Paper}
+      elevation={3}
+      sx={{
+        maxWidth: '100vw',
+        mx: 'auto',
+        mt: 5,
+        p: 4,
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="h5" gutterBottom>
+        My Feedback
+      </Typography>
+
+      <Rating
+        name="feedback-rating"
+        value={rating}
+        onChange={(event, newValue) => setRating(newValue)}
+        sx={{ mb: 2 }}
+      />
+
+      <TextField
+        label="Write your feedback"
+        multiline
+        rows={4}
+        fullWidth
+        value={feedback}
+        onChange={(e) => setFeedback(e.target.value)}
+        variant="outlined"
+        sx={{ mb: 3 }}
+      />
+
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        onClick={handleSubmit}
+        disabled={!feedback}
+      >
+        Submit Feedback
+      </Button>
+    </Box>
+  );
+};
+
+

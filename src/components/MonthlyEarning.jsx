@@ -3,10 +3,12 @@ import { Box, Typography, Button } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PopupModel from "./PopupModel";
 import { purchaseProduct } from "../api/userApi";
+import { useAlert } from "./AlertContext";
 
 const MonthlyEarning = ({ title, investAmount, productCode, earnings, returnPeriod, periodicReturn, totalEarnings }) => {
   const [open, setOpen] = useState(false);
   const [selectedInvestment, setSelectedInvestment] = useState(null);
+  const { showAlert } = useAlert();
 
   // Handle popup open
   const handleOpen = () => {
@@ -15,10 +17,10 @@ const MonthlyEarning = ({ title, investAmount, productCode, earnings, returnPeri
     setOpen(true);
   };
 
-  const userId = localStorage.getItem('userId');
+  const userId = sessionStorage.getItem('userId');
   const handleConfirmInvest = async () => {
      // Ideally from auth
-    // console.log("userId==20==>", localStorage.getItem('userId'));
+    // console.log("userId==20==>", sessionStorage.getItem('userId'));
     if (!selectedInvestment) return;
 
     const cleanAmount = Number(selectedInvestment.investAmount.replace(/[₹,]/g, "").trim());
@@ -26,10 +28,22 @@ const MonthlyEarning = ({ title, investAmount, productCode, earnings, returnPeri
 
     const res = await purchaseProduct(userId, selectedInvestment.productCode, cleanAmount);
     if (res.success) {
-      alert("✅ Investment successful!");
+      // alert("✅ Investment successful!");
+      showAlert("Investment successful!", "success");
       setOpen(false);
     } else {
-      alert("❌ " + res.message);
+      let alertType = "warning";
+    
+      if (res.message.includes("Insufficient balance")) {
+        res.message = "Insufficient Recharge Amount";
+        alertType = "info";
+      } else if (res.message.includes("purchased this product")) {
+        alertType = "warning";
+      } else {
+        alertType = "error"; // Fallback for unknown messages
+      }
+    
+      showAlert(res.message, alertType);
     }
   };
 

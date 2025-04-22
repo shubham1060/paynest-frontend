@@ -12,6 +12,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { useNavigate } from 'react-router-dom';
 import { getMyBankDetails, withdrawAmount } from '../api/userApi';
+import { useAlert } from "./AlertContext";
 
 const WithdrawPage = () => {
     const navigate = useNavigate();
@@ -21,13 +22,14 @@ const WithdrawPage = () => {
     const [loading, setLoading] = useState(true);
     const [balance, setBalance] = useState(0);
     // const [bankAccountId, setBankAccountId] = useState('');
+    const { showAlert } = useAlert();
 
     useEffect(() => {
         const fetchProfile = async () => {
             try {
                 setLoading(true); // start loading
                 const res = await getMyBankDetails();
-                console.log("User Bank Details:==27==> ", res);
+                // console.log("User Bank Details:==27==> ", res);
 
                 // Assuming res is like: { banks: [{ _id, name }, ...] }
                 if (res?.data?.length > 0) {
@@ -59,29 +61,33 @@ const WithdrawPage = () => {
 
     const handleConfirm = async () => {
         const withdrawAmountValue = amount;
-        console.log("Withdraw Amount:==62==>", amount);
+        // console.log("Withdraw Amount:==62==>", amount);
       
         // ✅ Basic validations
         if (isNaN(withdrawAmountValue) || withdrawAmountValue <= 0) {
-          alert("Please enter a valid amount.");
+        //   alert("Please enter a valid amount.");
+          showAlert("Please enter a valid amount", "warning");
           return;
         }
       
         if (withdrawAmountValue > balance && balance !== 0 && withdrawAmountValue !== 0) {
-          alert("Withdraw amount exceeds your available balance.");
+        //   alert("Withdraw amount exceeds your available balance.");
+          showAlert("Withdraw amount exceeds your available balance", "warning");
           return;
         }
       
         if (withdrawAmountValue < 199) {
-          alert("Minimum withdrawal amount is ₹200.");
+        //   alert("Minimum withdrawal amount is ₹200.");
+        showAlert("Minimum withdrawal amount is ₹200", "warning");
           return;
         }
       
         try {
           setLoading(true);
-          const userId = localStorage.getItem('userId');
+          const userId = sessionStorage.getItem('userId');
           if (!userId || !selectedBank) {
-            alert("Missing user or bank account details.");
+            // alert("Missing user or bank account details.");
+            showAlert("Missing user or bank account details", "error");
             return;
           }
       
@@ -91,13 +97,15 @@ const WithdrawPage = () => {
             amount: withdrawAmountValue,
             bankAccountId: selectedBank,
           });
-          console.log("Withdraw Response:==93==>", response);
-          alert(response.message || 'Withdrawal successful!');
+        //   console.log("Withdraw Response:==93==>", response);
+        //   alert(response.message || 'Withdrawal successful!');
+          showAlert("Withdrawal successful and credited in your Account within 24 hours", "Success");
       
           // Optional: Update balance state if needed
           setBalance(prev => prev - withdrawAmountValue);
         } catch (error) {
-          alert(error?.message || 'Withdrawal failed!');
+        //   alert(error?.message || 'Withdrawal failed!');
+        showAlert("Withdrawal failed!", "error");
         } finally {
           setLoading(false);
         }

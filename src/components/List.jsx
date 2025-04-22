@@ -33,7 +33,7 @@ const List = () => {
   const { type } = useParams();
   const navigate = useNavigate();
   const [records, setRecords] = useState([]);
-  console.log("Type from URL:", type);
+  // console.log("Type from URL:", type);
 
   useEffect(() => {
     // Simulate fetching different data based on type

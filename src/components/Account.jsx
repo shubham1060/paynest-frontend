@@ -26,6 +26,7 @@ import LogoutButton from "./LogoutButton";
 import { getUserProfile } from '../api/userApi';
 import { fetchUserOrders } from '../api/userApi';
 import { motion } from "framer-motion";
+import { useAlert } from "./AlertContext";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -35,13 +36,14 @@ const Account = () => {
   const [loading, setLoading] = useState(true);
   const [bankCount, setBankCount] = useState(0);
   const [orderCount, setOrderCount] = useState(0);
+  const { showAlert } = useAlert();
 
   const fundEntryItems = [
-    { name: "Billing List", path: "billing" },
+    { name: "Amount Earned", path: "amount-earned" },
     { name: "Recharge Records", path: "recharge-record" },
     { name: "Withdrawal Records", path: "withdraw-record" },
     { name: "Commission Records", path: "commission-record" },
-    { name: "Reward Records", path: "reward-record" },
+    // { name: "Reward Records", path: "reward-record" },
     { name: "My Feedback", path: "my-feedback" },
     { name: "Self-Service", path: "self-service" },
     { name: "About Us", path: "about-us" },
@@ -51,7 +53,7 @@ const Account = () => {
     (async () => {
       try {
         const data = await getUserProfile();
-        console.log("User Profile:==51==>", data);
+        // console.log("User Profile:==51==>", data);
         setUser(data);
         setBankCount(data.bankCount || 0);
 
@@ -59,8 +61,9 @@ const Account = () => {
         setOrderCount(orders.length);
         // <Orders onOrderCountChange={setOrderCount} />
       } catch (err) {
-        console.error("Error fetching user profile:", err);
-        alert("Failed to fetch user profile. Please try again.");
+        // console.error("Error fetching user profile:", err);
+        showAlert("Failed to load user profile. Please try again", "error");
+        // alert("Failed to fetch user profile. Please try again.");
         navigate("/"); // Redirect on failure
       } finally {
         setLoading(false);
@@ -302,7 +305,7 @@ const Account = () => {
         <LogoutButton
           onLogout={() => {
             // Your logout logic here
-            localStorage.clear();
+            sessionStorage.clear();
             sessionStorage.clear();
             setUser(null);
             window.location.reload();

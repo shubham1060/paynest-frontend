@@ -14,9 +14,11 @@ import EmailIcon from "@mui/icons-material/Email";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate } from "react-router-dom";
 import { updateUserProfile, getUserProfile } from "../api/userApi"; // make sure getUserProfile is available
+import { useAlert } from "./AlertContext";
 
 const UserSettings = () => {
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
   const [userData, setUserData] = useState({
     phoneNumber: "",
     name: "",
@@ -37,7 +39,8 @@ const UserSettings = () => {
         }
       } catch (err) {
         console.error("Failed to load user data", err);
-        alert("Failed to load user profile.");
+        // alert("Failed to load user profile.");
+        showAlert("Failed to load user profile", "error");
       }
     };
 
@@ -48,24 +51,36 @@ const UserSettings = () => {
     setUserData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
+  const handleBack = () => {
+    if (location.state?.from === "account") {
+      navigate("/account");
+    } else if (location.state?.from === "update-profile") {
+      navigate("/update-profile");
+    }
+  };
+
   const handleConfirm = async () => {
     try {
-      const userId = localStorage.getItem("userId");
+      const userId = sessionStorage.getItem("userId");
       if (!userId) {
-        alert("User ID not found");
+        // alert("User ID not found");
+        showAlert("User not found", "error");
         return;
       }
 
       const res = await updateUserProfile(userId, userData);
 
       if (res.success) {
-        alert("✅ Profile updated successfully!");
+        // alert("✅ Profile updated successfully!");
+        showAlert("Profile updated successfully!", "success");
       } else {
-        alert("❌ Failed to update profile.");
+        // alert("❌ Failed to update profile.");
+        showAlert("Failed to update profile", "error");
       }
     } catch (err) {
       console.error("Update failed", err);
-      alert("Error occurred while updating.");
+      // alert("Error occurred while updating.");
+      showAlert("Failed while updating profile", "error");
     }
   };
 
@@ -91,7 +106,7 @@ const UserSettings = () => {
     height: '48px'
   }}
 >
-  <IconButton onClick={() => navigate(-1)} sx={{ color: '#fff', p: 0.5 }}>
+  <IconButton onClick={(handleBack) => navigate(-1)} sx={{ color: '#fff', p: 0.5 }}>
     <ArrowBackIosIcon />
   </IconButton>
   <Typography

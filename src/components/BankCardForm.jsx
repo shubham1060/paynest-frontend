@@ -18,10 +18,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import NumbersIcon from "@mui/icons-material/Numbers";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getAllBanks, addBankDetails } from "../api/userApi";
+import { useAlert } from "./AlertContext";
 
 const BankCardForm = () => {
   const navigate = useNavigate();
   const [banks, setBanks] = useState([]);
+  const { showAlert } = useAlert();
 
   // Form State
   const [formData, setFormData] = useState({
@@ -71,26 +73,29 @@ const BankCardForm = () => {
   // Submit Handler
   const handleSubmit = async () => {
     try {
-      const userId = localStorage.getItem("userId"); // Get current user's ID
-      console.log("User ID:==53==>", userId);
+      const userId = sessionStorage.getItem("userId"); // Get current user's ID
+      // console.log("User ID:==53==>", userId);
       if (!userId) {
-        alert("logged in once again");
+        // alert("logged in once again");
+        showAlert("logged in once again", "error");
         navigate("/"); // Redirect to login if userId is not found
         return;
       }
       if (!validateForm()) return;
-      console.log("Form submitted:", formData);
+      // console.log("Form submitted:", formData);
 
       const payload = { ...formData, userId };
-      console.log("payload data==85==>", payload);
+      // console.log("payload data==85==>", payload);
 
       await addBankDetails(payload); // API call to backend
-      alert("Bank card added successfully!");
+      // alert("Bank card added successfully!");
+      showAlert("Bank card added successfully!", "success");
       navigate("/account");
     }
     catch (err) {
-      console.error(err);
-      alert("Failed to add bank card");
+      // console.error(err);
+      // alert("Failed to add bank card");
+      showAlert("Failed to add bank card", "error");
     }
   };
 

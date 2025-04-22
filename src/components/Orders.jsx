@@ -74,7 +74,7 @@ const Orders = ({ onOrderCountChange }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
+    const userId = sessionStorage.getItem('userId');
     if (!userId) {
       setLoading(false);
       return;

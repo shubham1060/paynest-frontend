@@ -13,6 +13,7 @@ import {
 } from "@mui/icons-material";
 import OtpPopup from "./OtpPopup";
 import { createUser } from "../api/userApi"; 
+import { useAlert } from "./AlertContext";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const SignupForm = () => {
   const [captchaText, setCaptchaText] = useState("");
   const [smsCode, setSmsCode] = useState("");
   const [timer, setTimer] = useState(0);
+  const { showAlert } = useAlert();
 
   // Simulate captcha generation
     useEffect(() => {
@@ -60,7 +62,7 @@ const SignupForm = () => {
       // Simulate delay for receiving SMS (2 seconds)
       setTimeout(() => {
         setSmsCode(generatedCode); // Set OTP after delay
-        console.log("SMS sent:", generatedCode); // Log for debugging
+        // console.log("SMS sent:", generatedCode); // Log for debugging
       }, 2000);
     }
   };
@@ -104,18 +106,20 @@ const SignupForm = () => {
         password: password,
         invitationCode: inviteCode,
       };
-      console.log("Signup Payload==>", { name, phone, password, inviteCode});
+      // console.log("Signup Payload==>", { name, phone, password, inviteCode});
       const result = await createUser(userData);
-      console.log("User created:", result);
+      // console.log("User created:", result);
   
       // Save token if needed
-      localStorage.setItem("token", result.data.access_token);
-      alert("User registered successfully, Please login to continue.");
+      sessionStorage.setItem("token", result.data.access_token);
+      // alert("User registered successfully, Please login to continue.");
+      showAlert("User registered successfully, Please login to continue", "success");
       setShowOtpPopup(false); // Close OTP dialog
       navigate("/"); // Or your next route
     } catch (error) {
+      showAlert("Signup failed. Please try again", "error");
       console.error("Signup failed:", error.response?.data || error.message);
-      alert("Signup failed. Please try again.");
+      // alert("Signup failed. Please try again.");
     }
   };
   

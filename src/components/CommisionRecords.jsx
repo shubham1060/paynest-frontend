@@ -69,7 +69,7 @@ const CommisionRecords = () => {
   useEffect(() => {
     const fetchCommissions = async () => {
       try {
-        const userId = localStorage.getItem('userId'); // assuming userId is stored in localStorage
+        const userId = sessionStorage.getItem('userId'); // assuming userId is stored in sessionStorage
         const data = await getCommissionByUserId(userId);
         setRecords(data.commissionRecords || []);
       } catch (err) {

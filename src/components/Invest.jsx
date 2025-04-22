@@ -8,12 +8,14 @@ import Footer from "./Footer";
 import Header from "./Header";
 import { investmentData, investmentMonthlyData } from "./Plandata";
 import { purchaseProduct } from "../api/userApi";
+import { useAlert } from "./AlertContext";
 
 const Invest = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [value, setValue] = useState("invest");
   const [open, setOpen] = useState(false);
   const [selectedInvestment, setSelectedInvestment] = useState(null);
+  const { showAlert } = useAlert();
 
   // Function to handle opening the popup
   const handleOpen = (investment) => {
@@ -21,7 +23,7 @@ const Invest = () => {
     setOpen(true);
   };
 
-  const userId = localStorage.getItem('userId');
+  const userId = sessionStorage.getItem('userId');
 
   const handleConfirmInvest = async (investment) => {  
     if (!userId) {
@@ -34,14 +36,26 @@ const Invest = () => {
       investment.investAmount.replace(/[₹,]/g, "").trim()
     );
   
-    console.log('cleanAmount==41==>',cleanAmount);
+    // console.log('cleanAmount==41==>',cleanAmount);
     const res = await purchaseProduct(userId, investment.productCode, cleanAmount);
   
     if (res.success) {
-      alert("✅ Investment successful!");
+      // alert("✅ Investment successful!");
+      showAlert("Investment successful!", "success");
       setOpen(false);
     } else {
-      alert("❌ " + res.message);
+      let alertType = "warning";
+    
+      if (res.message.includes("Insufficient balance")) {
+        res.message = "Insufficient Recharge Amount";
+        alertType = "info";
+      } else if (res.message.includes("purchased this product")) {
+        alertType = "warning";
+      } else {
+        alertType = "error"; // Fallback for unknown messages
+      }
+    
+      showAlert(res.message, alertType);
     }
   };  
 

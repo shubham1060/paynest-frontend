@@ -19,6 +19,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate, useLocation } from "react-router-dom";
 import { resetPassword } from '../api/userApi';
 import { jwtDecode } from "jwt-decode";
+import { useAlert } from "./AlertContext";
 
 const ForgetPassword = () => {
   const navigate = useNavigate();
@@ -29,9 +30,10 @@ const ForgetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { showAlert } = useAlert();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (token) {
       try {
@@ -61,6 +63,8 @@ const ForgetPassword = () => {
   const handleBack = () => {
     if (location.state?.from === "account") {
       navigate("/account");
+    } else if (location.state?.from === "self-service") {
+      navigate("/self-service");
     } else {
       navigate("/");
     }
@@ -72,11 +76,13 @@ const ForgetPassword = () => {
         const payload = isLoggedIn ? { password } : { phoneNumber: phone, password };
   
         const response = await resetPassword(payload);
-        alert("Password changed successfully!");
+        // alert("Password changed successfully!");
+        showAlert("Password changed successfully!", "success");
         setPassword("");
       } catch (error) {
         console.error("Reset error:", error);
-        alert("Error resetting password");
+        // alert("Error resetting password");
+        showAlert("Error in changing password", "error");
       }
     }
   };

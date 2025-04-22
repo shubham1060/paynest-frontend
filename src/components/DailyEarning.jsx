@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, CardContent, Typography, Box, Button } from "@mui/material";
-import InvestmentPopup from "./PopupModel";
 
 const keyMapping = {
   "Invest Amount": "investAmount",

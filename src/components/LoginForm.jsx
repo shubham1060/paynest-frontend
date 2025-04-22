@@ -17,8 +17,8 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
-import AlertNotify from "./AlertNotify";
 import { loginUser } from "../api/userApi";
+import { useAlert } from "./AlertContext";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -26,7 +26,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
-  const [showAlert, setShowAlert] = useState(false);
+  const { showAlert } = useAlert();
+  // const [alert, setAlert] = useState({ open: false, message: "", severity: "error" });
 
   const validateForm = useCallback(() => {
     let newErrors = {};
@@ -43,15 +44,23 @@ const LoginForm = () => {
       const data = await loginUser(phone, password);
       const { access_token, ...user } = data;
   
-      localStorage.setItem("token", access_token);
-      console.log("User Info:", user);
-      console.log("Token:", access_token);
+      sessionStorage.setItem("token", access_token);
+      // console.log("User Info:", user);
+      // console.log("Token:", access_token);
   
-      setShowAlert(true);
-      navigate("/invest");
-    } catch (errorMessage) {
-      alert(errorMessage);
-      console.error("Login Error:", errorMessage);
+      showAlert("Login successful!", "success");
+      // setShowAlert(true);
+      setTimeout(() => {
+        navigate("/invest"); // replace with your actual route
+      }, 2000);
+      // navigate("/invest");
+    } catch (error) {
+      if (error?.status === 401) {
+        showAlert("Invalid phone number or password.", "error");
+      } else {
+        showAlert("Something went wrong. Please try again.", "error");
+      }
+      // console.error("Login Error:", error);
     }
   }, [phone, password, validateForm, navigate]);
 
@@ -206,14 +215,6 @@ const LoginForm = () => {
                 >
                   Log in
                 </Button>
-
-                {/* Custom Alert */}
-                <AlertNotify
-                  open={showAlert}
-                  onClose={() => setShowAlert(false)}
-                  message="Login successful!"
-                  severity="success"
-                />
               </Box>
             </CardContent>
           </Card>
