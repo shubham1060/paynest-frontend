@@ -36,7 +36,7 @@ const MonthlyEarning = ({ title, investAmount, productCode, earnings, returnPeri
     
       if (res.message.includes("Insufficient balance")) {
         res.message = "Insufficient Recharge Amount";
-        alertType = "info";
+        alertType = "warning";
       } else if (res.message.includes("purchased this product")) {
         alertType = "warning";
       } else {

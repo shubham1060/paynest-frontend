@@ -27,7 +27,8 @@ const Invest = () => {
 
   const handleConfirmInvest = async (investment) => {  
     if (!userId) {
-      alert("User not logged in. Please log in to invest.");
+      // alert("User not logged in. Please log in to invest.");
+      showAlert("User not logged in. Please log in to invest.", "error");
       return;
     }
   
@@ -48,7 +49,7 @@ const Invest = () => {
     
       if (res.message.includes("Insufficient balance")) {
         res.message = "Insufficient Recharge Amount";
-        alertType = "info";
+        alertType = "warning";
       } else if (res.message.includes("purchased this product")) {
         alertType = "warning";
       } else {

@@ -48,8 +48,12 @@ const AboutUsPage = () => {
                             Our mission is to provide valuable profit to the customers.
                         </Typography>
 
+                        <Typography fontSize="14px" color="text.secondary" sx={{ mb: 2 }}>
+                            Founded in 2021, we have proudly served over 100k+ customers and continue to grow every day.
+                        </Typography>
+
                         <Typography fontSize="14px" color="text.secondary">
-                            Founded in 2021, we have proudly served over 10k+ customers and continue to grow every day. Thank you for being a part of our journey!
+                            Thank you for being a part of our journey!
                         </Typography>
                     </CardContent>
                 </Card>

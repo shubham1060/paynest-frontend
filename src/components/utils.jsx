@@ -15,7 +15,7 @@ const ForgetPassword = () => {
 
   const handleSubmit = () => {
     if (validateForm()) {
-      console.log("Resetting password for:", phone);
+      // console.log("Resetting password for:", phone);
       // API Call for password reset logic
     }
   };
@@ -187,8 +187,8 @@ const MyFeedbackPage = () => {
 
   const handleSubmit = () => {
     // You can replace this with an API call to save feedback
-    console.log('Submitted Feedback:', feedback);
-    console.log('Rating:', rating);
+    // console.log('Submitted Feedback:', feedback);
+    // console.log('Rating:', rating);
     alert('Thank you for your feedback!');
     setFeedback('');
     setRating(0);
