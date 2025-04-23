@@ -37,7 +37,7 @@ const WithdrawPage = () => {
                         id: bank._id,
                         name: bank.bankName,
                     })));
-                    if(res?.balance !== undefined) {
+                    if (res?.balance !== undefined) {
                         setBalance(res.balance); // Set balance if available
                     }
                 } else {
@@ -62,54 +62,54 @@ const WithdrawPage = () => {
     const handleConfirm = async () => {
         const withdrawAmountValue = amount;
         // console.log("Withdraw Amount:==62==>", amount);
-      
+
         // ✅ Basic validations
         if (isNaN(withdrawAmountValue) || withdrawAmountValue <= 0) {
-        //   alert("Please enter a valid amount.");
-          showAlert("Please enter a valid amount", "warning");
-          return;
-        }
-      
-        if (withdrawAmountValue > balance && balance !== 0 && withdrawAmountValue !== 0) {
-        //   alert("Withdraw amount exceeds your available balance.");
-          showAlert("Withdraw amount exceeds your available balance", "warning");
-          return;
-        }
-      
-        if (withdrawAmountValue < 199) {
-        //   alert("Minimum withdrawal amount is ₹200.");
-        showAlert("Minimum withdrawal amount is ₹200", "warning");
-          return;
-        }
-      
-        try {
-          setLoading(true);
-          const userId = sessionStorage.getItem('userId');
-          if (!userId || !selectedBank) {
-            // alert("Missing user or bank account details.");
-            showAlert("Missing user or bank account details", "error");
+            //   alert("Please enter a valid amount.");
+            showAlert("Please enter a valid amount", "warning");
             return;
-          }
-      
-          // ✅ Call API
-          const response = await withdrawAmount({
-            userId,
-            amount: withdrawAmountValue,
-            bankAccountId: selectedBank,
-          });
-        //   console.log("Withdraw Response:==93==>", response);
-        //   alert(response.message || 'Withdrawal successful!');
-          showAlert("Withdrawal successful and credited in your Account within 24 hours", "Success");
-      
-          // Optional: Update balance state if needed
-          setBalance(prev => prev - withdrawAmountValue);
-        } catch (error) {
-        //   alert(error?.message || 'Withdrawal failed!');
-        showAlert("Withdrawal failed!", "error");
-        } finally {
-          setLoading(false);
         }
-      };
+
+        if (withdrawAmountValue > balance && balance !== 0 && withdrawAmountValue !== 0) {
+            //   alert("Withdraw amount exceeds your available balance.");
+            showAlert("Withdraw amount exceeds your available balance", "warning");
+            return;
+        }
+
+        if (withdrawAmountValue < 199) {
+            //   alert("Minimum withdrawal amount is ₹200.");
+            showAlert("Minimum withdrawal amount is ₹200", "warning");
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const userId = sessionStorage.getItem('userId');
+            if (!userId || !selectedBank) {
+                // alert("Missing user or bank account details.");
+                showAlert("Missing user or bank account details", "error");
+                return;
+            }
+
+            // ✅ Call API
+            const response = await withdrawAmount({
+                userId,
+                amount: withdrawAmountValue,
+                bankAccountId: selectedBank,
+            });
+            //   console.log("Withdraw Response:==93==>", response);
+            //   alert(response.message || 'Withdrawal successful!');
+            showAlert("Withdrawal successful and credited in your Account within 24 hours", "Success");
+
+            // Optional: Update balance state if needed
+            setBalance(prev => prev - withdrawAmountValue);
+        } catch (error) {
+            //   alert(error?.message || 'Withdrawal failed!');
+            showAlert("Withdrawal failed!", "error");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Box
@@ -241,8 +241,8 @@ const WithdrawPage = () => {
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', }} >
                     <Typography variant="subtitle1">Amount</Typography>
                     <Typography
-                        sx={{ fontSize: { xs: 12, sm: 14 }, mt: { xs: 1, sm: 0 }, mr: 1 }}>
-                        Withdrawal balance <strong>₹ {balance}</strong>
+                        sx={{ fontSize: { xs: 12, sm: 14 }, mt: { xs: 1, sm: 0 }, mr: 1 }} >
+                        Withdrawal balance <strong>₹ {balance || '0'}</strong> {/* Render balance or 0 */}
                     </Typography>
                 </Box>
                 <Box

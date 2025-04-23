@@ -16,6 +16,19 @@ import {
 import PaymentIcon from "@mui/icons-material/Payment";
 import InfoIcon from "@mui/icons-material/InfoOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { verifyRechargePayment, createRechargeOrder } from '../api/userApi';
+import axios from "axios";
+import { useAlert } from "./AlertContext";
+
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
 
 const RechargePage = () => {
   const navigate = useNavigate();
@@ -23,6 +36,7 @@ const RechargePage = () => {
   const [customAmount, setCustomAmount] = useState("");
   const [selectedChannel, setSelectedChannel] = useState(null);
   const inputRef = useRef(null);
+  const { showAlert } = useAlert();
 
   const amountOptions = [100, 500, 1000, 3000, 10000, 50000];
   const paymentChannels = [
@@ -64,6 +78,74 @@ const RechargePage = () => {
 
   const handleChannelSelect = (channelId) => {
     setSelectedChannel(selectedChannel === channelId ? null : channelId);
+  };
+
+  const handleRecharge = async () => {
+    const amount = parseInt(customAmount, 10);
+    const channel = selectedChannel;
+  
+    if (!amount || amount < 100) {
+      showAlert("Please enter a valid recharge amount.", "warning");
+      return;
+    }
+  
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    const userId = user?.userId;
+  
+    if (!userId) {
+      showAlert("User not logged in", "error");
+      return;
+    }
+  
+    await loadRazorpayScript();
+  
+    try {
+      const { id: order_id, currency, amount: orderAmount } = await createRechargeOrder(amount);
+  
+      const options = {
+        key: "rzp_test_5XN7GdWihUyuHU",
+        amount: orderAmount,
+        currency,
+        name: "PayNest Recharge",
+        description: "Recharge Wallet",
+        order_id,
+        handler: async function (response) {
+          try {
+            await verifyRechargePayment({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+              amount,
+              userId,
+            });
+  
+            showAlert("Recharge successful!", "success");
+            setTimeout(() => {
+              navigate("/account");
+            }, 2000);
+          } catch (err) {
+            console.error("Verification failed:", err);
+            showAlert("Recharge verification failed. Please contact support.", "error");
+          }
+        },
+        prefill: {
+          name: user?.name || "Test User",
+          contact: user?.phoneNumber || "9*********",
+        },
+        theme: { color: "#3399cc" },
+        method: {
+          upi: true,
+          netbanking: true,
+          card: false,
+        },
+      };
+  
+      const razor = new window.Razorpay(options);
+      razor.open();
+    } catch (err) {
+      console.error("Razorpay order creation failed", err);
+      showAlert("Failed to initiate payment. Please try again.", "error");
+    }
   };
 
   return (
@@ -198,9 +280,8 @@ const RechargePage = () => {
                       borderRadius: 3,
                       backgroundColor:
                         selectedChannel === channel.id ? "#a5f2e7" : "#ffffff",
-                      border: `2px solid ${
-                        selectedChannel === channel.id ? "#156fb2" : "#bbbbbb"
-                      }`,
+                      border: `2px solid ${selectedChannel === channel.id ? "#156fb2" : "#bbbbbb"
+                        }`,
                       transition: "all 0.3s ease",
                       "&:hover": {
                         backgroundColor: "#a5f2e7",
@@ -244,9 +325,11 @@ const RechargePage = () => {
                   background: "#125a8c",
                 },
               }}
+              onClick={handleRecharge}
             >
               Confirm
             </Button>
+
           </Box>
 
           {/* Rule Description */}

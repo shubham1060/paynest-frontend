@@ -1,49 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
   Typography,
   Box,
-  IconButton
+  IconButton,
+  CircularProgress
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
-
-const rechargeRecords = [
-  {
-    arrivalMoney: 190.95,
-    createTime: '12:20 PM, 31 Mar 25',
-    status: 'Payment Success',
-    finishTime: '10:24 AM, 02 Apr 25'
-  },
-  {
-    arrivalMoney: 295.45,
-    createTime: '11:59 AM, 30 Mar 25',
-    status: 'Payment Pending',
-    finishTime: '20:28 PM, 30 Mar 25'
-  },
-  {
-    arrivalMoney: 190.0,
-    createTime: '11:37 AM, 28 Mar 25',
-    status: 'Payment Failed',
-    finishTime: '12:47 PM, 28 Mar 25'
-  },
-  {
-    arrivalMoney: 190.0,
-    createTime: '10:41 AM, 27 Mar 25',
-    status: 'Payment Success',
-    finishTime: '11:55 AM, 27 Mar 25'
-  }
-];
+import { fetchRechargeDetails } from '../api/userApi'; // API import
 
 const InfoLine = ({ label, value, isStatus }) => {
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Payment Success':
+      case 'success':
         return 'green';
-      case 'Payment Failed':
+      case 'failed':
         return 'red';
-      case 'Payment Pending':
+      case 'pending':
         return 'orange';
       default:
         return 'inherit';
@@ -76,16 +51,31 @@ const MoneyLine = ({ label, amount }) => (
 const RechargeCard = ({ record }) => (
   <Card sx={{ marginBottom: 0.5, borderRadius: 3, boxShadow: 2 }}>
     <CardContent>
-      <MoneyLine label="Arrival Money" amount={record.arrivalMoney} />
-      <InfoLine label="Create Time" value={record.createTime} />
+      <MoneyLine label="Arrival Money" amount={record.amount} />
+      <InfoLine label="Create Time" value={new Date(record.createdAt).toLocaleString()} />
       <InfoLine label="Status" value={record.status} isStatus />
-      <InfoLine label="Finish Time" value={record.finishTime} />
+      <InfoLine label="Finish Time" value={new Date(record.updatedAt).toLocaleString()} />
     </CardContent>
   </Card>
 );
 
-const RechargeRecords = () => {
+const RechargeRecords = ({ userId }) => {
   const navigate = useNavigate();
+  const [rechargeRecords, setRechargeRecords] = useState([]);
+  const [loading, setLoading] = useState(true);  // Add loading state
+
+  useEffect(() => {
+    const loadRecords = async () => {
+      const userId = sessionStorage.getItem('userId');
+      if (userId) {
+        setLoading(true);  // Start loading
+        const data = await fetchRechargeDetails(userId);
+        setRechargeRecords(data);
+        setLoading(false);  // Stop loading after data is fetched
+      }
+    };
+    loadRecords();
+  }, [userId]);
 
   return (
     <Box
@@ -143,9 +133,19 @@ const RechargeRecords = () => {
           msOverflowStyle: 'none'
         }}
       >
-        {rechargeRecords.map((record, index) => (
-          <RechargeCard key={index} record={record} />
-        ))}
+        {loading ? (
+          <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+            <CircularProgress />
+          </Box>
+        ) : rechargeRecords.length > 0 ? (
+          rechargeRecords.map((record, index) => (
+            <RechargeCard key={index} record={record} />
+          ))
+        ) : (
+          <Typography textAlign="center" mt={30} color="gray">
+            No recharge records found.
+          </Typography>
+        )}
       </Box>
     </Box>
   );

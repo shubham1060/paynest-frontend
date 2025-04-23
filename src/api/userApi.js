@@ -39,8 +39,10 @@ export const getUserProfile = async () => {
     // console.log("User Profile Response:==37==>", response.data);
     sessionStorage.setItem('userId', response.data.userId); // Store userId in sessionStorage
     sessionStorage.setItem('phoneNumber', response.data.phoneNumber);
+    sessionStorage.setItem('user', JSON.stringify(response.data));
     // console.log("User ID:==39==>", sessionStorage.getItem('userId'));
     // console.log("PhoneNumber==41==>", sessionStorage.getItem('phoneNumber'));
+    console.log('user==45==>', sessionStorage.getItem('user'));
     return response.data;
   } catch (error) {
     console.error('Error fetching user profile:', error);
@@ -180,7 +182,7 @@ export const fetchUserOrders = async (userId) => {
 export const resetPassword = async (payload) => {
   const token = sessionStorage.getItem("token");
 
-  const res = await fetch(`${API_BASE_URL}/user/reset-password`, {
+  const res = await fetch(`${API_BASE_URL}/api/user/reset-password`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -243,6 +245,43 @@ export const getEarningRecords = async (userId) => {
     return res.data;
   } catch (err) {
     console.error("Error fetching investment details:", err);
+    return [];
+  }
+};
+
+export const createRechargeOrder = async (amount) => {
+  const response = await axios.post(`${API_BASE_URL}/api/razorpay/create-order`, { amount });
+  return response.data;
+};
+
+export const verifyRechargePayment = async ({ razorpay_payment_id, razorpay_order_id, razorpay_signature, amount, userId }) => {
+  const token = sessionStorage.getItem("token");
+
+  const res = await axios.post(`${API_BASE_URL}/api/recharge/verify-payment`,
+    {
+      razorpay_payment_id,
+      razorpay_order_id,
+      razorpay_signature,
+      amount,
+      userId,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return res.data;
+};
+
+export const fetchRechargeDetails = async (userId) => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/recharge/getRechargeDetails/${userId}`);
+    const data = await res.json();
+    return data.data; // This contains recharge records
+  } catch (err) {
+    console.error('Error fetching recharge details:', err);
     return [];
   }
 };
