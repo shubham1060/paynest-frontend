@@ -42,7 +42,7 @@ export const getUserProfile = async () => {
     sessionStorage.setItem('user', JSON.stringify(response.data));
     // console.log("User ID:==39==>", sessionStorage.getItem('userId'));
     // console.log("PhoneNumber==41==>", sessionStorage.getItem('phoneNumber'));
-    console.log('user==45==>', sessionStorage.getItem('user'));
+    // console.log('user==45==>', sessionStorage.getItem('user'));
     return response.data;
   } catch (error) {
     console.error('Error fetching user profile:', error);
@@ -241,7 +241,7 @@ export const submitFeedback = async ({ rating, feedback }) => {
 export const getEarningRecords = async (userId) => {
   try {
     const res = await axios.get(`${API_BASE_URL}/invest/earnings/${userId}`);
-    console.log('investment data==242=>', res.data);
+    // console.log('investment data==242=>', res.data);
     return res.data;
   } catch (err) {
     console.error("Error fetching investment details:", err);
