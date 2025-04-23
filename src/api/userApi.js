@@ -28,19 +28,19 @@ export const loginUser = async (phoneNumber, password) => {
 
 // Get user profile and user details after login using token
 export const getUserProfile = async () => {
-  const token = localStorage.getItem('token');
-  console.log("Token:==30==>", token);
+  const token = sessionStorage.getItem('token');
+  // console.log("Token:==30==>", token);
   try {
     const response = await axios.get(`${API_BASE_URL}/api/user/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("User Profile Response:==37==>", response.data);
-    localStorage.setItem('userId', response.data.userId); // Store userId in localStorage
-    localStorage.setItem("phoneNumber", response.data.phoneNumber);
-    console.log("User ID:==39==>", localStorage.getItem('userId'));
-    console.log("PhoneNumber==41==>", localStorage.setItem("phoneNumber", response.data.phoneNumber));
+    // console.log("User Profile Response:==37==>", response.data);
+    sessionStorage.setItem('userId', response.data.userId); // Store userId in sessionStorage
+    sessionStorage.setItem('phoneNumber', response.data.phoneNumber);
+    // console.log("User ID:==39==>", sessionStorage.getItem('userId'));
+    // console.log("PhoneNumber==41==>", sessionStorage.getItem('phoneNumber'));
     return response.data;
   } catch (error) {
     console.error('Error fetching user profile:', error);
@@ -107,7 +107,7 @@ const api = axios.create({
 
 // Add interceptor to attach JWT token
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -118,7 +118,7 @@ api.interceptors.request.use((config) => {
 export const getMyBankDetails = async () => {
   try {
     const response = await api.get(`${API_BASE_URL}/api/bank-details/my-bank-details`);
-    console.log("Bank Details:==88==>", response.data);
+    // console.log("Bank Details:==88==>", response.data);
     return response.data;
   } catch (error) {
     throw error.response?.data || { message: "Unauthorized or error fetching profile" };
@@ -127,7 +127,7 @@ export const getMyBankDetails = async () => {
 
 // withdraw amount in user's bank
 export const withdrawAmount = async (withdrawData) => {
-  const token = localStorage.getItem('token'); // if auth token is used
+  const token = sessionStorage.getItem('token'); // if auth token is used
   try {
     const response = await axios.post(`${API_BASE_URL}/api/withdraw`, withdrawData,
       {
@@ -146,7 +146,7 @@ export const withdrawAmount = async (withdrawData) => {
 
 // show withdrwal records on account page
 export const fetchUserWithdrawalRecords = async (userId) => {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   const response = await axios.get(`${API_BASE_URL}/api/withdraw/records/${userId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -168,7 +168,7 @@ export const purchaseProduct = async (userId, productCode, investAmount) => {
 export const fetchUserOrders = async (userId) => {
   try {
     const res = await axios.get(`${API_BASE_URL}/invest/orders/${userId}`);
-    console.log('orders data==133=>', res.data);
+    // console.log('orders data==133=>', res.data);
     return res.data;
   } catch (err) {
     console.error("Error fetching user orders:", err);
@@ -178,9 +178,9 @@ export const fetchUserOrders = async (userId) => {
 
 // reset password or forget password api
 export const resetPassword = async (payload) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
-  const res = await fetch(`${API_BASE_URL}/api/user/reset-password`, {
+  const res = await fetch(`${API_BASE_URL}/user/reset-password`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -195,4 +195,54 @@ export const resetPassword = async (payload) => {
   }
 
   return res.json();
+};
+
+// show commission records on UI
+export const getCommissionByUserId = async (userId) => {
+  try {
+    // console.log("User ID:==203==>", sessionStorage.getItem('userId'));
+    const response = await axios.get(`${API_BASE_URL}/commission?userId=${userId}`);
+    // const res = await axios.get(`/api/commission?userId=${userId}`);
+    
+    // console.log('commission data==206==>', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching commission data:', error);
+    throw error;
+  }
+};
+
+export const submitFeedback = async ({ rating, feedback }) => {
+  const userId = sessionStorage.getItem('userId');
+  // console.log('userId==217==>', sessionStorage.getItem('userId'));
+
+  if (!userId || !feedback) {
+    throw new Error('Missing userId or feedback');
+  }
+
+  const response = await fetch(`${API_BASE_URL}/api/feedback`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userId, rating, feedback }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Failed to submit feedback');
+  }
+
+  return response.json();
+};
+
+export const getEarningRecords = async (userId) => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/invest/earnings/${userId}`);
+    console.log('investment data==242=>', res.data);
+    return res.data;
+  } catch (err) {
+    console.error("Error fetching investment details:", err);
+    return [];
+  }
 };

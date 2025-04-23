@@ -22,11 +22,12 @@ const PrizeTask = () => {
           backgroundColor: "#B3E5FC",
           paddingTop: "8px",
           minHeight: "100vh",
+          width:"100vw",
           maxWidth: "100vw",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          padding: "20px",
+          padding: "10px",
           justifyContent: "flex-start",
           overflowX: "hidden",
         }}
@@ -43,11 +44,11 @@ const PrizeTask = () => {
         <Typography variant="body2" mt={1}>
           <b>2.</b> You will receive rewards for subordinate investment amounts:
         </Typography>
-        <Typography variant="body2">Commission rate (Level 1): 20%</Typography>
-        <Typography variant="body2">Commission rate (Level 2): 2%</Typography>
-        <Typography variant="body2">Commission rate (Level 3): 1%</Typography>
+        <Typography variant="body2">Commission rate (Level 1): 10%</Typography>
+        <Typography variant="body2">Commission rate (Level 2): 5% (coming soon)</Typography>
+        <Typography variant="body2">Commission rate (Level 3): 2% (coming soon)</Typography>
         <Typography variant="body2" mt={1}>
-          Assuming you invite 100 users to join and invest 10,000 rupees on the platform, your income would be: 1,000,000 * 20% = 200,000 rupees.
+          Assuming you invite 100 users to join and invest 10,000 rupees on the platform, your income would be: 10,00,000 * 10% = 1,00,000 rupees.
         </Typography>
         <Typography variant="body2" mt={1}>
           Each excellent promoter can earn at least 1,000,000 rupees per month.

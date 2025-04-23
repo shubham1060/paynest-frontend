@@ -19,10 +19,17 @@ import UserSettings from "./components/UserSettings";
 import ResetPaymentPasswordPage from './components/ResetPaymentPasswordPage';
 import Withdraw from "./components/Withdraw"; 
 import Orders from "./components/Orders";
+import MyFeedbackPage from "./components/MyFeedbackPage";
+import SelfService from "./components/SelfService";
+import SupportPage from "./components/SupportPage";
+import AboutUsPage from "./components/AboutUsPage";
+import AmountEarned from "./components/AmountEarned";
+import { AlertProvider } from "./components/AlertContext";
 
 function App() {
   const [value, setValue] = useState("invest");
   return (
+    <AlertProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginForm />} />
@@ -43,11 +50,16 @@ function App() {
         <Route path="/reset-payment-password" element={<ResetPaymentPasswordPage />} />
         <Route path="/withdraw" element={<Withdraw />} />
         <Route path="/my-order" element={<Orders />} />
-
+        <Route path="/my-feedback" element={<MyFeedbackPage />} />
+        <Route path="/self-service" element={<SelfService />} />
+        <Route path="/support" element={<SupportPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
+        <Route path="/amount-earned" element={<AmountEarned />} />
 
       </Routes>
       <Footer value={value} onChange={setValue} />
     </BrowserRouter>
+    </AlertProvider>
   );
 }
 

@@ -1,5 +1,4 @@
-// CommisionRecords.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -9,33 +8,8 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
-
-const commissionRecords = [
-  {
-    amount: 150.0,
-    source: "Referral: User123",
-    type: "Referral Bonus",
-    dateEarned: "01 Apr 25, 09:15 AM",
-    status: "Credited",
-    creditedTime: "01 Apr 25, 09:20 AM"
-  },
-  {
-    amount: 100.0,
-    source: "Task Completion",
-    type: "Task Bonus",
-    dateEarned: "29 Mar 25, 03:40 PM",
-    status: "Pending",
-    creditedTime: "-"
-  },
-  {
-    amount: 200.0,
-    source: "Referral: User567",
-    type: "Referral Bonus",
-    dateEarned: "28 Mar 25, 11:00 AM",
-    status: "Failed",
-    creditedTime: "-"
-  }
-];
+import { getCommissionByUserId } from '../api/userApi';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const InfoLine = ({ label, value, isStatus }) => {
   const getStatusColor = (status) => {
@@ -70,25 +44,45 @@ const InfoLine = ({ label, value, isStatus }) => {
 const MoneyLine = ({ label, amount }) => (
   <Box display="flex" justifyContent="space-between" mb={1}>
     <Typography fontSize="14px">{label}</Typography>
-    <Typography fontSize="14px">₹ {amount}</Typography>
+    <Typography fontSize="14px">₹ {amount.toFixed(2)}</Typography>
   </Box>
 );
 
 const CommissionCard = ({ record }) => (
   <Card sx={{ marginBottom: 0.5, borderRadius: 3, boxShadow: 2 }}>
     <CardContent>
-      <MoneyLine label="Commission Amount" amount={record.amount} />
-      <InfoLine label="Source" value={record.source} />
-      <InfoLine label="Type" value={record.type} />
-      <InfoLine label="Date Earned" value={record.dateEarned} />
+      <MoneyLine label="Commission Amount" amount={record.commissionEarned} />
+      <InfoLine label="Source" value="Referral: user invited"/>
+      <InfoLine label="Type" value={record.product} />
+      <InfoLine label="Date Earned" value={new Date(record.createdAt).toLocaleString()} />
       <InfoLine label="Status" value={record.status} isStatus />
-      <InfoLine label="Credited Time" value={record.creditedTime} />
+      <InfoLine label="Credited Time" value={record.status === 'Pending' ? 'Coming soon' : new Date(record.updatedAt).toLocaleString()} />
     </CardContent>
   </Card>
 );
 
 const CommisionRecords = () => {
   const navigate = useNavigate();
+  const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCommissions = async () => {
+      try {
+        const userId = sessionStorage.getItem('userId'); // assuming userId is stored in sessionStorage
+        const data = await getCommissionByUserId(userId);
+        setRecords(data.commissionRecords || []);
+      } catch (err) {
+        console.error('Error fetching commission data:', err);
+      } finally {
+        setLoading(false); // ✅ stop loading once done
+      }
+    };
+
+    fetchCommissions();
+  }, []);
+
+
 
   return (
     <Box
@@ -144,9 +138,19 @@ const CommisionRecords = () => {
           msOverflowStyle: 'none'
         }}
       >
-        {commissionRecords.map((record, index) => (
-          <CommissionCard key={index} record={record} />
-        ))}
+        {loading ? (
+          <Box display="flex" justifyContent="center" alignItems="center" height="80%">
+            <CircularProgress />
+          </Box>
+        ) : records.length === 0 ? (
+          <Typography textAlign="center" mt={30}>
+            You don't invite any user so invite user and get Bonus.
+          </Typography>
+        ) : (
+          records.map((record, index) => (
+            <CommissionCard key={index} record={record} />
+          ))
+        )}
       </Box>
     </Box>
   );

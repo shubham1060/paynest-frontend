@@ -11,7 +11,6 @@ import {
   List,
   ListItem,
 } from "@mui/material";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import ReceiptIcon from "@mui/icons-material/Receipt";
@@ -25,8 +24,9 @@ import avatarImage from "../assets/av1.png";
 import SettingsPopup from "./SettingsPopup"; // <-- added
 import LogoutButton from "./LogoutButton";
 import { getUserProfile } from '../api/userApi';
-import Orders from './Orders';
 import { fetchUserOrders } from '../api/userApi';
+import { motion } from "framer-motion";
+import { useAlert } from "./AlertContext";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -36,23 +36,24 @@ const Account = () => {
   const [loading, setLoading] = useState(true);
   const [bankCount, setBankCount] = useState(0);
   const [orderCount, setOrderCount] = useState(0);
+  const { showAlert } = useAlert();
 
   const fundEntryItems = [
-    { name: "Billing List", path: "billing" },
+    { name: "Amount Earned", path: "amount-earned" },
     { name: "Recharge Records", path: "recharge-record" },
     { name: "Withdrawal Records", path: "withdraw-record" },
     { name: "Commission Records", path: "commission-record" },
-    { name: "Reward Records" },
-    { name: "My Feedback" },
-    { name: "Self-Service" },
-    { name: "About Us" },
+    // { name: "Reward Records", path: "reward-record" },
+    { name: "My Feedback", path: "my-feedback" },
+    { name: "Self-Service", path: "self-service" },
+    { name: "About Us", path: "about-us" },
   ];
 
   useEffect(() => {
     (async () => {
       try {
         const data = await getUserProfile();
-        console.log("User Profile:==51==>", data);
+        // console.log("User Profile:==51==>", data);
         setUser(data);
         setBankCount(data.bankCount || 0);
 
@@ -60,11 +61,12 @@ const Account = () => {
         setOrderCount(orders.length);
         // <Orders onOrderCountChange={setOrderCount} />
       } catch (err) {
-        console.error("Error fetching user profile:", err);
-        alert("Failed to fetch user profile. Please try again.");
+        // console.error("Error fetching user profile:", err);
+        showAlert("Failed to load user profile. Please try again", "error");
+        // alert("Failed to fetch user profile. Please try again.");
         navigate("/"); // Redirect on failure
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     })();
   }, []);
@@ -77,38 +79,62 @@ const Account = () => {
     <Box
       sx={{
         width: "100vw",
-        height: "100%", 
+        height: "100%",
         backgroundColor: "#156fb2",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: 3, 
+        padding: 3,
         overflow: "hidden",
         boxSizing: "border-box",
-        position: "relative", 
+        position: "relative",
         paddingBottom: "60px",
       }}
     >
       {/* Top Right Icons */}
       <Box
         sx={{
-          position: "absolute",
-          top: 10, 
-          right: 10, 
+          position: "relative",
+          width: "100%",
           display: "flex",
-          gap: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          mt: -2,
+          mb: -2,
         }}
       >
-        <IconButton sx={{ backgroundColor: "#3babd9" }}>
-          <NotificationsIcon />
-        </IconButton>
+        {/* Animated Referral Code */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <Box sx={{ textAlign: "center" }}>
+            <Typography variant="subtitle1" sx={{color: "#fff" }}>
+              🎁 Your Referral Code
+            </Typography>
+            {user?.referralCode && (
+              <Typography variant="h6" sx={{ color: "#ffeb3b", fontWeight: "bold" }}>
+                {user.referralCode}
+              </Typography>
+            )}
+          </Box>
+        </motion.div>
+        {/* Settings Icon in the top-right corner */}
         <IconButton
-          sx={{ backgroundColor: "#3babd9" }}
+          sx={{
+            position: "absolute",
+            right: -8,
+            top: 0,
+            backgroundColor: "#3babd9",
+            color: "#fff",
+          }}
           onClick={() => setOpenSettings(true)}
         >
           <SettingsIcon />
         </IconButton>
       </Box>
+
 
       {/* User Info Card */}
       <Box
@@ -116,7 +142,7 @@ const Account = () => {
           background: "#3babd9",
           p: 2,
           borderRadius: "10px",
-          mt: 6,
+          mt: 2,
           width: "100%",
         }}
       >
@@ -129,16 +155,16 @@ const Account = () => {
           }}
         >
           {user && (
-          <Box>
-            <Typography variant="h6" color="white" fontWeight="bold">
-              {user.name}
-            </Typography>
-            <Typography color="white">{user.phoneNumber}</Typography>
-            <Typography color="white">User ID: {user.userId}</Typography>
-            <Typography color="black" fontWeight="bold">
-              Account Balance: ₹{user.balance.toFixed(2)}
-            </Typography>
-          </Box>
+            <Box>
+              <Typography variant="h6" color="white" fontWeight="bold">
+                {user.name}
+              </Typography>
+              <Typography color="white">{user.phoneNumber}</Typography>
+              <Typography color="white">User ID: {user.userId}</Typography>
+              <Typography color="black" fontWeight="bold">
+                Account Balance: ₹{user.balance.toFixed(2)}
+              </Typography>
+            </Box>
           )}
           <Avatar
             src={avatarImage}
@@ -194,9 +220,10 @@ const Account = () => {
             amount: user.balance.toFixed(2),
             onClick: () => navigate("/withdraw"),
           },
-          { icon: <ReceiptIcon />, label: "Orders", 
-            amount: orderCount > 0 ? `${orderCount} Order${orderCount > 1 ? 's' : ''}` : "No Orders", 
-            onClick: () => navigate("/my-order") 
+          {
+            icon: <ReceiptIcon />, label: "Orders",
+            amount: orderCount > 0 ? `${orderCount} Order${orderCount > 1 ? 's' : ''}` : "No Orders",
+            onClick: () => navigate("/my-order")
           },
           {
             icon: <AccountBalanceIcon />,
@@ -278,7 +305,7 @@ const Account = () => {
         <LogoutButton
           onLogout={() => {
             // Your logout logic here
-            localStorage.clear();
+            sessionStorage.clear();
             sessionStorage.clear();
             setUser(null);
             window.location.reload();

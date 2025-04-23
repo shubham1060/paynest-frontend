@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Close"; // Import Close Icon
 
 const PopupModel = ({ open, onClose, selectedInvestment, onConfirmInvest }) => {
 
-  {console.log("Modal open state:=7=>", open, "Selected Investment:=7=>", selectedInvestment)}
+  // {console.log("Modal open state:=7=>", open, "Selected Investment:=7=>", selectedInvestment)}
 
 
     const [confirmOpen, setConfirmOpen] = useState(false);

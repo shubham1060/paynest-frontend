@@ -81,7 +81,7 @@ const WithdrawalRecords = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
+    const userId = sessionStorage.getItem('userId');
     if (!userId) {
       setLoading(false); // stop loader if no user
       return;

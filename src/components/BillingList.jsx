@@ -100,7 +100,7 @@ const BillingList = () => {
   return (
     <Box
       sx={{
-        paddingTop: '0px',
+        paddingTop: '1px',
         height: '100vh',
         width: '100vw',
         backgroundColor: '#fff',

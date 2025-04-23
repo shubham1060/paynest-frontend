@@ -82,7 +82,7 @@ const RechargePage = () => {
         elevation={6}
         sx={{
           width: "100%",
-          maxWidth: 450,
+          maxWidth: 500,
           height: "95%",
           display: "flex",
           flexDirection: "column",
