@@ -21,14 +21,14 @@ const MyFeedbackPage = () => {
         try {
           const result = await submitFeedback({ rating, feedback });
         //   console.log('Feedback submitted:', result);
-          setRating(0);
+          setRating(1);
           setFeedback('');
         //   alert('Thanks for your feedback!');
           showAlert("Thanks for your feedback!", "success");
         } catch (err) {
-          console.error('Error:', err.message);
+        //   console.error('Error:', err.message);
         //   alert('Failed to submit feedback.');
-        showAlert("Failed to submit feedback", "error");
+        showAlert(err.message, "error");
         }
       };
 

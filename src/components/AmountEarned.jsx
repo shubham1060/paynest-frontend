@@ -62,14 +62,14 @@ const AmountEarned = () => {
     return (
         <Box
             sx={{
-                paddingTop: '1px',
+                // paddingTop: '1px',
                 height: '100vh',
                 width: '100vw',
                 backgroundColor: '#fff',
                 overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
-                paddingBottom: '50px',
+                // paddingBottom: '50px',
             }}
         >
             {/* Header */}

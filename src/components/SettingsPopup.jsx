@@ -1,16 +1,5 @@
 import React from "react";
-import {
-  Dialog,
-  DialogContent,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  Divider,
-  Box,
-  Button,
-  IconButton,
-} from "@mui/material";
+import { Dialog, DialogContent, List, ListItem, ListItemText, Typography, Divider, Box, Button, IconButton, } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom"; // ✅ Import navigate
 
@@ -20,7 +9,7 @@ const SettingsPopup = ({ open, onClose }) => {
   const settingsOptions = [
     "User Information",
     "Login Password",
-    "Transaction Password",
+    // "Transaction Password",
   ];
 
   const handleOptionClick = (option) => {
@@ -30,9 +19,9 @@ const SettingsPopup = ({ open, onClose }) => {
       navigate("/user-settings"); // ✅ Navigate only for this option
     }
 
-    if (option === "Transaction Password") {
-        navigate("/reset-payment-password"); // 👈 navigate to the new page
-      }
+    // if (option === "Transaction Password") {
+    //     navigate("/reset-payment-password"); // 👈 navigate to the new page
+    //   }
 
       if (option === "Login Password") {
         navigate("/forget-password", { state: { from: "account" } });

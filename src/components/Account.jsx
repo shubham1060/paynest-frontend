@@ -45,7 +45,8 @@ const Account = () => {
     { name: "Commission Records", path: "commission-record" },
     // { name: "Reward Records", path: "reward-record" },
     { name: "My Feedback", path: "my-feedback" },
-    { name: "Self-Service", path: "self-service" },
+    { name: "Self Service", path: "self-service" },
+    { name: "Rules & Conditions", path: "rules" },
     { name: "About Us", path: "about-us" },
   ];
 
@@ -217,7 +218,7 @@ const Account = () => {
           {
             icon: <AccountBalanceWalletIcon />,
             label: "Withdraw",
-            amount: user.balance.toFixed(2),
+            amount: `₹ ${user.balance.toFixed(2)}`,
             onClick: () => navigate("/withdraw"),
           },
           {

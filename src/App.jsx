@@ -25,6 +25,7 @@ import SupportPage from "./components/SupportPage";
 import AboutUsPage from "./components/AboutUsPage";
 import AmountEarned from "./components/AmountEarned";
 import { AlertProvider } from "./components/AlertContext";
+import Rules from "./components/Rules";
 
 function App() {
   const [value, setValue] = useState("invest");
@@ -54,6 +55,7 @@ function App() {
         <Route path="/self-service" element={<SelfService />} />
         <Route path="/support" element={<SupportPage />} />
         <Route path="/about-us" element={<AboutUsPage />} />
+        <Route path="/rules" element={<Rules />} />
         <Route path="/amount-earned" element={<AmountEarned />} />
 
       </Routes>
