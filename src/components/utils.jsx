@@ -170,7 +170,7 @@ const ForgetPassword = () => {
 
 export default ForgetPassword;
 
-
+/*
 import React, { useState } from 'react';
 import {
   Box,
@@ -240,5 +240,87 @@ const MyFeedbackPage = () => {
     </Box>
   );
 };
+
+
+import React, { useEffect, useState } from "react";
+import { Box, Paper, Typography, Grid } from "@mui/material";
+import { getAdminStats } from "../api/adminApi";
+
+const AdminDashboard = () => {
+  const [stats, setStats] = useState(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await getAdminStats();
+        setStats(data);
+      } catch (err) {
+        console.error("Failed to load admin stats", err);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  if (!stats) return <Typography>Loading...</Typography>;
+
+  const productTitles = Object.keys(stats.productCounts);
+
+  return (
+    <Box sx={{ display: "flex", width: "100vw", overflowX: "hidden" }}>
+      <Box sx={{ flexGrow: 1, bgcolor: "#f4f5f7", display: "flex", flexDirection: "column" }}>
+        <Box sx={{ flexGrow: 1, width: "100%" }}>
+          <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 3, width: "90%", margin: "auto" }}>
+            <Typography variant="h5" sx={{ fontWeight: "bold", color: "#3babd9", mb: 2 }}>
+              Admin Dashboard
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={4}>
+                <Paper sx={{ p: 2, textAlign: "center" }}>
+                  <Typography variant="h6">Total Users</Typography>
+                  <Typography variant="h4">{stats.totalUsers}</Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <Paper sx={{ p: 2, textAlign: "center" }}>
+                  <Typography variant="h6">Total Recharge</Typography>
+                  <Typography variant="h4">₹{stats.totalRecharge.toFixed(2)}</Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <Paper sx={{ p: 2, textAlign: "center" }}>
+                  <Typography variant="h6">Total Balance</Typography>
+                  <Typography variant="h4">₹{stats.totalBalance.toFixed(2)}</Typography>
+                </Paper>
+              </Grid>
+              {productTitles.map((title, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Paper sx={{ p: 2, textAlign: "center" }}>
+                    <Typography variant="h6">{title}</Typography>
+                    <Typography variant="h4">{stats.productCounts[title]}</Typography>
+                  </Paper>
+                </Grid>
+              ))}
+              <Grid item xs={12} sm={6} md={4}>
+                <Paper sx={{ p: 2, textAlign: "center" }}>
+                  <Typography variant="h6">Total Withdraw</Typography>
+                  <Typography variant="h4">₹{stats.totalWithdraw.toFixed(2)}</Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <Paper sx={{ p: 2, textAlign: "center" }}>
+                  <Typography variant="h6">Total Commission</Typography>
+                  <Typography variant="h4">₹{stats.totalCommission.toFixed(2)}</Typography>
+                </Paper>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+export default AdminDashboard;
+*/
 
 

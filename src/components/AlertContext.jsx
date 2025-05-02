@@ -13,7 +13,7 @@ export const AlertProvider = ({ children }) => {
     duration: 2000,
   });
 
-  const showAlert = (message, severity = "success", duration = 2000) => {
+  const showAlert = (message, severity = "success", duration = 3000) => {
     setAlertState({ open: true, message, severity, duration });
   };
 
