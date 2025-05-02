@@ -20,16 +20,16 @@ const PrizeTask = () => {
       <Box
         sx={{
           backgroundColor: "#B3E5FC",
-          paddingTop: "8px",
-          minHeight: "100vh",
+          // paddingTop: "8px",
+          height: "100vh",
           width:"100vw",
-          maxWidth: "100vw",
+          // maxWidth: "100vw",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           padding: "10px",
           justifyContent: "flex-start",
-          overflowX: "hidden",
+          // overflowX: "hidden",
         }}
       >
         <Box display="flex" alignItems="center" justifyContent="center" mb={1}>

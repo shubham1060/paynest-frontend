@@ -19,17 +19,17 @@ const SupportPage = () => {
   const supportDetails = [
     {
       label: 'Email',
-      value: 'support@example.com',
+      value: 'a68818151@gmail.com',
       icon: <EmailIcon sx={{ color: '#156fb2' }} />
     },
     {
       label: 'Phone',
-      value: '+91 9876543210',
+      value: '+91 9639639639',
       icon: <PhoneIcon sx={{ color: '#156fb2' }} />
     },
     {
       label: 'WhatsApp',
-      value: '+91 9876543210',
+      value: '+91 9639639639',
       icon: <WhatsAppIcon sx={{ color: '#25D366' }} />
     }
   ];
@@ -111,7 +111,7 @@ const SupportPage = () => {
             <Divider sx={{ my: 3 }} />
 
             <Typography fontSize="13px" color="text.secondary">
-              Our support team is available 24/7. You can contact us anytime via email or WhatsApp, or call us between 9 AM to 6 PM.
+              Our support team is available 24/7. You can contact us anytime via email or WhatsApp, or call us between 10 AM to 6 PM.
             </Typography>
           </CardContent>
         </Card>

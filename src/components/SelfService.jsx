@@ -71,7 +71,7 @@ const SelfService = () => {
             marginRight: '40px'
           }}
         >
-          Self-Service
+          Self Service
         </Typography>
       </Box>
 
