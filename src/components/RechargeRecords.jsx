@@ -14,11 +14,11 @@ import { fetchRechargeDetails } from '../api/userApi'; // API import
 const InfoLine = ({ label, value, isStatus }) => {
   const getStatusColor = (status) => {
     switch (status) {
-      case 'success':
+      case 'Success':
         return 'green';
-      case 'failed':
+      case 'Failed':
         return 'red';
-      case 'pending':
+      case 'Pending':
         return 'orange';
       default:
         return 'inherit';

@@ -207,8 +207,8 @@ const Account = () => {
             borderRadius: "25px",
             padding: "18px",
           }}
-          onClick={() => navigate("/recharge")}
-        >
+          onClick={() => {sessionStorage.setItem("userId", user.userId); 
+                          navigate("/recharge")} }>
           Recharge
         </Button>
       </Card>

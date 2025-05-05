@@ -19,7 +19,7 @@ export const loginUser = async (phoneNumber, password) => {
       phoneNumber,
       password,
     });
-
+    // console.log('loginData=22=>',response.data.data);
     return response.data.data; // contains access_token and user data
   } catch (error) {
     throw error.response?.data?.message || "Login failed. Please try again.";
@@ -249,30 +249,29 @@ export const getEarningRecords = async (userId) => {
   }
 };
 
-export const createRechargeOrder = async (amount) => {
-  const response = await axios.post(`${API_BASE_URL}/api/razorpay/create-order`, { amount });
-  return response.data;
-};
-
-export const verifyRechargePayment = async ({ razorpay_payment_id, razorpay_order_id, razorpay_signature, amount, userId }) => {
-  const token = sessionStorage.getItem("token");
-
-  const res = await axios.post(`${API_BASE_URL}/api/recharge/verify-payment`,
-    {
-      razorpay_payment_id,
-      razorpay_order_id,
-      razorpay_signature,
-      amount,
-      userId,
-    },
-    {
+export const submitRechargePayment = async (data) => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/recharge/submit`, {
+      method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-    }
-  );
+      body: JSON.stringify(data),
+    });
 
-  return res.data;
+    const result = await res.json(); // Assuming the response is in JSON format
+
+    // Check if the response is successful
+    if (!res.ok) {
+      console.error("Error submitting payment:", result);
+      throw new Error(result.message || "An error occurred while submitting the payment");
+    }
+
+    return result; // Return the result for further use in the component
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
 };
 
 export const fetchRechargeDetails = async (userId) => {
