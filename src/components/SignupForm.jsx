@@ -117,7 +117,7 @@ const SignupForm = () => {
       setShowOtpPopup(false); // Close OTP dialog
       navigate("/"); // Or your next route
     } catch (error) {
-      showAlert("Signup failed & Your number is already registered. Please try again", "error");
+      showAlert("Signup failed or Your number is already registered. Please try again", "error");
       console.error("Signup failed:", error.response?.data || error.message);
       // alert("Signup failed. Please try again.");
     }

@@ -32,7 +32,7 @@ const RechargePage = () => {
       id: "channel1",
       name: "Payment Channel 1",
       minAmount: 100,
-      maxAmount: 50000,
+      maxAmount: 100000,
     },
     {
       id: "channel2",
@@ -77,6 +77,10 @@ const RechargePage = () => {
     const amount = parseInt(customAmount, 10);
     const channel = selectedChannel;
 
+    if (!amount || amount < 100) {
+      showAlert("Please enter a valid recharge amount.", "warning");
+      return;
+    }
     const userId = sessionStorage.getItem("userId");
     // console.log('userId=81=>', userId);
     // Navigating to another page with dynamic data

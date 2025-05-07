@@ -1,87 +1,125 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL; // change to your backend URL
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// Assuming you have an API endpoint for admin login
-const loginAdmin = async (phoneNumber, password) => {
+if (!BASE_URL) {
+  console.error('BASE_URL is not defined. Please check your environment variables.');
+}
+
+// Admin login
+export const loginAdmin = async (phoneNumber, password) => {
   try {
     const response = await axios.post(`${BASE_URL}/api/admin/login`, { phoneNumber, password });
-    // console.log('adminData=16=>',response.data);
-    // Store the access token in session storage or local storage
-    sessionStorage.setItem('accessToken', response.data.data.access_token); // Store the access token
-    return response.data; // Return the response data (access_token and user info)
+    const token = response?.data?.data?.access_token;
+    if (token) {
+      sessionStorage.setItem('accessToken', token);
+    } else {
+      console.warn('No access token received during admin login.');
+    }
+    return response.data;
   } catch (error) {
-    throw error; // Handle error appropriately
+    console.error('Error during admin login:', error);
+    return null;
   }
 };
 
-// Export the loginAdmin function
-export { loginAdmin };
-
-export const getBankDetails = () => {
-  return axios.get(`${BASE_URL}/api/bank-details`);
+export const getBankDetails = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/bank-details`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching bank details:', error);
+    return null;
+  }
 };
 
 export const fetchUsers = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/user`);  // Your backend URL here
+    const response = await axios.get(`${BASE_URL}/api/user`);
     return response.data;
   } catch (error) {
     console.error('Error fetching users:', error);
-    throw error;  // You can handle errors more gracefully as needed
+    return [];
   }
 };
 
 export const fetchInvestments = async () => {
-  const response = await axios.get(`${BASE_URL}/invest`);
-  return response.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/invest`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching investments:', error);
+    return [];
+  }
 };
 
 export const fetchWithdrawals = async () => {
-  const res = await axios.get(`${BASE_URL}/api/withdraw`);
-  return res.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/api/withdraw`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching withdrawals:', error);
+    return [];
+  }
 };
 
 export const getAllCommissions = async () => {
-  const response = await axios.get(`${BASE_URL}/commission/all`);
-  // console.log('commission data=52=>',response.data);
-  return response.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/commission/all`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching commissions:', error);
+    return [];
+  }
 };
 
 export const getAllFeedback = async () => {
-  const response = await axios.get(`${BASE_URL}/api/feedback`);
-  return response.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/api/feedback`);
+    // console.log('response.data=79=>', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching feedback:', error);
+    return [];
+  }
 };
 
 export const getAdminStats = async () => {
   const token = sessionStorage.getItem('accessToken');
-  // console.log('token=56=>',token);
-  
-  const response = await axios.get(`${BASE_URL}/api/admin/dashboard`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return response.data;
+  if (!token) {
+    console.warn('No access token found in session storage.');
+    return null;
+  }
+
+  try {
+    const response = await axios.get(`${BASE_URL}/api/admin/dashboard`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching admin stats:', error);
+    return null;
+  }
 };
 
 export const getAllRecharge = async () => {
-  const response = await axios.get(`${BASE_URL}/api/recharge/all`);
-  // console.log('recharge data=70=>',response.data);
-  return response.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/api/recharge/all`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching recharge data:', error);
+    return [];
+  }
 };
 
-export const updateRechargeStatus = (id, status) => {
-  return axios.patch(`${BASE_URL}/api/recharge/status/${id}`, { status });
+export const updateRechargeStatus = async (id, status) => {
+  try {
+    const response = await axios.patch(`${BASE_URL}/api/recharge/status/${id}`, { status });
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating recharge status for ID ${id}:`, error);
+    return null;
+  }
 };
-
-// export const updateRechargeStatus = async (id, status) => {
-//   const res = await fetch(`/api/recharge/admin/update-status/${id}`, {
-//     method: "PATCH",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ status }),
-//   });
-
-//   if (!res.ok) throw new Error("Failed to update status");
-//   return res.json();
-// };

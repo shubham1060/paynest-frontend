@@ -7,7 +7,7 @@ import {
   Grid,
   Button,
   IconButton,
-  Container,
+  Container, Divider,
   List,
   ListItem,
 } from "@mui/material";
@@ -27,6 +27,9 @@ import { getUserProfile } from '../api/userApi';
 import { fetchUserOrders } from '../api/userApi';
 import { motion } from "framer-motion";
 import { useAlert } from "./AlertContext";
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import Face6Icon from '@mui/icons-material/Face6';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 
 const Account = () => {
   const navigate = useNavigate();
@@ -62,7 +65,7 @@ const Account = () => {
         setOrderCount(orders.length);
         // <Orders onOrderCountChange={setOrderCount} />
       } catch (err) {
-        // console.error("Error fetching user profile:", err);
+        console.error("Error fetching user profile:", err);
         showAlert("Failed to load user profile. Please try again", "error");
         // alert("Failed to fetch user profile. Please try again.");
         navigate("/"); // Redirect on failure
@@ -111,7 +114,7 @@ const Account = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <Box sx={{ textAlign: "center" }}>
-            <Typography variant="subtitle1" sx={{color: "#fff" }}>
+            <Typography variant="subtitle1" sx={{ color: "#fff" }}>
               🎁 Your Referral Code
             </Typography>
             {user?.referralCode && (
@@ -157,13 +160,27 @@ const Account = () => {
         >
           {user && (
             <Box>
-              <Typography variant="h6" color="white" fontWeight="bold">
-                {user.name}
-              </Typography>
-              <Typography color="white">{user.phoneNumber}</Typography>
-              <Typography color="white">User ID: {user.userId}</Typography>
-              <Typography color="black" fontWeight="bold">
-                Account Balance: ₹{user.balance.toFixed(2)}
+              <Box display="flex" alignItems="center" gap={1}>
+                <Face6Icon fontSize="small" sx={{ color: 'white' }} />
+                <Typography variant="h6" color="white" fontWeight="bold">
+                  {user.name}
+                </Typography>
+              </Box>
+
+              <Box display="flex" alignItems="center" gap={1} mt={0.5}>
+                <LocalPhoneIcon fontSize="small" sx={{ color: 'white' }} />
+                <Typography color="white">{user.phoneNumber}</Typography>
+              </Box>
+
+              <Box display="flex" alignItems="center" gap={1} mt={0.5}>
+                <PermIdentityIcon fontSize="small" sx={{ color: 'white' }} />
+                <Typography color="white">User ID: {user.userId}</Typography>
+              </Box>
+
+              <Divider sx={{ my: 0.5, backgroundColor: 'white' }} />
+
+              <Typography color="white" fontWeight="bold">
+                Account Balance: ₹ {user.balance.toFixed(2)}
               </Typography>
             </Box>
           )}
@@ -207,8 +224,10 @@ const Account = () => {
             borderRadius: "25px",
             padding: "18px",
           }}
-          onClick={() => {sessionStorage.setItem("userId", user.userId); 
-                          navigate("/recharge")} }>
+          onClick={() => {
+            sessionStorage.setItem("userId", user.userId);
+            navigate("/recharge")
+          }}>
           Recharge
         </Button>
       </Card>

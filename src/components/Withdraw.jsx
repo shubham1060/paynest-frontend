@@ -44,7 +44,7 @@ const WithdrawPage = () => {
                     setBankChannels([]); // fallback in case no data
                 }
             } catch (err) {
-                console.error(err.message);
+                // console.error(err.message);
             } finally {
                 setLoading(false); // stop loading
             }

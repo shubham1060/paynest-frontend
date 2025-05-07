@@ -26,7 +26,7 @@ const MyFeedbackPage = () => {
         //   alert('Thanks for your feedback!');
           showAlert("Thanks for your feedback!", "success");
         } catch (err) {
-        //   console.error('Error:', err.message);
+          console.error('Error:', err.message);
         //   alert('Failed to submit feedback.');
         showAlert(err.message, "error");
         }

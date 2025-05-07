@@ -93,7 +93,7 @@ const BankCardForm = () => {
       navigate("/account");
     }
     catch (err) {
-      // console.error(err);
+      console.error(err);
       // alert("Failed to add bank card");
       showAlert("Failed to add bank card", "error");
     }
