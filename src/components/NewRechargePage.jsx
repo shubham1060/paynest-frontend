@@ -40,7 +40,7 @@ const NewRechargePage = () => {
     const { amount, channel, userId } = location.state || {}; // Destructure amount, channel, and userId
 
     const upiIds = [
-        "8357901140@pthdfc", "8357901140@ptyes"
+        "8357901140@pthdfc", "78paynest108@airtel"
     ];
 
     let selectedUPI = "";
@@ -71,7 +71,7 @@ const NewRechargePage = () => {
           // Call the API to submit recharge data
           const response = await submitRechargePayment(data); // Assuming submitRechargePayment is an API call
       
-          console.log("API Response:", response); // Log the response for debugging
+        //   console.log("API Response:", response); // Log the response for debugging
       
           if (response.success) {
             // Show success alert

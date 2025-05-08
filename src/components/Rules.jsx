@@ -29,7 +29,7 @@ const RulesPage = () => {
                         </Typography>
 
                         <Typography fontSize="14px" color="text.secondary" sx={{ mb: 2 }}>
-                            • <b>Account Balance</b> and <b>Recharge Balance</b> are different.
+                            • <b>Account Balance</b> and <b>Recharge Amount</b> are different.
                         </Typography>
 
                         <Typography fontSize="14px" color="text.secondary" sx={{ mb: 2 }}>
@@ -38,6 +38,14 @@ const RulesPage = () => {
 
                         <Typography fontSize="14px" color="text.secondary" sx={{ mb: 2 }}>
                             • <b>Recharge Amount:</b> This is the amount you manually add to your wallet, which can only be used to purchase products. It cannot be withdrawn or returned.
+                        </Typography>
+
+                        <Typography fontSize="14px" color="text.secondary" sx={{ mb: 2 }}>
+                            • If you have any issues with your Account Balance and Recharge Amount, please contact customer support on Whatsapp. We will resolve your query ASAP.
+                        </Typography>
+
+                        <Typography fontSize="14px" color="text.secondary" sx={{ mb: 2 }}>
+                            • <b>Self Service &gt; Contact Support &gt; WhatsApp</b>
                         </Typography>
 
                         <Typography fontSize="15px" sx={{ fontWeight: 'bold', mb: 0.5, mt: 1 }}>

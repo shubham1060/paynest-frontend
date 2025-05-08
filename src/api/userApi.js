@@ -2,112 +2,112 @@ import axios from "axios";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// user signup api
+if (!API_BASE_URL) {
+  console.error('API_BASE_URL is not defined in environment variables.');
+}
+
+// User signup API
 export const createUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/user`, userData); // Replace with your actual API URL
+    const response = await axios.post(`${API_BASE_URL}/api/user`, userData);
     return response.data;
   } catch (error) {
-    throw error.response?.data || { message: "Something went wrong" };
+    console.error("Create user error:", error);
+    return { success: false, message: error.response?.data?.message || "Signup failed." };
   }
 };
 
-// user login api
+// ✅ update this after successful login
 export const loginUser = async (phoneNumber, password) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/api/user/login`, {
       phoneNumber,
       password,
     });
-    // console.log('loginData=22=>',response.data.data);
-    return response.data.data; // contains access_token and user data
+
+    const { access_token, ...rest } = response.data.data;
+
+    if (access_token) {
+      sessionStorage.setItem("token", access_token); // ✅ This was missing!
+    }
+
+    return response.data.data;
   } catch (error) {
     throw error.response?.data?.message || "Login failed. Please try again.";
   }
 };
 
-// Get user profile and user details after login using token
+// Get user profile
 export const getUserProfile = async () => {
   const token = sessionStorage.getItem('token');
-  // console.log("Token:==30==>", token);
+  if (!token) {
+    console.warn("No token found for profile fetch.");
+    return null;
+  }
+
   try {
     const response = await axios.get(`${API_BASE_URL}/api/user/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
-    // console.log("User Profile Response:==37==>", response.data);
-    sessionStorage.setItem('userId', response.data.userId); // Store userId in sessionStorage
-    sessionStorage.setItem('phoneNumber', response.data.phoneNumber);
-    sessionStorage.setItem('user', JSON.stringify(response.data));
-    // console.log("User ID:==39==>", sessionStorage.getItem('userId'));
-    // console.log("PhoneNumber==41==>", sessionStorage.getItem('phoneNumber'));
-    // console.log('user==45==>', sessionStorage.getItem('user'));
-    return response.data;
+    const user = response.data;
+    sessionStorage.setItem('userId', user.userId);
+    sessionStorage.setItem('phoneNumber', user.phoneNumber);
+    sessionStorage.setItem('user', JSON.stringify(user));
+    return user;
   } catch (error) {
-    console.error('Error fetching user profile:', error);
-    throw error;
+    console.error("Error fetching profile:", error);
+    return null;
   }
 };
 
-// update user profile data
+// Update profile
 export const updateUserProfile = async (userId, updatedData) => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/user/update-profile/${userId}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedData),
     });
 
-    // Try to parse JSON safely
-    const text = await response.text(); // Read the raw response body
-    const data = text ? JSON.parse(text) : {}; // Parse if not empty
-
-    // console.log('text==62=>', text);
-    // console.log('data==63=>', data);
+    const text = await response.text();
+    const data = text ? JSON.parse(text) : {};
 
     if (!response.ok) {
-      throw new Error(data.message || "Failed to update user.");
+      throw new Error(data.message || "Update failed.");
     }
 
     return { success: true, data };
   } catch (error) {
-    console.error("Error in updateUserProfile:", error);
-    return { success: false, error: error.message };
+    console.error("Profile update error:", error);
+    return { success: false, message: error.message };
   }
 };
 
-
-// get all banks names from mongoDB and show on bank card page
+// Get all banks from mongoDB and show on bank card page
 export const getAllBanks = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/api/banks`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching banks:', error);
+    console.error("Bank fetch error:", error);
     return [];
   }
 };
 
-// add all bank details of user
+// Add bank details
 export const addBankDetails = async (data) => {
   try {
-    const res = await axios.post(`${API_BASE_URL}/api/bank-details`, data); // Adjust if needed
-    return res.data;
+    const response = await axios.post(`${API_BASE_URL}/api/bank-details`, data);
+    return response.data;
   } catch (error) {
-    console.error('Error Saving bank details:', error);
-    return [];
+    console.error("Bank detail save error:", error);
+    return null;
   }
 };
 
-// Create axios instance
-const api = axios.create({
-  baseURL: API_BASE_URL,
-});
+// Axios instance with interceptor
+const api = axios.create({ baseURL: API_BASE_URL });
 
-// Add interceptor to attach JWT token
 api.interceptors.request.use((config) => {
   const token = sessionStorage.getItem("token");
   if (token) {
@@ -116,104 +116,106 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// get user's bank details and show in withdraw component
+// Get user's bank details
 export const getMyBankDetails = async () => {
   try {
     const response = await api.get(`${API_BASE_URL}/api/bank-details/my-bank-details`);
-    // console.log("Bank Details:==88==>", response.data);
     return response.data;
   } catch (error) {
-    throw error.response?.data || { message: "Unauthorized or error fetching profile" };
+    console.error("My bank details fetch error:", error);
+    return null;
   }
 };
 
-// withdraw amount in user's bank
+// Withdraw amount
 export const withdrawAmount = async (withdrawData) => {
-  const token = sessionStorage.getItem('token'); // if auth token is used
+  const token = sessionStorage.getItem('token');
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/withdraw`, withdrawData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const response = await axios.post(`${API_BASE_URL}/api/withdraw`, withdrawData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error('Withdraw API error:', error);
-    throw error.response?.data || error;
+    console.error("Withdraw error:", error);
+    return { success: false, message: error.response?.data?.message || "Withdraw failed." };
   }
 };
 
-// show withdrwal records on account page
+// Withdrawal records
 export const fetchUserWithdrawalRecords = async (userId) => {
   const token = sessionStorage.getItem('token');
-  const response = await axios.get(`${API_BASE_URL}/api/withdraw/records/${userId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data.data;
-};
-
-// send data to mongoDB, which product is purchased by user
-export const purchaseProduct = async (userId, productCode, investAmount) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/invest/purchase`, { userId, productCode, investAmount});
-    return { success: true, data: response.data };
+    const response = await axios.get(`${API_BASE_URL}/api/withdraw/records/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
   } catch (error) {
-    const message = error.response?.data?.message || 'Something went wrong';
-    return { success: false, message };
-  }
-};
-
-// retrive user's purchased order and show in orders 
-export const fetchUserOrders = async (userId) => {
-  try {
-    const res = await axios.get(`${API_BASE_URL}/invest/orders/${userId}`);
-    // console.log('orders data==133=>', res.data);
-    return res.data;
-  } catch (err) {
-    console.error("Error fetching user orders:", err);
+    console.error("Withdrawal record fetch error:", error);
     return [];
   }
 };
 
-// reset password or forget password api
-export const resetPassword = async (payload) => {
-  const token = sessionStorage.getItem("token");
-
-  const res = await fetch(`${API_BASE_URL}/api/user/reset-password`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message || "Failed to reset password");
+// Purchase product
+export const purchaseProduct = async (userId, productCode, investAmount) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/invest/purchase`, {
+      userId, productCode, investAmount
+    });
+    return { success: true, data: response.data };
+  } catch (error) {
+    return { success: false, message: error.response?.data?.message || "Purchase failed." };
   }
-
-  return res.json();
 };
 
-// show commission records on UI
-export const getCommissionByUserId = async (userId) => {
+// Fetch orders
+export const fetchUserOrders = async (userId) => {
   try {
-    // console.log("User ID:==203==>", sessionStorage.getItem('userId'));
-    const response = await axios.get(`${API_BASE_URL}/commission?userId=${userId}`);
-    // const res = await axios.get(`/api/commission?userId=${userId}`);
-    
-    // console.log('commission data==206==>', response.data);
+    const response = await axios.get(`${API_BASE_URL}/invest/orders/${userId}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching commission data:', error);
-    throw error;
+    console.error("Orders fetch error:", error);
+    return [];
   }
 };
 
+// Reset password
+export const resetPassword = async (payload) => {
+  const token = sessionStorage.getItem("token");
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/user/reset-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Reset failed.");
+
+    return data;
+  } catch (error) {
+    console.error("Password reset error:", error);
+    throw new Error(error.message);
+  }
+};
+
+// Get commission
+export const getCommissionByUserId = async (userId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/commission?userId=${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Commission fetch error:", error);
+    return [];
+  }
+};
+
+// Submit feedback
 export const submitFeedback = async ({ rating, feedback }) => {
   const userId = sessionStorage.getItem('userId');
   // console.log('userId==217==>', sessionStorage.getItem('userId'));
@@ -238,49 +240,53 @@ export const submitFeedback = async ({ rating, feedback }) => {
   return response.json();
 };
 
+
+// Get earnings
 export const getEarningRecords = async (userId) => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/invest/earnings/${userId}`);
-    // console.log('investment data==242=>', res.data);
-    return res.data;
-  } catch (err) {
-    console.error("Error fetching investment details:", err);
+    const response = await axios.get(`${API_BASE_URL}/invest/earnings/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Earnings fetch error:", error);
     return [];
   }
 };
 
+// Submit recharge
 export const submitRechargePayment = async (data) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/recharge/submit`, {
+    const response = await fetch(`${API_BASE_URL}/api/recharge/submit`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
 
-    const result = await res.json(); // Assuming the response is in JSON format
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || "Recharge failed.");
 
-    // Check if the response is successful
-    if (!res.ok) {
-      console.error("Error submitting payment:", result);
-      throw new Error(result.message || "An error occurred while submitting the payment");
-    }
-
-    return result; // Return the result for further use in the component
+    return result;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    console.error("Recharge error:", error);
+    return { success: false, message: error.message };
   }
 };
 
+// Fetch recharge details
 export const fetchRechargeDetails = async (userId) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/recharge/getRechargeDetails/${userId}`);
-    const data = await res.json();
-    return data.data; // This contains recharge records
-  } catch (err) {
-    console.error('Error fetching recharge details:', err);
+    const response = await fetch(`${API_BASE_URL}/api/recharge/getRechargeDetails/${userId}`);
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Recharge details fetch error:", error);
     return [];
   }
+};
+
+export const generateQrData = async (upiId, amount) => {
+  const response = await axios.post(`${API_BASE_URL}/qr/generate`, {
+    upiId,
+    amount,
+  });
+  return response.data.qrData;
 };

@@ -92,7 +92,7 @@ const WithdrawalRecords = () => {
         setWithdrawals(data);
         setLoading(false); // stop loader after data loads
       }).catch((err) => {
-        console.error("Error loading withdrawals", err);
+        // console.error("Error loading withdrawals", err);
         setLoading(false);
       });
   }, []);

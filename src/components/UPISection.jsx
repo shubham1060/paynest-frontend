@@ -1,6 +1,5 @@
 import { Box, Typography, Button, TextField } from "@mui/material";
 import { useState } from "react";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const UPISection = ({ upiId, onUTRChange }) => {
   const [copied, setCopied] = useState(false);
@@ -16,7 +15,7 @@ const UPISection = ({ upiId, onUTRChange }) => {
   return (
     <Box width="100%">
       {/* UPI ID Row */}
-      <Box display="flex" alignItems="center" gap={3} width="100%" mb={4}>
+      <Box display="flex" alignItems="center" gap={3} width="100%" mb={2}>
         <Typography variant="body2" color="text.secondary" width="20%" textAlign="center">
           UPI ID
         </Typography>
@@ -33,6 +32,10 @@ const UPISection = ({ upiId, onUTRChange }) => {
         </Button>
       </Box>
 
+      <Typography fontSize={14} color="success" fontWeight="bold" textAlign="center" mt={2} mb={2}>
+        Have you paid successfully? Please enter UTR..
+      </Typography>
+
       {/* UTR Input */}
       <Box display="flex" alignItems="center" gap={1} mb={1}>
         <Typography fontWeight={500} width="35px">UTR</Typography>
@@ -45,7 +48,7 @@ const UPISection = ({ upiId, onUTRChange }) => {
       </Box>
 
       {/* Red Reminder */}
-      <Typography fontSize={14} color="error" fontWeight={500} textAlign="center" mt={4}>
+      <Typography fontSize={14} color="error" fontWeight={500} textAlign="center" mt={3} mb={2}>
         Important reminder: After completing the UPI transaction, please backfill UPI Ref No./UTR No./Google Pay: UPI Transaction ID/Freecharge: Transaction ID (12 digits). If you do not back fill UTR, 100% of the deposit transaction will fail. Please be sure to backfill!
       </Typography>
     </Box>

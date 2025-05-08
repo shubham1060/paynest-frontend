@@ -13,8 +13,16 @@ export const AlertProvider = ({ children }) => {
     duration: 2000,
   });
 
-  const showAlert = (message, severity = "success", duration = 3000) => {
-    setAlertState({ open: true, message, severity, duration });
+  const showAlert = (message, severity = "success", duration) => {
+    const defaultDurations = {
+      success: 3000,
+      error: 3000,
+      warning: 3500,
+      info: 3000,
+    };
+    setAlertState({
+      open: true, message, severity, duration: duration ?? defaultDurations[severity] ?? 3000,
+    });
   };
 
   const handleClose = () => {

@@ -84,7 +84,7 @@ const Orders = ({ onOrderCountChange }) => {
         setOrders(data);
         if (onOrderCountChange) {
             onOrderCountChange(data.length); // send order count to parent
-            console.log('length=87=>', data.length);
+            // console.log('length=87=>', data.length);
           }
         setLoading(false);
       })

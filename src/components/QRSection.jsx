@@ -2,12 +2,25 @@ import React, { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import { Box, Typography, Paper, Avatar } from "@mui/material";
 import upiIcon from "../assets/Upi_icons.png"; // single icon for all UPI apps
+import { generateQrData } from "../api/userApi";
 
 export const QRSection = ({ upiId, amount }) => {
     const [timeLeft, setTimeLeft] = useState(8 * 60); // 8 minutes in seconds
     const [expired, setExpired] = useState(false);
+    const [qrData, setQrData] = useState("");
 
-    const qrData = `upi://pay?pa=${upiId}&pn=PayNest&am=${amount}&cu=INR`;
+    // Call backend to generate UPI URL
+    useEffect(() => {
+        const fetchQrData = async () => {
+            try {
+                const qr = await generateQrData(upiId, amount);
+                setQrData(qr);
+            } catch (err) {
+                console.error("QR generation failed", err);
+            }
+        };
+        fetchQrData();
+    }, [upiId, amount]);
 
     // Countdown timer
     useEffect(() => {
@@ -22,9 +35,7 @@ export const QRSection = ({ upiId, amount }) => {
     }, [timeLeft]);
 
     const formatTime = () => {
-        const minutes = Math.floor(timeLeft / 60)
-            .toString()
-            .padStart(2, "0");
+        const minutes = Math.floor(timeLeft / 60).toString().padStart(2, "0");
         const seconds = (timeLeft % 60).toString().padStart(2, "0");
         return `${minutes}:${seconds}`;
     };

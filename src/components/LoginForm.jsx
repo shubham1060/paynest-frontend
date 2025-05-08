@@ -52,7 +52,7 @@ const LoginForm = () => {
       // setShowAlert(true);
       setTimeout(() => {
         navigate("/invest"); // replace with your actual route
-      }, 2000);
+      }, 3000);
       // navigate("/invest");
     } catch (error) {
       if (error?.status === 401) {
@@ -60,7 +60,7 @@ const LoginForm = () => {
       } else {
         showAlert("Something went wrong. Please try again.", "error");
       }
-      // console.error("Login Error:", error);
+      console.error("Login Error:", error);
     }
   }, [phone, password, validateForm, navigate]);
 
