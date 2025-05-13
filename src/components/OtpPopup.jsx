@@ -63,7 +63,7 @@ const OtpPopup = ({
           fullWidth
           value={smsCode}
           onChange={(e) => setSmsCode(e.target.value)}
-          label="SMS Verification Code"
+          label="SMS Verify Code"
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

@@ -68,6 +68,9 @@ const Account = () => {
         console.error("Error fetching user profile:", err);
         showAlert("Failed to load user profile. Please try again", "error");
         // alert("Failed to fetch user profile. Please try again.");
+        sessionStorage.clear();
+        setUser(null);
+        window.location.reload();
         navigate("/"); // Redirect on failure
       } finally {
         setLoading(false);
@@ -325,7 +328,6 @@ const Account = () => {
         <LogoutButton
           onLogout={() => {
             // Your logout logic here
-            sessionStorage.clear();
             sessionStorage.clear();
             setUser(null);
             window.location.reload();
