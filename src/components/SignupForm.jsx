@@ -48,6 +48,14 @@ const SignupForm = () => {
     }
   }, [timer]);
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref');
+    if (ref) {
+      setInviteCode(ref);  // referralCode ko form ke field me set kar do
+    }
+  }, []);
+
   const handleCaptchaChange = (e) => {
     const value = e.target.value;
     setCaptchaValue(value);

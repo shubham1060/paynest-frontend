@@ -9,7 +9,7 @@ import {
   IconButton,
   Container, Divider,
   List,
-  ListItem,
+  ListItem, Tooltip,
 } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -30,6 +30,7 @@ import { useAlert } from "./AlertContext";
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import Face6Icon from '@mui/icons-material/Face6';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import UtilsReferralCopyButton from "./utils";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -121,9 +122,12 @@ const Account = () => {
               🎁 Your Referral Code
             </Typography>
             {user?.referralCode && (
-              <Typography variant="h6" sx={{ color: "#ffeb3b", fontWeight: "bold" }}>
-                {user.referralCode}
-              </Typography>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1 }}>
+                <Typography variant="h6" sx={{ color: "#ffeb3b", fontWeight: "bold" }}>
+                  {user.referralCode}
+                </Typography>
+                <UtilsReferralCopyButton referralCode={user.referralCode} />
+              </Box>
             )}
           </Box>
         </motion.div>
