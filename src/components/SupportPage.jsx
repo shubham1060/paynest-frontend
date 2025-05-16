@@ -24,12 +24,12 @@ const SupportPage = () => {
     },
     {
       label: 'Phone',
-      value: '+91 9639639639',
+      value: '+91 9********9 (Please share your issue on email)',
       icon: <PhoneIcon sx={{ color: '#156fb2' }} />
     },
     {
       label: 'WhatsApp',
-      value: '+91 9639639639',
+      value: '+91 9********9 (Please share your issue on email)',
       icon: <WhatsAppIcon sx={{ color: '#25D366' }} />
     }
   ];
