@@ -40,7 +40,7 @@ const NewRechargePage = () => {
     const { amount, channel, userId } = location.state || {}; // Destructure amount, channel, and userId
 
     const upiIds = [
-        "8357901140@pthdfc", "78paynest108@airtel"
+        "78paynest108@airtel", "7869259124@ybl"
     ];
 
     let selectedUPI = "";
