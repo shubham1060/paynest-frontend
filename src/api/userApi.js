@@ -161,7 +161,7 @@ export const fetchUserWithdrawalRecords = async (userId) => {
 // Purchase product
 export const purchaseProduct = async (userId, productCode, investAmount) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/invest/purchase`, {
+    const response = await axios.post(`${API_BASE_URL}/api/invest/purchase`, {
       userId, productCode, investAmount
     });
     return { success: true, data: response.data };
@@ -173,7 +173,7 @@ export const purchaseProduct = async (userId, productCode, investAmount) => {
 // Fetch orders
 export const fetchUserOrders = async (userId) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/invest/orders/${userId}`);
+    const response = await axios.get(`${API_BASE_URL}/api/invest/orders/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Orders fetch error:", error);
@@ -207,7 +207,7 @@ export const resetPassword = async (payload) => {
 // Get commission
 export const getCommissionByUserId = async (userId) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/commission?userId=${userId}`);
+    const response = await axios.get(`${API_BASE_URL}/api/commission?userId=${userId}`);
     return response.data;
   } catch (error) {
     console.error("Commission fetch error:", error);
@@ -244,7 +244,7 @@ export const submitFeedback = async ({ rating, feedback }) => {
 // Get earnings
 export const getEarningRecords = async (userId) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/invest/earnings/${userId}`);
+    const response = await axios.get(`${API_BASE_URL}/api/invest/earnings/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Earnings fetch error:", error);
@@ -284,7 +284,7 @@ export const fetchRechargeDetails = async (userId) => {
 };
 
 export const generateQrData = async (upiId, amount) => {
-  const response = await axios.post(`${API_BASE_URL}/qr/generate`, {
+  const response = await axios.post(`${API_BASE_URL}/api/qr/generate`, {
     upiId,
     amount,
   });

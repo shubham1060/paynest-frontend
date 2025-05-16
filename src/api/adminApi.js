@@ -45,7 +45,7 @@ export const fetchUsers = async () => {
 
 export const fetchInvestments = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/invest`);
+    const response = await axios.get(`${BASE_URL}/api/invest`);
     return response.data;
   } catch (error) {
     console.error('Error fetching investments:', error);
@@ -65,7 +65,7 @@ export const fetchWithdrawals = async () => {
 
 export const getAllCommissions = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/commission/all`);
+    const response = await axios.get(`${BASE_URL}/api/commission/all`);
     return response.data;
   } catch (error) {
     console.error('Error fetching commissions:', error);
