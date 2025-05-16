@@ -243,12 +243,12 @@ const RechargePage = () => {
           </Typography>
           <Box sx={{ color: "#666", fontSize: "14px" }}>
             {[
-              "Please do not change the recharge amount. Transfer the exact amount that you selected.",
-              "Always initiate each recharge through this page. Do not save account transfers.",
+              "Please do not change the recharge amount. Recharge the exact amount that you selected.",
+              "Always initiate each recharge through this page.",
               "Single recharge amount should be between ₹100 - ₹10,000.",
-              "If the recharge is delayed, report the issue in the Help Center.",
+              "If the recharge is delayed, report the issue in the Customer Support.",
               "Due to high traffic, recharge may fail. Please try again.",
-              "After a successful transfer, enter the correct UTR (12 digits).",
+              "After a successful transfer, enter the correct UTR / Transaction Id (12 digits).",
             ].map((rule, index) => (
               <Box key={index} sx={{ display: "flex", alignItems: "flex-start", mt: index === 0 ? 0 : 1 }}>
                 <Typography variant="body2" sx={{ minWidth: "20px", fontWeight: 600 }}>{index + 1}.</Typography>

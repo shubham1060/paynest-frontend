@@ -77,10 +77,10 @@ const NewRechargePage = () => {
             // Show success alert
             showAlert("Recharge amount will be credited in 5-10 minutes.", "success");
           
-            // Delay navigation to account page by 2 seconds
+            // Delay navigation to account page by 3 seconds
             setTimeout(() => {
               navigate("/account"); // Adjust to the correct account page route
-            }, 3000); // 2000 milliseconds = 2 seconds
+            }, 3000); // 3000 milliseconds = 3 seconds
           } else {
             // Handle unexpected response
             showAlert("An error occurred. Please try again later.", "error");

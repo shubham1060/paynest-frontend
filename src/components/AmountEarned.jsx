@@ -30,7 +30,7 @@ const EarningCard = ({ record }) => (
         <CardContent>
             <MoneyLine label="Earning Amount" amount={record.amountReceived} />
             <InfoLine label="Product Name" value={record.productName} />
-            <InfoLine label="Payout Date" value={record.date} />
+            <InfoLine label="Payout Date" value={new Date(record.date).toLocaleString()} />
             <InfoLine label="Status" value="Credited" />
         </CardContent>
     </Card>
