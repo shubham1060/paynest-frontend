@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Grid, Typography, Card } from "@mui/material";
 import DailyAndMonthlyTabs from "./DailyAndMonthlyTabs";
 import DailyEarning from "./DailyEarning";
@@ -9,6 +9,7 @@ import Header from "./Header";
 import { investmentData, investmentMonthlyData } from "./Plandata";
 import { purchaseProduct } from "../api/userApi";
 import { useAlert } from "./AlertContext";
+import TelegramModal from './TelegramModal';
 
 const Invest = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -16,6 +17,7 @@ const Invest = () => {
   const [open, setOpen] = useState(false);
   const [selectedInvestment, setSelectedInvestment] = useState(null);
   const { showAlert } = useAlert();
+  const [showModal, setShowModal] = useState(false);
 
   // Function to handle opening the popup
   const handleOpen = (investment) => {
@@ -25,28 +27,32 @@ const Invest = () => {
 
   const userId = sessionStorage.getItem('userId');
 
-  const handleConfirmInvest = async (investment) => {  
+  useEffect(() => {
+    setShowModal(true);
+  }, []);
+
+  const handleConfirmInvest = async (investment) => {
     if (!userId) {
       // alert("User not logged in. Please log in to invest.");
       showAlert("User not logged in. Please log in to invest.", "error");
       return;
     }
-  
+
     // Clean ₹ and commas from amount
     const cleanAmount = Number(
       investment.investAmount.replace(/[₹,]/g, "").trim()
     );
-  
+
     // console.log('cleanAmount==41==>',cleanAmount);
     const res = await purchaseProduct(userId, investment.productCode, cleanAmount);
-  
+
     if (res.success) {
       // alert("✅ Investment successful!");
       showAlert("Investment successful!", "success");
       setOpen(false);
     } else {
       let alertType = "warning";
-    
+
       if (res.message.includes("Insufficient balance")) {
         res.message = "Insufficient Recharge Amount";
         alertType = "warning";
@@ -55,10 +61,10 @@ const Invest = () => {
       } else {
         alertType = "error"; // Fallback for unknown messages
       }
-    
+
       showAlert(res.message, alertType);
     }
-  };  
+  };
 
   return (
     <Box
@@ -153,8 +159,8 @@ const Invest = () => {
                     {index === 0
                       ? "Portfolio Investment Product A"
                       : index === 1
-                      ? "Portfolio Investment Product B"
-                      : "Portfolio Investment Product C"}
+                        ? "Portfolio Investment Product B"
+                        : "Portfolio Investment Product C"}
                   </Typography>
 
                   {/* Daily Earning Grid */}
@@ -212,6 +218,9 @@ const Invest = () => {
         selectedInvestment={selectedInvestment}
         onConfirmInvest={handleConfirmInvest}
       />
+
+      {/* Telegram Modal */}
+      <TelegramModal open={showModal} onClose={() => setShowModal(false)} />
 
       {/* Footer */}
       <Footer
