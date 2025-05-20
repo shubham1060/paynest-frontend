@@ -16,7 +16,11 @@ const BankDetailsPage = () => {
 
   useEffect(() => {
     getBankDetails()
-      .then(res => setDetails(res.data.data))
+      .then(res => {
+        // console.log('Bank details response:=20=>', res);
+        setDetails(res?.data || []);
+        // console.log('Bank details response:=22=>', res.data);
+      })
       .catch(err => console.error('Failed to fetch bank details:', err));
   }, []);
 

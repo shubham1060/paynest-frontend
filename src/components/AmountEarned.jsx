@@ -30,7 +30,15 @@ const EarningCard = ({ record }) => (
         <CardContent>
             <MoneyLine label="Earning Amount" amount={record.amountReceived} />
             <InfoLine label="Product Name" value={record.productName} />
-            <InfoLine label="Payout Date" value={new Date(record.date).toLocaleString()} />
+            <InfoLine label="Payout Date" value={new Date(record.date).toLocaleString('en-GB', {
+                timeZone: 'Asia/Kolkata',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+            })} />
             <InfoLine label="Status" value="Credited" />
         </CardContent>
     </Card>
@@ -47,6 +55,7 @@ const AmountEarned = () => {
             try {
                 const data = await getEarningRecords(userId);
                 setRecords(data);
+                // console.log('Fetched earning records:=50=>', data);
             } catch (err) {
                 console.error('Error fetching earning records:', err);
             } finally {
