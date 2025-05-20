@@ -38,7 +38,7 @@ const TelegramModal = ({ open, onClose }) => {
                             marginBottom: 16,
                         }}
                     />
-                    <Typography variant="body2" sx={{ mb: 2, fontWeight:"bold"}}>
+                    <Typography variant="body2" sx={{ mb: 1, fontWeight:"bold"}}>
                         Join our official Telegram channel
                     </Typography>
                     <Typography variant="h6" fontWeight="bold">
@@ -47,12 +47,12 @@ const TelegramModal = ({ open, onClose }) => {
                     <Typography variant="body2" color="text.secondary" mb={1}>
                         {channelInfo.subscribers}
                     </Typography>
-                    <Typography variant="body2" sx={{ mb: 2 }}>
+                    <Typography variant="body2" sx={{ mb: 1 }}>
                         Stay updated with latest updates, offers and support. Don’t miss out!
                     </Typography>
 
                     {/* Buttons in one row */}
-                    <Stack direction="row" spacing={2} justifyContent="center" mt={3}>
+                    <Stack direction="row" spacing={2} justifyContent="center" mt={1}>
                         <Button
                             variant="contained"
                             href={channelInfo.telegramLink}
