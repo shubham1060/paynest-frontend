@@ -38,6 +38,9 @@ const TelegramModal = ({ open, onClose }) => {
                             marginBottom: 16,
                         }}
                     />
+                    <Typography variant="body2" sx={{ mb: 2, fontWeight:"bold"}}>
+                        Join our official Telegram channel
+                    </Typography>
                     <Typography variant="h6" fontWeight="bold">
                         {channelInfo.name}
                     </Typography>
