@@ -33,13 +33,16 @@ export const getBankDetails = async () => {
   }
 };
 
-export const fetchUsers = async () => {
+export const fetchUsers = async ({ limit = 50, skip = 0 } = {}) => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/user`);
+    const response = await axios.get(`${BASE_URL}/api/user`, {
+      params: { limit, skip },
+    });
+    // Assuming backend responds with { data: [...users], total: number }
     return response.data;
   } catch (error) {
     console.error('Error fetching users:', error);
-    return [];
+    return { data: [], total: 0 };
   }
 };
 
@@ -56,6 +59,7 @@ export const fetchInvestments = async () => {
 export const fetchWithdrawals = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/api/withdraw`);
+    // console.log('response.data-withdrawal=59=>', response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching withdrawals:', error);
@@ -104,15 +108,19 @@ export const getAdminStats = async () => {
   }
 };
 
-export const getAllRecharge = async () => {
+export const getAllRecharge = async ({ limit = 15, skip = 0 } = {}) => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/recharge/all`);
+    const response = await axios.get(`${BASE_URL}/api/recharge/all`, {
+      params: { limit, skip },
+    });
+    // console.log('response.data=116=>', response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching recharge data:', error);
-    return [];
+    return { data: [], total: 0 };
   }
 };
+
 
 export const updateRechargeStatus = async (id, status) => {
   try {
@@ -120,6 +128,16 @@ export const updateRechargeStatus = async (id, status) => {
     return response.data;
   } catch (error) {
     console.error(`Error updating recharge status for ID ${id}:`, error);
+    return null;
+  }
+};
+
+export const updateWithdrawalStatus = async (id, status) => {
+  try {
+    const response = await axios.patch(`${BASE_URL}/api/withdraw/status/${id}`, { status });
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating withdrawal status for ID ${id}:`, error);
     return null;
   }
 };
