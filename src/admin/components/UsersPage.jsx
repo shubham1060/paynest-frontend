@@ -8,6 +8,8 @@ import {
   TableCell,
   TableBody,
   Container,
+  Pagination,
+  Stack,
 } from '@mui/material';
 import { fetchUsers } from '../../api/adminApi'; // Import the API function
 
@@ -16,18 +18,26 @@ const UsersPage = () => {
   const [loading, setLoading] = useState(true); // To handle loading state
   const [error, setError] = useState(null); // To handle errors
 
+  // Pagination states
+  const [page, setPage] = useState(1);   // 1-based page index for MUI Pagination
+  const limit = 50;                      // Number of users per page
+  const [totalUsers, setTotalUsers] = useState(0);
+
   useEffect(() => {
-    // Fetch users from API
-    fetchUsers()
-      .then((data) => {
-        setUsers(data);  // Set users to state
-        setLoading(false);  // Set loading to false once data is fetched
+    setLoading(true);
+    setError(null);
+    // Call fetchUsers with limit and skip based on current page
+    fetchUsers({ limit, skip: (page - 1) * limit })
+      .then(({ data, total }) => {
+        setUsers(data);
+        setTotalUsers(total);
+        setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setError('Failed to fetch users. Please try again later.');
-        setLoading(false);  // Set loading to false if error occurs
+        setLoading(false);
       });
-  }, []);
+  }, [page]);
 
   if (loading) {
     return <Typography variant="h6" sx={{ color: 'white' }}>Loading...</Typography>;
@@ -39,9 +49,14 @@ const UsersPage = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 0.5 }}>
-      <Typography variant="h5" gutterBottom sx={{ color: 'white', fontSize: { xs: '1rem', sm: '1.5rem', md: '1.8rem' } }}>
+      <Typography
+        variant="h5"
+        gutterBottom
+        sx={{ color: 'white', fontSize: { xs: '1rem', sm: '1.5rem', md: '1.8rem' } }}
+      >
         Users
       </Typography>
+
       <Paper sx={{ width: '85vw', overflowX: 'auto' }}>
         <Table size="small">
           <TableHead>
@@ -72,6 +87,28 @@ const UsersPage = () => {
           </TableBody>
         </Table>
       </Paper>
+
+      {/* Pagination */}
+      <Stack spacing={2} sx={{ mt: 2, display: 'flex', alignItems: 'center' }}>
+        <Pagination
+          count={Math.ceil(totalUsers / limit)}
+          page={page}
+          onChange={(event, value) => setPage(value)}
+          color="primary"
+          shape="rounded"
+          size="large"
+          sx={{
+            '& .MuiPaginationItem-root': {
+              color: 'white',
+            },
+            // Optional: change selected page color
+            '& .Mui-selected': {
+              backgroundColor: 'white',
+              color: '#1976d2', // or any contrast color
+            },
+          }}
+        />
+      </Stack>
     </Container>
   );
 };

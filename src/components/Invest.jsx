@@ -11,6 +11,14 @@ import { purchaseProduct } from "../api/userApi";
 import { useAlert } from "./AlertContext";
 import TelegramModal from './TelegramModal';
 
+const productTitles = [
+  "Portfolio Investment Product A",
+  "Portfolio Investment Product B",
+  "Portfolio Investment Product C",
+  "Portfolio Investment Product D",
+  "Portfolio Investment Product E",
+];
+
 const Invest = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [value, setValue] = useState("invest");
@@ -156,11 +164,7 @@ const Invest = () => {
                       textAlign: "center",
                     }}
                   >
-                    {index === 0
-                      ? "Portfolio Investment Product A"
-                      : index === 1
-                        ? "Portfolio Investment Product B"
-                        : "Portfolio Investment Product C"}
+                    {productTitles[index] || `Portfolio Investment Product ${String.fromCharCode(65 + index)}`}
                   </Typography>
 
                   {/* Daily Earning Grid */}

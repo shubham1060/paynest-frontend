@@ -95,7 +95,7 @@ const WithdrawPage = () => {
             const response = await withdrawAmount({
                 userId,
                 amount: withdrawAmountValue,
-                bankAccountId: selectedBank,
+                bankAccount: selectedBank,
             });
             //   console.log("Withdraw Response:==93==>", response);
             //   alert(response.message || 'Withdrawal successful!');
@@ -103,6 +103,7 @@ const WithdrawPage = () => {
 
             // Optional: Update balance state if needed
             setBalance(prev => prev - withdrawAmountValue);
+            
         } catch (error) {
             //   alert(error?.message || 'Withdrawal failed!');
             showAlert("Withdrawal failed!", "error");
@@ -201,7 +202,7 @@ const WithdrawPage = () => {
                             <Paper
                                 key={bank.id}
                                 elevation={3}
-                                onClick={() => setSelectedBank(bank.id)}
+                                onClick={() => setSelectedBank(bank.name)}
                                 sx={{
                                     display: 'flex',
                                     justifyContent: 'space-between',
@@ -210,7 +211,7 @@ const WithdrawPage = () => {
                                     py: 1.5,
                                     mb: 2,
                                     borderRadius: 2,
-                                    backgroundColor: selectedBank === bank.id ? 'rgb(109, 193, 226)' : '#fff',
+                                    backgroundColor: selectedBank === bank.name ? 'rgb(109, 193, 226)' : '#fff',
                                     cursor: 'pointer',
                                     transition: '0.2s',
                                 }}
@@ -218,7 +219,7 @@ const WithdrawPage = () => {
                                 <Box>
                                     <Typography fontWeight="bold">{bank.name}</Typography>
                                 </Box>
-                                <AccountBalanceIcon color={selectedBank === bank.id ? 'primary' : 'action'} />
+                                <AccountBalanceIcon color={selectedBank === bank.name ? 'primary' : 'action'} />
                             </Paper>
                         ))}
                     </>
