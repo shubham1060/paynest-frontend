@@ -99,7 +99,7 @@ const WithdrawPage = () => {
             });
             //   console.log("Withdraw Response:==93==>", response);
             //   alert(response.message || 'Withdrawal successful!');
-            showAlert("Withdrawal successful and credited in your bank Account within 1-2 days", "success");
+            showAlert("Withdrawal successful and credited in your bank account within 1-2 days", "success");
 
             // Optional: Update balance state if needed
             setBalance(prev => prev - withdrawAmountValue);
