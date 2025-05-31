@@ -39,19 +39,22 @@ const LoginForm = () => {
 
   const handleLogin = useCallback(async () => {
     if (!validateForm()) return;
-  
+
     try {
       const data = await loginUser(phone, password);
-      const { access_token, ...user } = data;
-  
+      const { access_token, showFirstRewardPopup, ...user } = data;
+
       sessionStorage.setItem("token", access_token);
       // console.log("User Info:", user);
       // console.log("Token:", access_token);
-  
+
       showAlert("Login successful!", "success");
       // setShowAlert(true);
       setTimeout(() => {
-        navigate("/invest"); // replace with your actual route
+        // Pass reward popup flag to next page via navigation state
+        navigate("/invest", {
+          state: { showFirstRewardPopup: true }, // ✅ pass flag here
+        });
       }, 3000);
       // navigate("/invest");
     } catch (error) {
