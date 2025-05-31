@@ -36,14 +36,14 @@ const Invest = () => {
   };
 
   const userId = sessionStorage.getItem('userId');
-  console.log("User ID from sessionStorage:=39=>", userId);
+  //console.log("User ID from sessionStorage:=39=>", userId);
   // On mount: get userId and fetch reward status
 
   useEffect(() => {
     const checkPopupStatus = async () => {
       try {
         const res = await getUserById(userId);
-        console.log("User data fetched:=46=>", res.data);
+        //console.log("User data fetched:=46=>", res.data);
         if (res.data && !res.data.rewardPopupShown) {
           setShowPopup(true);
         }

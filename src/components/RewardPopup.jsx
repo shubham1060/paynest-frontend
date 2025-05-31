@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Box, Typography, Button, Slide } from "@mui/material";
 import { markRewardPopupSeen } from "../api/userApi";
+import ConfettiEffect from "./ConfettiEffect"; 
 
 const RewardPopup = ({ open, onClose, userId }) => {
   const [slideIn, setSlideIn] = useState(open);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     setSlideIn(open);
+    if (open) {
+      setShowConfetti(true); // Start confetti when modal opens
+      const timer = setTimeout(() => setShowConfetti(false), 5000); // Stop after 5s
+      return () => clearTimeout(timer);
+    }
   }, [open]);
 
   const handleClose = async () => {
@@ -21,6 +28,8 @@ const RewardPopup = ({ open, onClose, userId }) => {
 
   return (
     <Modal open={open} onClose={handleClose}>
+      <>
+        <ConfettiEffect trigger={showConfetti} /> {/* 🎉 Show confetti */}
       <Slide direction={slideIn ? "down" : "up"} in={slideIn} mountOnEnter unmountOnExit>
         <Box
           sx={{
@@ -40,7 +49,7 @@ const RewardPopup = ({ open, onClose, userId }) => {
             🎉 Congratulations 🎉
           </Typography>
           <Typography sx={{ mb: 2 }}>
-            You’ve received ₹150 reward bonus.
+            You just got <b>₹150</b> reward bonus!
           </Typography>
 
           <Box mt={2}>
@@ -48,6 +57,7 @@ const RewardPopup = ({ open, onClose, userId }) => {
           </Box>
         </Box>
       </Slide>
+      </>
     </Modal>
   );
 };
