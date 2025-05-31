@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { Box, Grid, Typography, Card } from "@mui/material";
 import DailyAndMonthlyTabs from "./DailyAndMonthlyTabs";
 import DailyEarning from "./DailyEarning";
@@ -7,9 +7,10 @@ import PopupModel from "./PopupModel";
 import Footer from "./Footer";
 import Header from "./Header";
 import { investmentData, investmentMonthlyData } from "./Plandata";
-import { purchaseProduct } from "../api/userApi";
+import { purchaseProduct, getUserById } from "../api/userApi";
 import { useAlert } from "./AlertContext";
 import TelegramModal from './TelegramModal';
+import RewardPopup from './RewardPopup';
 
 const productTitles = [
   "Portfolio Investment Product A",
@@ -26,6 +27,7 @@ const Invest = () => {
   const [selectedInvestment, setSelectedInvestment] = useState(null);
   const { showAlert } = useAlert();
   const [showModal, setShowModal] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   // Function to handle opening the popup
   const handleOpen = (investment) => {
@@ -34,10 +36,27 @@ const Invest = () => {
   };
 
   const userId = sessionStorage.getItem('userId');
+  console.log("User ID from sessionStorage:=39=>", userId);
+  // On mount: get userId and fetch reward status
 
   useEffect(() => {
-    setShowModal(true);
-  }, []);
+    const checkPopupStatus = async () => {
+      try {
+        const res = await getUserById(userId);
+        console.log("User data fetched:=46=>", res.data);
+        if (res.data && !res.data.rewardPopupShown) {
+          setShowPopup(true);
+        }
+        else{
+          setShowModal(true); // Show Telegram modal if reward popup is not shown
+        }
+      } catch (error) {
+        console.error("Error checking popup status", error);
+      }
+    };
+
+    if (userId) checkPopupStatus();
+  }, [userId]);
 
   const handleConfirmInvest = async (investment) => {
     if (!userId) {
@@ -223,7 +242,11 @@ const Invest = () => {
         onConfirmInvest={handleConfirmInvest}
       />
 
-      {/* Telegram Modal */}
+      {showPopup && (
+        <RewardPopup open={showPopup} onClose={() => setShowPopup(false)} userId={userId} />
+      )}
+
+      {/* Telegram Modal shown only if rewardStatus === true */}
       <TelegramModal open={showModal} onClose={() => setShowModal(false)} />
 
       {/* Footer */}

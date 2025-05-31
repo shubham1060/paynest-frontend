@@ -29,6 +29,8 @@ export const loginUser = async (phoneNumber, password) => {
 
     if (access_token) {
       sessionStorage.setItem("token", access_token); // ✅ This was missing!
+      sessionStorage.setItem("userId", rest.data.userId);
+      console.log("User ID set in sessionStorage:33=>", rest.data.userId);
     }
 
     return response.data.data;
@@ -52,12 +54,21 @@ export const getUserProfile = async () => {
     const user = response.data;
     sessionStorage.setItem('userId', user.userId);
     sessionStorage.setItem('phoneNumber', user.phoneNumber);
+    // sessionStorage.setItem("firstLoginRewardGiven", user.firstLoginRewardGiven);
     sessionStorage.setItem('user', JSON.stringify(user));
     return user;
   } catch (error) {
     console.error("Error fetching profile:", error);
     return null;
   }
+};
+
+export const getUserById = async (userId) => {
+  return axios.get(`${API_BASE_URL}/api/user/${userId}`);
+};
+
+export const markRewardPopupSeen = async (userId) => {
+  return axios.patch(`${API_BASE_URL}/api/user/reward-popup-seen/${userId}`);
 };
 
 // Update profile

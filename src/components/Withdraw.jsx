@@ -103,7 +103,9 @@ const WithdrawPage = () => {
 
             // Optional: Update balance state if needed
             // setBalance(prev => prev - withdrawAmountValue);
-            showAlert("Our banking partner is currently experiencing downtime. Withdrawals will resume once the service is restored.", "warning");
+            
+            // showAlert("Our banking partner is currently experiencing downtime. Withdrawals will resume once the service is restored.", "warning");
+            showAlert("Withdrawal will be available after your plan completes.", "warning");
             setBalance(balance);
         } catch (error) {
             //   alert(error?.message || 'Withdrawal failed!');
