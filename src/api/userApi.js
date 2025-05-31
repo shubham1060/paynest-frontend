@@ -30,7 +30,7 @@ export const loginUser = async (phoneNumber, password) => {
     if (access_token) {
       sessionStorage.setItem("token", access_token); // ✅ This was missing!
       sessionStorage.setItem("userId", rest.data.userId);
-      console.log("User ID set in sessionStorage:33=>", rest.data.userId);
+      //console.log("User ID set in sessionStorage:33=>", rest.data.userId);
     }
 
     return response.data.data;
